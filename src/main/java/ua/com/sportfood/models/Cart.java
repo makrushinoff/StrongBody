@@ -1,5 +1,6 @@
 package ua.com.sportfood.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ public class Cart {
 
     public Cart(Customer customer) {
         this.customer = customer;
+        bookings = new ArrayList<>();
     }
 
     public Cart() {
@@ -29,6 +31,14 @@ public class Cart {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public void addBooking(Booking booking) {
+        bookings.add(booking);
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
     @Override

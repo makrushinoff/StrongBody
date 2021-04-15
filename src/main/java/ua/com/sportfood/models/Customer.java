@@ -7,8 +7,10 @@ public class Customer {
     private UUID id;
     private AuthorizationData authorizationData;
 
-    public Customer(AuthorizationData authorizationData) {
-        this.authorizationData = authorizationData;
+    public Customer(String email, String username,
+                    String password, String firstName, String lastName, String phoneNumber) {
+        authorizationData = new AuthorizationData(email,username,password,firstName,lastName,phoneNumber);
+        authorizationData.setId(UUID.randomUUID());
     }
 
     public Customer() {

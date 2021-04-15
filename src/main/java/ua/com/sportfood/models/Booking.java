@@ -9,12 +9,14 @@ public class Booking {
     private int productAmount;
     private int orderNumber;
     private Product product;
+    private UUID cartId;
 
-    public Booking(LocalDate date, int productAmount, int orderNumber, Product product) {
+    public Booking(LocalDate date, int productAmount, int orderNumber, Product product, UUID cartId) {
         this.date = date;
         this.productAmount = productAmount;
         this.orderNumber = orderNumber;
         this.product = product;
+        this.cartId = cartId;
     }
 
     public Booking() {
@@ -60,6 +62,14 @@ public class Booking {
         this.product = product;
     }
 
+    public UUID getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(UUID cartId) {
+        this.cartId = cartId;
+    }
+
     @Override
     public String toString() {
         return "Booking{" +
@@ -67,6 +77,7 @@ public class Booking {
                 ", productAmount=" + productAmount +
                 ", orderNumber=" + orderNumber +
                 ", product=" + product +
+                ", cartId=" + cartId +
                 '}';
     }
 }
