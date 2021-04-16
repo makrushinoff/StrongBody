@@ -5,14 +5,14 @@ import java.util.UUID;
 
 public class Booking {
     private UUID id;
-    private LocalDate date;
+    private LocalDate orderDate;
     private int productAmount;
     private int orderNumber;
     private Product product;
     private UUID cartId;
 
-    public Booking(LocalDate date, int productAmount, int orderNumber, Product product, UUID cartId) {
-        this.date = date;
+    public Booking(LocalDate orderDate, int productAmount, int orderNumber, Product product, UUID cartId) {
+        this.orderDate = orderDate;
         this.productAmount = productAmount;
         this.orderNumber = orderNumber;
         this.product = product;
@@ -30,12 +30,12 @@ public class Booking {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getOrderDate() {
+        return orderDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 
     public int getProductAmount() {
@@ -73,7 +73,7 @@ public class Booking {
     @Override
     public String toString() {
         return "Booking{" +
-                "date=" + date +
+                "date=" + orderDate +
                 ", productAmount=" + productAmount +
                 ", orderNumber=" + orderNumber +
                 ", product=" + product +
