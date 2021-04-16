@@ -9,10 +9,12 @@ CREATE TABLE IF NOT EXISTS authorization_data (
 );
 CREATE TABLE IF NOT EXISTS customer (
     id UUID NOT NULL UNIQUE PRIMARY KEY ,
+    authorization_id UUID NOT NULL,
     FOREIGN KEY (authorization_id) REFERENCES authorization_data(id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS cart(
     id UUID NOT NULL UNIQUE PRIMARY KEY ,
+    customer_id UUID NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS product (
@@ -28,6 +30,8 @@ CREATE TABLE IF NOT EXISTS booking(
     order_date date NOT NULL,
     product_amount int NOT NULL,
     order_number int NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+    product_id UUID NOT NULL,
+    cart_id UUID NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
     FOREIGN KEY (cart_id) REFERENCES cart(id) ON DELETE CASCADE
 );
