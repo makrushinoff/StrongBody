@@ -2,6 +2,7 @@ package ua.com.sportfood.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Cart {
@@ -42,9 +43,24 @@ public class Cart {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cart cart = (Cart) o;
+        return Objects.equals(id, cart.id) && Objects.equals(customer, cart.customer) && Objects.equals(bookings, cart.bookings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, customer, bookings);
+    }
+
+    @Override
     public String toString() {
         return "Cart{" +
-                "customer=" + customer +
+                "id=" + id +
+                ", customer=" + customer +
+                ", bookings=" + bookings +
                 '}';
     }
 }

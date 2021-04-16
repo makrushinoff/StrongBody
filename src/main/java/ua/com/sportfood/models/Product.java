@@ -1,5 +1,6 @@
 package ua.com.sportfood.models;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Product {
@@ -70,9 +71,23 @@ public class Product {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return price == product.price && availableAmount == product.availableAmount && Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(article, product.article) && Objects.equals(description, product.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, article, description, availableAmount);
+    }
+
+    @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", price=" + price +
                 ", article='" + article + '\'' +
                 ", description='" + description + '\'' +

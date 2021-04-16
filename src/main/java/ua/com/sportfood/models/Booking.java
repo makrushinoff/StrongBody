@@ -1,6 +1,7 @@
 package ua.com.sportfood.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Booking {
@@ -71,9 +72,23 @@ public class Booking {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return productAmount == booking.productAmount && orderNumber == booking.orderNumber && Objects.equals(id, booking.id) && Objects.equals(orderDate, booking.orderDate) && Objects.equals(product, booking.product) && Objects.equals(cartId, booking.cartId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, orderDate, productAmount, orderNumber, product, cartId);
+    }
+
+    @Override
     public String toString() {
         return "Booking{" +
-                "date=" + orderDate +
+                "id=" + id +
+                ", orderDate=" + orderDate +
                 ", productAmount=" + productAmount +
                 ", orderNumber=" + orderNumber +
                 ", product=" + product +
