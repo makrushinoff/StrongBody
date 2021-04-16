@@ -1,6 +1,7 @@
 package ua.com.sportfood.models;
 
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Customer {
@@ -33,9 +34,23 @@ public class Customer {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(id, customer.id) && Objects.equals(authorizationData, customer.authorizationData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, authorizationData);
+    }
+
+    @Override
     public String toString() {
         return "Customer{" +
-                "authorizationData=" + authorizationData +
+                "id=" + id +
+                ", authorizationData=" + authorizationData +
                 '}';
     }
 }

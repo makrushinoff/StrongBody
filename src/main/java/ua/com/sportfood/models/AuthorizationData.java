@@ -1,5 +1,6 @@
 package ua.com.sportfood.models;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class AuthorizationData {
@@ -80,9 +81,23 @@ public class AuthorizationData {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorizationData that = (AuthorizationData) o;
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phoneNumber, that.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, username, password, firstName, lastName, phoneNumber);
+    }
+
+    @Override
     public String toString() {
         return "AuthorizationData{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
