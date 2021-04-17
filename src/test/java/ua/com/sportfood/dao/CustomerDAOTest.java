@@ -68,6 +68,33 @@ class CustomerDAOTest {
     }
 
     @Test
+    void shouldNotContainsCustomer() {
+        customer1 = new Customer(
+                "cus@bla.com",
+                "cutouser",
+                "cus",
+                "Custo",
+                "Mer",
+                "+99999999"
+        );
+        customer1.setId(UUID.randomUUID());
+        customerDAO.save(customer1);
+        customer2 = new Customer(
+                "cus2@bla.com",
+                "cut2ouser",
+                "cus2",
+                "Custo2",
+                "Mer2",
+                "+99999999222"
+        );
+        customer2.setId(UUID.randomUUID());
+
+        List<Customer> result = customerDAO.findAll();
+
+        assertThat(result.contains(customer2)).isFalse();
+    }
+
+    @Test
     void shouldSave() {
         customer1 = new Customer(
                 "cus@bla.com",
@@ -122,6 +149,36 @@ class CustomerDAOTest {
 
         assertThat(resultCustomer.equals(customer2)).isTrue();
 
+    }
+
+    @Test
+    void shouldCustomerNotBeEqualsAfterUpdate() {
+        customer1 = new Customer(
+                "cus@bla.com",
+                "cutouser",
+                "cus",
+                "Custo",
+                "Mer",
+                "+99999999"
+        );
+        customer1.setId(UUID.randomUUID());
+        customerDAO.save(customer1);
+        customer2 = new Customer(
+                "cus2@bla.com",
+                "cut2ouser",
+                "cus2",
+                "Custo2",
+                "Mer2",
+                "+99999999222"
+        );
+        customer2.setId(customer1.getId());
+        customer2.getAuthorizationData().setId(customer1.getAuthorizationData().getId());
+        customerDAO.updateById(customer1.getId(), customer2);
+
+        List<Customer> resultList = customerDAO.findAll();
+        Customer resultCustomer = resultList.get(0);
+
+        assertThat(resultCustomer.equals(customer1)).isFalse();
     }
 
     @Test

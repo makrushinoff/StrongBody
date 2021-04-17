@@ -21,12 +21,8 @@ public class CustomerDAO implements GeneralDAO<Customer>{
 
     @Override
     public List<Customer> findAll() {
-        List<AuthorizationData> authorizationDataList = jdbcTemplate.query("SELECT * FROM authorization_data", (resultSet, i) -> {
-            return parseAuthorizationDataFromResultSet(resultSet);
-        });
-        List<Customer> customers = jdbcTemplate.query("SELECT * FROM customer", (resultSet, i) -> {
-            return parseResultSetToCustomer(resultSet, authorizationDataList);
-        });
+        List<AuthorizationData> authorizationDataList = jdbcTemplate.query("SELECT * FROM authorization_data", (resultSet, i) -> parseAuthorizationDataFromResultSet(resultSet));
+        List<Customer> customers = jdbcTemplate.query("SELECT * FROM customer", (resultSet, i) -> parseResultSetToCustomer(resultSet, authorizationDataList));
         return customers;
     }
 

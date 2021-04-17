@@ -12,3 +12,11 @@ CREATE TABLE customer (
     authorization_id UUID ,
     FOREIGN KEY (authorization_id) REFERENCES authorization_data(id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS product (
+    id UUID PRIMARY KEY ,
+    name VARCHAR(100) NOT NULL,
+    price int NOT NULL,
+    article VARCHAR(50) NOT NULL UNIQUE,
+    description text,
+    available_amount int not null
+);
