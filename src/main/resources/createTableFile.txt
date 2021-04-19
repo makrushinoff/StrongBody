@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS authorization_data (
      password VARCHAR(50) NOT NULL,
      first_name VARCHAR(50) NOT NULL,
      last_name VARCHAR(50) NOT NULL,
-     phone_number VARCHAR(50) NOT NULL
+     phone_number VARCHAR (50) NOT NULL
  );
  CREATE TABLE IF NOT EXISTS customer (
      id UUID PRIMARY KEY ,

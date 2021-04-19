@@ -70,6 +70,18 @@ public class ProductDAO implements GeneralDAO<Product> {
         return filteredList.get(0);
     }
 
+    public Product findByArticle(String article) {
+        List<Product> allProducts = findAll();
+        List<Product> filteredList = allProducts.stream()
+                .filter(product -> product.getArticle().equals(article)).collect(Collectors.toList());
+        if(filteredList.size() > 1) try {
+            throw new SQLException();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return filteredList.get(0);
+    }
+
     private Product parseResultSetToProduct(ResultSet resultSet) throws SQLException {
         Product product = new Product();
         product.setId(resultSet.getObject("id", UUID.class));
