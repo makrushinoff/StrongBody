@@ -249,4 +249,38 @@ class ProductDAOTest {
 
         assertThrows(IndexOutOfBoundsException.class, () -> productDAO.findById(UUID.randomUUID()));
     }
+
+    @Test
+    void shouldFindByArticle() {
+        product1 = new Product(
+                "prod1",
+                2000,
+                "PP-01",
+                "Super-puper product",
+                5
+        );
+        product1.setId(UUID.randomUUID());
+        productDAO.save(product1);
+        String article = "PP-01";
+
+        Product result = productDAO.findByArticle(article);
+
+        assertThat(result.equals(product1)).isTrue();
+    }
+
+    @Test
+    void shouldNotFindByIdCauseOfWrongArticle() {
+        product1 = new Product(
+                "prod1",
+                2000,
+                "PP-01",
+                "Super-puper product",
+                5
+        );
+        product1.setId(UUID.randomUUID());
+        productDAO.save(product1);
+        String article = "00000000";
+
+        assertThrows(IndexOutOfBoundsException.class, () -> productDAO.findByArticle(article));
+    }
 }
