@@ -10,6 +10,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import ua.com.sportfood.models.Customer;
+import ua.com.sportfood.models.Role;
+import ua.com.sportfood.models.State;
 
 import java.util.List;
 import java.util.UUID;
@@ -49,8 +51,11 @@ class CustomerDAOTest {
                 "Custo",
                 "Mer",
                 "+99999999"
+
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customer2 = new Customer(
                 "cus2@bla.com",
                 "cut2ouser",
@@ -60,6 +65,8 @@ class CustomerDAOTest {
                 "+99999999222"
         );
         customer2.setId(UUID.randomUUID());
+        customer2.setRole(Role.USER);
+        customer2.setState(State.ACTIVE);
         customerDAO.save(customer1);
         customerDAO.save(customer2);
         List<Customer> result = customerDAO.findAll();
@@ -78,6 +85,8 @@ class CustomerDAOTest {
                 "+99999999"
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customerDAO.save(customer1);
         customer2 = new Customer(
                 "cus2@bla.com",
@@ -88,7 +97,8 @@ class CustomerDAOTest {
                 "+99999999222"
         );
         customer2.setId(UUID.randomUUID());
-
+        customer2.setRole(Role.USER);
+        customer2.setState(State.ACTIVE);
         List<Customer> result = customerDAO.findAll();
 
         assertThat(result.contains(customer2)).isFalse();
@@ -105,6 +115,8 @@ class CustomerDAOTest {
                 "+99999999"
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customer2 = new Customer(
                 "cus2@bla.com",
                 "cut2ouser",
@@ -115,7 +127,8 @@ class CustomerDAOTest {
         );
 
         customer2.setId(UUID.randomUUID());
-
+        customer2.setRole(Role.USER);
+        customer2.setState(State.ACTIVE);
         customerDAO.save(customer1);
         customerDAO.save(customer2);
     }
@@ -131,6 +144,8 @@ class CustomerDAOTest {
                 "+99999999"
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customerDAO.save(customer1);
         customer2 = new Customer(
                 "cus2@bla.com",
@@ -141,7 +156,8 @@ class CustomerDAOTest {
                 "+99999999222"
         );
         customer2.setId(customer1.getId());
-        customer2.getAuthorizationData().setId(customer1.getAuthorizationData().getId());
+        customer2.setRole(Role.USER);
+        customer2.setState(State.ACTIVE);
         customerDAO.updateById(customer1.getId(), customer2);
 
         List<Customer> resultList = customerDAO.findAll();
@@ -162,6 +178,8 @@ class CustomerDAOTest {
                 "+99999999"
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customerDAO.save(customer1);
         customer2 = new Customer(
                 "cus2@bla.com",
@@ -172,7 +190,8 @@ class CustomerDAOTest {
                 "+99999999222"
         );
         customer2.setId(customer1.getId());
-        customer2.getAuthorizationData().setId(customer1.getAuthorizationData().getId());
+        customer2.setRole(Role.USER);
+        customer2.setState(State.ACTIVE);
         customerDAO.updateById(customer1.getId(), customer2);
 
         List<Customer> resultList = customerDAO.findAll();
@@ -192,6 +211,8 @@ class CustomerDAOTest {
                 "+99999999"
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customerDAO.save(customer1);
 
         customerDAO.deleteById(customer1.getId());
@@ -212,6 +233,8 @@ class CustomerDAOTest {
                 "+99999999"
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customerDAO.save(customer1);
 
         Customer result = customerDAO.findById(customer1.getId());
@@ -230,9 +253,12 @@ class CustomerDAOTest {
                 "+99999999"
         );
         customer1.setId(UUID.randomUUID());
+        customer1.setRole(Role.USER);
+        customer1.setState(State.ACTIVE);
         customerDAO.save(customer1);
 
-        Customer result = customerDAO.findByUsername(customer1.getAuthorizationData().getUsername());
+
+        Customer result = customerDAO.findByUsername(customer1.getUsername());
 
         assertThat(result.equals(customer1)).isTrue();
     }

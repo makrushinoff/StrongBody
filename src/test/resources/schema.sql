@@ -1,16 +1,14 @@
-CREATE TABLE authorization_data (
-    id UUID PRIMARY KEY ,
-    email VARCHAR(50),
-    username VARCHAR(50),
-    password VARCHAR(50),
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    phone_number VARCHAR(50)
-);
+
 CREATE TABLE customer (
     id UUID PRIMARY KEY ,
-    authorization_id UUID ,
-    FOREIGN KEY (authorization_id) REFERENCES authorization_data(id) ON DELETE CASCADE
+    email VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+    customer_state VARCHAR (200) NOT NULL,
+    customer_role VARCHAR (200)  NOT NULL
 );
 CREATE TABLE IF NOT EXISTS product (
     id UUID PRIMARY KEY ,

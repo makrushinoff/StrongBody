@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS authorization_data (
+ CREATE TABLE IF NOT EXISTS customer (
      id UUID PRIMARY KEY ,
      email VARCHAR(50) NOT NULL,
      username VARCHAR(50) NOT NULL UNIQUE,
@@ -6,11 +6,6 @@ CREATE TABLE IF NOT EXISTS authorization_data (
      first_name VARCHAR(50) NOT NULL,
      last_name VARCHAR(50) NOT NULL,
      phone_number VARCHAR(50) NOT NULL
- );
- CREATE TABLE IF NOT EXISTS customer (
-     id UUID PRIMARY KEY ,
-     authorization_id UUID NOT NULL,
-     FOREIGN KEY (authorization_id) REFERENCES authorization_data(id) ON DELETE CASCADE
  );
  CREATE TABLE IF NOT EXISTS cart(
      id UUID PRIMARY KEY ,
