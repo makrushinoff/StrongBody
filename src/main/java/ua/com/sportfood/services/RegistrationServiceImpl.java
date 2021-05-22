@@ -1,6 +1,5 @@
 package ua.com.sportfood.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.com.sportfood.dao.CustomerDAO;
@@ -10,7 +9,7 @@ import ua.com.sportfood.models.Role;
 import ua.com.sportfood.models.State;
 
 @Service
-public class RegistrationServiceImpl implements RegistrationService{
+public class RegistrationServiceImpl implements RegistrationService {
 
     private final CustomerDAO customerDAO;
     private final PasswordEncoder passwordEncoder;
@@ -19,7 +18,6 @@ public class RegistrationServiceImpl implements RegistrationService{
         this.customerDAO = customerDAO;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public void registration(RegistrationForm userForm) {
@@ -35,6 +33,5 @@ public class RegistrationServiceImpl implements RegistrationService{
         customer.setState(State.ACTIVE);
 
         customerDAO.save(customer);
-
     }
 }
