@@ -1,10 +1,11 @@
 package ua.com.sportfood.dao;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface GeneralDAO<T> {
-    
+
     List<T> findAll();
 
     void save(T t);
@@ -13,6 +14,6 @@ public interface GeneralDAO<T> {
 
     void deleteById(UUID id);
 
-    T findById(UUID id);
+    Optional<T> findById(UUID id);
 
 }

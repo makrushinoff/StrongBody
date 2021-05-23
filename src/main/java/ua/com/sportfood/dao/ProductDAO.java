@@ -7,6 +7,7 @@ import ua.com.sportfood.models.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -57,29 +58,32 @@ public class ProductDAO implements GeneralDAO<Product> {
     }
 
     @Override
-    public Product findById(UUID id) {
+    public Optional<Product> findById(UUID id) {
         List<Product> allProducts = findAll();
         List<Product> filteredList = allProducts.stream()
                 .filter(product -> product.getId().equals(id))
                 .collect(Collectors.toList());
-        if(filteredList.size() > 1) try {
-            throw new SQLException();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+
+        if (filteredList.size() == 1) {
+            Product result = filteredList.get(0);
+            return Optional.of(result);
         }
-        return filteredList.get(0);
+
+        return Optional.empty();
     }
 
-    public Product findByArticle(String article) {
+    public Optional<Product> findByArticle(String article) {
         List<Product> allProducts = findAll();
         List<Product> filteredList = allProducts.stream()
-                .filter(product -> product.getArticle().equals(article)).collect(Collectors.toList());
-        if(filteredList.size() > 1) try {
-            throw new SQLException();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+                .filter(product -> product.getArticle().equals(article))
+                .collect(Collectors.toList());
+
+        if (filteredList.isEmpty()) {
+            return Optional.empty();
         }
-        return filteredList.get(0);
+
+        Product result = filteredList.get(0);
+        return Optional.of(result);
     }
 
     private Product parseResultSetToProduct(ResultSet resultSet) throws SQLException {
