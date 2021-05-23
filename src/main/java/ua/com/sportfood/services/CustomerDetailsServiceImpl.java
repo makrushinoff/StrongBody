@@ -1,6 +1,5 @@
-package ua.com.sportfood.security.details;
+package ua.com.sportfood.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,8 +10,12 @@ import ua.com.sportfood.dao.CustomerDAO;
 public class CustomerDetailsServiceImpl implements UserDetailsService {
 
     private final static String USER_NOT_FOUND = "user with username %s not found";
-    @Autowired
-    private  CustomerDAO customerDAO;
+
+    private final CustomerDAO customerDAO;
+
+    public CustomerDetailsServiceImpl(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
