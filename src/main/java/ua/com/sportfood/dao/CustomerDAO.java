@@ -9,6 +9,7 @@ import ua.com.sportfood.models.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -66,16 +67,17 @@ public class CustomerDAO implements GeneralDAO<Customer> {
     }
 
     @Override
-    public Customer findById(UUID id) {
+    public Optional<Customer> findById(UUID id) {
         List<Customer> customerList = findAll();
         List<Customer> filteredList = customerList.stream()
                 .filter(customer -> customer.getId().equals(id)).collect(Collectors.toList());
-        if (filteredList.size() > 1) try {
-            throw new SQLException();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+
+        if (filteredList.isEmpty()) {
+            return Optional.empty();
         }
-        return filteredList.get(0);
+
+        Customer result = filteredList.get(0);
+        return Optional.of(result);
     }
 
     public Customer findByUsername(String username) {
