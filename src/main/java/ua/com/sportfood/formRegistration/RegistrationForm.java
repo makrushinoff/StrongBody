@@ -3,10 +3,22 @@ package ua.com.sportfood.formRegistration;
 public class RegistrationForm {
     private String firstName;
     private String lastName;
-    private String login;
+    private String username;
     private String password;
     private String email;
     private String phoneNumber;
+
+    public RegistrationForm() {
+    }
+
+    public RegistrationForm(String firstName, String lastName, String username, String password, String email, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -40,12 +52,12 @@ public class RegistrationForm {
         this.lastName = lastName;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
