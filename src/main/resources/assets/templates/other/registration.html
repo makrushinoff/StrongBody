@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+
+<th:block th:replace="fragments/templates :: navbar"/>
+
+<div class="container">
+
+    <div class="mt-5 ms-5 me-5">
+        <h1 class="text-center">Registration</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-4 mt-4">
+                <form class="row" th:object="${registrationForm}" th:action="@{/registration}" method="post">
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="username">Username</label>
+                        <input class="form-control" type="text" placeholder="Username" th:field="*{username}"
+                               required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="firstName">First name</label>
+                        <input class="form-control" type="text" placeholder="First name" th:field="*{firstName}"
+                               required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="firstName">Last name</label>
+                        <input class="form-control" type="text" placeholder="Last name" th:field="*{lastName}"
+                               required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="email">Email</label>
+                        <input class="form-control" type="text" placeholder="Email" th:field="*{email}"
+                               required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="phoneNumber">Phone number</label>
+                        <input class="form-control" type="text" placeholder="Phone number" th:field="*{phoneNumber}"
+                               required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="password">Password</label>
+                        <input class="form-control" type="password" placeholder="Password" th:field="*{password}"
+                               required pattern=".{8,}" title="Minimum password size is 8" id="password">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label h5" th:for="confirmPassword">Confirm password</label>
+                        <input class="form-control" type="password" placeholder="Password" required id="confirmPassword">
+                    </div>
+
+                    <div class="col-lg-4">
+                        <input class="btn btn-success" type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments/templates :: passwords_match_script"></th:block>
+
+</body>
+</html>

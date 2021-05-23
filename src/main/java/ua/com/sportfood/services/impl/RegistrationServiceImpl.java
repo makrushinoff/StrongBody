@@ -3,7 +3,7 @@ package ua.com.sportfood.services.impl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.com.sportfood.dao.CustomerDAO;
-import ua.com.sportfood.models.RegistrationForm;
+import ua.com.sportfood.models.forms.RegistrationForm;
 import ua.com.sportfood.models.Customer;
 import ua.com.sportfood.models.Role;
 import ua.com.sportfood.models.State;
