@@ -1,14 +1,18 @@
 package ua.com.sportfood.services.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.sportfood.dao.CustomerDAO;
 import ua.com.sportfood.exceptions.FieldValidationException;
 import ua.com.sportfood.exceptions.ValidationException;
-import ua.com.sportfood.formRegistration.RegistrationForm;
+import ua.com.sportfood.models.RegistrationForm;
 import ua.com.sportfood.models.Customer;
 import ua.com.sportfood.services.Validator;
 
 import java.util.List;
+
+import static ua.com.sportfood.models.RegistrationForm.*;
 
 /**
  * CustomerValidator is a class, that should validate input data
@@ -16,12 +20,11 @@ import java.util.List;
  */
 @Service
 public class RegistrationFormValidator implements Validator<Customer, RegistrationForm> {
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationFormValidator.class);
+
     private final CustomerDAO customerDAO;
 
-    private static final String VALIDATION_EXCEPTION_PATTERN = "Field: '%s', value: '%s' , reason: '%s'";
-    private static final String USERNAME_FIELD = "username";
-    private static final String EMAIL_FIELD = "email";
-    private static final String PHONE_NUMBER_FIELD = "phoneNumber";
+    private static final String VALIDATION_EXCEPTION_PATTERN = "VALIDATION FAIL. Field: '%s', value: '%s' , reason: '%s'";
     private static final String DUPLICATION_REASON = "Duplicated instance in database";
 
     public RegistrationFormValidator(CustomerDAO customerDAO) {
@@ -42,16 +45,24 @@ public class RegistrationFormValidator implements Validator<Customer, Registrati
      */
     public Customer validate(RegistrationForm form) throws ValidationException {
         List<Customer> allCustomers = customerDAO.findAll();
-        try{
-            allCustomers.forEach(customer -> checkForExisting(form, customer));
+        try {
+            allCustomers.forEach(customer -> validateFields(form, customer));
         } catch (FieldValidationException ex) {
-            String message = String.format(VALIDATION_EXCEPTION_PATTERN, ex.getInvalidFieldName(), ex.getInvalidValue(), ex.getReason());
+            String message = generateValidationMessage(ex);
+            LOG.warn(message);
             throw new ValidationException(message);
         }
         return new Customer();
     }
 
-    private void checkForExisting(RegistrationForm form, Customer customer) throws FieldValidationException {
+    private String generateValidationMessage(FieldValidationException ex) {
+        String invalidFieldName = ex.getInvalidFieldName();
+        String invalidValue = ex.getInvalidValue();
+        String reason = ex.getReason();
+        return String.format(VALIDATION_EXCEPTION_PATTERN, invalidFieldName, invalidValue, reason);
+    }
+
+    private void validateFields(RegistrationForm form, Customer customer) throws FieldValidationException {
         usernameValidation(form, customer);
         emailValidation(form, customer);
         phoneNumberValidation(form, customer);

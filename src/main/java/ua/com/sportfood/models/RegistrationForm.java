@@ -1,4 +1,4 @@
-package ua.com.sportfood.formRegistration;
+package ua.com.sportfood.models;
 
 public class RegistrationForm {
     private String firstName;
@@ -7,6 +7,10 @@ public class RegistrationForm {
     private String password;
     private String email;
     private String phoneNumber;
+
+    public static final String USERNAME_FIELD = "username";
+    public static final String EMAIL_FIELD = "email";
+    public static final String PHONE_NUMBER_FIELD = "phoneNumber";
 
     public RegistrationForm() {
     }

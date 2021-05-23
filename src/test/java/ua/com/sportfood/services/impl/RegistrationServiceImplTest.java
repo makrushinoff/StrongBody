@@ -8,9 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.com.sportfood.dao.CustomerDAO;
-import ua.com.sportfood.formRegistration.RegistrationForm;
+import ua.com.sportfood.models.RegistrationForm;
 import ua.com.sportfood.models.Customer;
-import ua.com.sportfood.services.impl.RegistrationServiceImpl;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

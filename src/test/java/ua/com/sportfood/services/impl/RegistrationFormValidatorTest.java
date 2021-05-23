@@ -7,9 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.sportfood.dao.CustomerDAO;
-import ua.com.sportfood.exceptions.FieldValidationException;
 import ua.com.sportfood.exceptions.ValidationException;
-import ua.com.sportfood.formRegistration.RegistrationForm;
+import ua.com.sportfood.models.RegistrationForm;
 import ua.com.sportfood.models.Customer;
 
 import java.util.Collections;
@@ -28,15 +27,15 @@ class RegistrationFormValidatorTest {
     @InjectMocks
     private RegistrationFormValidator testInstance;
 
-    private final static String FIRST_NAME = "first";
-    private final static String LAST_NAME = "last";
-    private final static String PASSWORD = "pass";
+    private final static String FIRST_NAME = "firstName";
+    private final static String LAST_NAME = "lastLast";
+    private final static String PASSWORD = "password";
     private final static String EMAIL = "email";
-    private final static String USERNAME = "user";
-    private final static String PHONE_NUMBER = "phone";
-    private final static String USERNAME2 = "user2";
-    private final static String PHONE_NUMBER2 = "number2";
     private final static String EMAIL2 = "email2";
+    private final static String USERNAME = "username";
+    private final static String USERNAME2 = "username2";
+    private final static String PHONE_NUMBER = "phoneNumber";
+    private final static String PHONE_NUMBER2 = "phoneNumber2";
     private final static Customer EMPTY_CUSTOMER = new Customer();
 
     private RegistrationForm registrationForm;
