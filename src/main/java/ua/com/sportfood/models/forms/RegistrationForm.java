@@ -1,4 +1,4 @@
-package ua.com.sportfood.models;
+package ua.com.sportfood.models.forms;
 
 public class RegistrationForm {
     private String firstName;

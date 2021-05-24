@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.sportfood.dao.CustomerDAO;
 import ua.com.sportfood.exceptions.ValidationException;
-import ua.com.sportfood.models.RegistrationForm;
+import ua.com.sportfood.models.forms.RegistrationForm;
 import ua.com.sportfood.models.Customer;
 
 import java.util.Collections;
