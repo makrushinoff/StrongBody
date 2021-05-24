@@ -1,4 +1,4 @@
-package ua.com.sportfood.services;
+package ua.com.sportfood.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.com.sportfood.dao.CustomerDAO;
 import ua.com.sportfood.formRegistration.RegistrationForm;
 import ua.com.sportfood.models.Customer;
+import ua.com.sportfood.services.impl.RegistrationServiceImpl;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
