@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJdbcTest
 @ComponentScan(basePackages = "ua.com.sportfood.dao")
-class CustomerDAOTest {
+class CustomerDAOImplTest {
 
     private static final String EMAIL1 = "cus@bla.com";
     private static final String EMAIL2 = "cus2@bla.com";
@@ -144,8 +144,10 @@ class CustomerDAOTest {
     @Test
     void shouldFindByUsername() {
         customerDAO.save(customer1);
-        Customer actual = customerDAO.findByUsername(USERNAME1);
+        Optional<Customer> actualOptional = customerDAO.findFirstByUsername(USERNAME1);
 
+        assertThat(actualOptional).isPresent();
+        Customer actual = actualOptional.get();
         assertThat(actual).isEqualTo(customer1);
     }
 }

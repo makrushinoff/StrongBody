@@ -3,6 +3,7 @@ package ua.com.sportfood.services.impl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.com.sportfood.dao.CustomerDAO;
+import ua.com.sportfood.dao.impl.CustomerDAOImpl;
 import ua.com.sportfood.models.forms.RegistrationForm;
 import ua.com.sportfood.models.Customer;
 import ua.com.sportfood.models.Role;
@@ -15,7 +16,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final CustomerDAO customerDAO;
     private final PasswordEncoder passwordEncoder;
 
-    public RegistrationServiceImpl(CustomerDAO customerDAO, PasswordEncoder passwordEncoder) {
+    public RegistrationServiceImpl(CustomerDAOImpl customerDAO, PasswordEncoder passwordEncoder) {
         this.customerDAO = customerDAO;
         this.passwordEncoder = passwordEncoder;
     }

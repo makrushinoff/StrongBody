@@ -10,11 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ua.com.sportfood.services.CustomerDetailsServiceImpl;
+import ua.com.sportfood.services.impl.CustomerDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan({"ua.com.sportfood.services", "ua.com.sportfood.dao"})
+@ComponentScan({"ua.com.sportfood.services", "ua.com.sportfood.dao", "ua.com.sportfood.populator"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomerDetailsServiceImpl customerDetailsService;

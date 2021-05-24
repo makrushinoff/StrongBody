@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ua.com.sportfood.dao.CustomerDAO;
+import ua.com.sportfood.dao.impl.CustomerDAOImpl;
 import ua.com.sportfood.models.forms.RegistrationForm;
 import ua.com.sportfood.models.Customer;
 
@@ -23,7 +23,7 @@ class RegistrationServiceImplTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private CustomerDAO customerDAO;
+    private CustomerDAOImpl customerDAOImpl;
 
     @InjectMocks
     private RegistrationServiceImpl testInstance;
@@ -37,6 +37,6 @@ class RegistrationServiceImplTest {
     void shouldRegistration() {
         testInstance.registration(registrationForm);
 
-        verify(customerDAO).save(any(Customer.class));
+        verify(customerDAOImpl).save(any(Customer.class));
     }
 }
