@@ -10,6 +10,7 @@ import ua.com.sportfood.dao.CustomerDAO;
 import ua.com.sportfood.exceptions.ValidationException;
 import ua.com.sportfood.models.forms.RegistrationForm;
 import ua.com.sportfood.models.Customer;
+import ua.com.sportfood.validation.RegistrationFormValidator;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ua.com.sportfood.services.impl;
+package ua.com.sportfood.validation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +8,6 @@ import ua.com.sportfood.exceptions.FieldValidationException;
 import ua.com.sportfood.exceptions.ValidationException;
 import ua.com.sportfood.models.forms.RegistrationForm;
 import ua.com.sportfood.models.Customer;
-import ua.com.sportfood.services.Validator;
 
 import java.util.List;
 

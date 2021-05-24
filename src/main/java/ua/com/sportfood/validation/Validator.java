@@ -1,4 +1,4 @@
-package ua.com.sportfood.services;
+package ua.com.sportfood.validation;
 
 import ua.com.sportfood.exceptions.ValidationException;
 
