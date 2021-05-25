@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJdbcTest
 @ComponentScan(basePackages = "ua.com.sportfood.dao")
-class ProductDAOTest {
+class ProductDAOImlTest {
 
     private static final String PRODUCT_NAME1 = "prod1";
     private static final String PRODUCT_NAME2 = "prod2";

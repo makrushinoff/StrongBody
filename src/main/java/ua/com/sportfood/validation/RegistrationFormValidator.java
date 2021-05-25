@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.sportfood.dao.CustomerDAO;
+import ua.com.sportfood.dao.impl.CustomerDAOImpl;
 import ua.com.sportfood.exceptions.FieldValidationException;
 import ua.com.sportfood.exceptions.ValidationException;
 import ua.com.sportfood.models.forms.RegistrationForm;
@@ -26,7 +27,7 @@ public class RegistrationFormValidator implements Validator<Customer, Registrati
     private static final String VALIDATION_EXCEPTION_PATTERN = "VALIDATION FAIL. Field: '%s', value: '%s' , reason: '%s'";
     private static final String DUPLICATION_REASON = "Duplicated instance in database";
 
-    public RegistrationFormValidator(CustomerDAO customerDAO) {
+    public RegistrationFormValidator(CustomerDAOImpl customerDAO) {
         this.customerDAO = customerDAO;
     }
 

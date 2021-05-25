@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ua.com.sportfood.dao.CustomerDAO;
+import ua.com.sportfood.dao.impl.CustomerDAOImpl;
 import ua.com.sportfood.exceptions.ValidationException;
 import ua.com.sportfood.models.forms.RegistrationForm;
 import ua.com.sportfood.models.Customer;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 class RegistrationFormValidatorTest {
 
     @Mock
-    private CustomerDAO customerDAO;
+    private CustomerDAOImpl customerDAOImpl;
 
     @InjectMocks
     private RegistrationFormValidator testInstance;
@@ -67,7 +67,7 @@ class RegistrationFormValidatorTest {
     void shouldCheckCustomerIsPresentByUsername() {
         registrationForm.setEmail(EMAIL2);
         registrationForm.setPhoneNumber(PHONE_NUMBER2);
-        when(customerDAO.findAll()).thenReturn(customers);
+        when(customerDAOImpl.findAll()).thenReturn(customers);
 
         assertThrows(ValidationException.class, () ->
                 testInstance.validate(registrationForm));
@@ -77,7 +77,7 @@ class RegistrationFormValidatorTest {
     void shouldCheckCustomerIsPresentByEmail() {
         registrationForm.setUsername(USERNAME2);
         registrationForm.setPhoneNumber(PHONE_NUMBER2);
-        when(customerDAO.findAll()).thenReturn(customers);
+        when(customerDAOImpl.findAll()).thenReturn(customers);
 
         assertThrows(ValidationException.class, () ->
                 testInstance.validate(registrationForm));
@@ -87,7 +87,7 @@ class RegistrationFormValidatorTest {
     void shouldCheckCustomerIsPresentByPhoneNumber() {
         registrationForm.setEmail(EMAIL2);
         registrationForm.setUsername(USERNAME2);
-        when(customerDAO.findAll()).thenReturn(customers);
+        when(customerDAOImpl.findAll()).thenReturn(customers);
 
         assertThrows(ValidationException.class, () ->
                 testInstance.validate(registrationForm));
@@ -98,7 +98,7 @@ class RegistrationFormValidatorTest {
         registrationForm.setUsername(USERNAME2);
         registrationForm.setEmail(EMAIL2);
         registrationForm.setPhoneNumber(PHONE_NUMBER2);
-        when(customerDAO.findAll()).thenReturn(customers);
+        when(customerDAOImpl.findAll()).thenReturn(customers);
 
         Customer actual = testInstance.validate(registrationForm);
 
