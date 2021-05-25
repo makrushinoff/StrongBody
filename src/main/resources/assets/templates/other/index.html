@@ -7,9 +7,124 @@
 
 <th:block th:replace="fragments/templates :: navbar"/>
 
-<div class="main-content">
-    <div class="container mt-5">
-        <h1 class="display-1 text-center mb-5">Strong Body</h1>
+<div class="container mt-5">
+    <div class="row text-center mb-4">
+        <div class="row mb-3">
+            <h1 class="display-1">Strong Body</h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <p class="lead text-muted">
+                    B2C Solution that provides ability to perform product transaction between many customers
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <img src="https://images.pexels.com/photos/347134/pexels-photo-347134.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+             class="rounded border border-5" alt="">
+    </div>
+
+    <div class="row text-center mb-4">
+        <div class="row">
+            <h1 class="display-4">Technologies</h1>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-4">
+            <div class="card">
+                <img src="https://www.postgresql.org/media/img/about/press/elephant.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h3 class="card-title">Database</h3>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque autem blanditiis
+                        cum debitis eveniet fugiat quam quia quisquam. Ab deserunt eaque enim et excepturi
+                        exercitationem
+                        fugiat molestias sed soluta voluptatem.
+                    </p>
+                    <a class="btn btn-primary"
+                       href="https://github.com/makrushinoff/StrongBody/blob/master/docs/db_schema.jpg">Schema</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <img src="https://nehajain216.github.io/img/jdbc.png" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h3 class="card-title">JDBC</h3>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque autem blanditiis
+                        cum debitis eveniet fugiat quam quia quisquam. Ab deserunt eaque enim et excepturi
+                        exercitationem
+                        fugiat molestias sed soluta voluptatem.
+                    </p>
+                    <a class="btn btn-primary"
+                       href="https://github.com/makrushinoff/StrongBody/tree/master/src/main/java/ua/com/sportfood/dao">
+                        DAO Layer</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <img src="https://spring.io/images/spring-initializr-4291cc0115eb104348717b82161a81de.svg"
+                     class="card-img-top" alt="">
+                <div class="card-body">
+                    <h3 class="card-title">Spring Security</h3>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque autem blanditiis
+                        cum debitis eveniet fugiat quam quia quisquam. Ab deserunt eaque enim et excepturi
+                        exercitationem
+                        fugiat molestias sed soluta voluptatem.
+                    </p>
+                    <a class="btn btn-primary"
+                       href="https://github.com/makrushinoff/StrongBody/blob/master/src/main/java/ua/com/sportfood/config/SecurityConfig.java">
+                        Security Configs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center mb-4">
+        <div class="row">
+            <h1 class="display-4">Features</h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Products</h4>
+                    <p class="card-text">You can see all products in catalog page.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Authentication</h4>
+                    <p class="card-text">If you are anonymous user, you have access only for 3 pages (home, login,
+                        registration).
+                        If you are logged in you have access to all pages and functions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Cart</h4>
+                    <p class="card-text">You can add product to cart and then process it! You are going to see result of
+                        processing at your profile page.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
