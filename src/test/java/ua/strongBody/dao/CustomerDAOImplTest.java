@@ -47,15 +47,13 @@ class CustomerDAOImplTest {
     @BeforeEach
     void setUp() {
         customer1 = new Customer();
+        customer1.setId(UUID.randomUUID());
         customer1.setEmail(EMAIL1);
         customer1.setUsername(USERNAME1);
         customer1.setPassword(PASSWORD1);
         customer1.setFirstName(FIRST_NAME1);
         customer1.setLastName(LAST_NAME1);
         customer1.setPhoneNumber(PHONE_NUMBER1);
-        customer1.setRole(Role.USER);
-        customer1.setState(State.ACTIVE);
-        customer1.setId(UUID.randomUUID());
 
         customer2 = new Customer();
         customer2.setEmail(EMAIL2);
@@ -64,8 +62,6 @@ class CustomerDAOImplTest {
         customer2.setFirstName(FIRST_NAME2);
         customer2.setLastName(LAST_NAME2);
         customer2.setPhoneNumber(PHONE_NUMBER2);
-        customer2.setRole(Role.USER);
-        customer2.setState(State.ACTIVE);
 
         database = new EmbeddedDatabaseBuilder().
                 setType(EmbeddedDatabaseType.H2)
@@ -82,8 +78,8 @@ class CustomerDAOImplTest {
     void shouldFindAll() {
         customer2.setId(UUID.randomUUID());
 
-        customerDAO.save(customer1);
-        customerDAO.save(customer2);
+        customerDAO.saveWithId(customer1);
+        customerDAO.saveWithId(customer2);
         List<Customer> actual = customerDAO.findAll();
 
         assertThat(actual).contains(customer1).contains(customer2);
@@ -93,7 +89,7 @@ class CustomerDAOImplTest {
     void shouldNotContainsCustomer() {
         customer2.setId(UUID.randomUUID());
 
-        customerDAO.save(customer1);
+        customerDAO.saveWithId(customer1);
         List<Customer> actual = customerDAO.findAll();
 
         assertThat(actual.contains(customer2)).isFalse();
@@ -103,7 +99,7 @@ class CustomerDAOImplTest {
     void shouldUpdateById() {
         customer2.setId(customer1.getId());
 
-        customerDAO.save(customer1);
+        customerDAO.saveWithId(customer1);
         customerDAO.updateById(customer1.getId(), customer2);
         List<Customer> actual = customerDAO.findAll();
 
@@ -114,7 +110,7 @@ class CustomerDAOImplTest {
     void shouldCustomerNotBeEqualsAfterUpdate() {
         customer2.setId(customer1.getId());
 
-        customerDAO.save(customer1);
+        customerDAO.saveWithId(customer1);
         customerDAO.updateById(customer1.getId(), customer2);
         List<Customer> actualList = customerDAO.findAll();
 
@@ -124,7 +120,7 @@ class CustomerDAOImplTest {
 
     @Test
     void shouldDeleteById() {
-        customerDAO.save(customer1);
+        customerDAO.saveWithId(customer1);
         customerDAO.deleteById(customer1.getId());
         List<Customer> actual = customerDAO.findAll();
 
@@ -133,7 +129,7 @@ class CustomerDAOImplTest {
 
     @Test
     void shouldFindById() {
-        customerDAO.save(customer1);
+        customerDAO.saveWithId(customer1);
         Optional<Customer> actualCustomerOptional = customerDAO.findById(customer1.getId());
 
         assertThat(actualCustomerOptional).isPresent();
@@ -143,7 +139,7 @@ class CustomerDAOImplTest {
 
     @Test
     void shouldFindByUsername() {
-        customerDAO.save(customer1);
+        customerDAO.saveWithId(customer1);
         Optional<Customer> actualOptional = customerDAO.findFirstByUsername(USERNAME1);
 
         assertThat(actualOptional).isPresent();

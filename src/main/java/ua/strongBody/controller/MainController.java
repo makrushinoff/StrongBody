@@ -5,10 +5,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.strongBody.models.forms.LoginForm;
 import ua.strongBody.models.forms.RegistrationForm;
+import ua.strongBody.services.RegistrationService;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
+
+    private final RegistrationService registrationService;
+
+    public MainController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @GetMapping("/")
     public String indexPage() {
@@ -28,13 +35,18 @@ public class MainController {
     }
 
     @GetMapping("/registration")
-    public String registrationPage(Model model) {
+    public String registrationPage(@RequestParam(value = "regFail", required = false) String regFail,
+                                   Model model) {
         model.addAttribute(new RegistrationForm());
+        model.addAttribute("regFail", regFail != null);
         return "other/registration";
     }
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("registrationForm") RegistrationForm registrationForm) {
+        if (!registrationService.register(registrationForm)) {
+            return "redirect:/registration?regFail";
+        }
         return "redirect:/login?regSuccess";
     }
 

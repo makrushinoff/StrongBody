@@ -1,11 +1,10 @@
 package ua.strongBody.dao.impl;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.strongBody.dao.CustomerDAO;
 import ua.strongBody.models.Customer;
-import ua.strongBody.models.Role;
-import ua.strongBody.models.State;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,24 +24,31 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public List<Customer> findAll() {
-        List<Customer> customers = jdbcTemplate.query("SELECT * FROM customer", (resultSet, i) -> parseResultSetToCustomer(resultSet));
-        return customers;
+        return jdbcTemplate.query("SELECT * FROM customer", (resultSet, i) -> parseResultSetToCustomer(resultSet));
     }
 
     @Override
-    public void save(Customer customer) {
-        jdbcTemplate.update("INSERT INTO customer VALUES(?, ?, ?, ?, ?, ?, ? , ? , ?)",
+    public void save(Customer customer) throws DataAccessException {
+        jdbcTemplate.update("INSERT INTO customer (email, username, password, first_name, last_name, phone_number) VALUES (?, ?, ?, ?, ?, ?)",
+                customer.getEmail(),
+                customer.getUsername(),
+                customer.getPassword(),
+                customer.getFirstName(),
+                customer.getLastName(),
+                customer.getPhoneNumber()
+        );
+    }
+
+    @Override
+    public void saveWithId(Customer customer) {
+        jdbcTemplate.update("INSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, ?)",
                 customer.getId(),
                 customer.getEmail(),
                 customer.getUsername(),
                 customer.getPassword(),
                 customer.getFirstName(),
                 customer.getLastName(),
-                customer.getPhoneNumber(),
-                customer.getState().toString(),
-                customer.getRole().toString()
-
-
+                customer.getPhoneNumber()
         );
     }
 
@@ -54,13 +60,15 @@ public class CustomerDAOImpl implements CustomerDAO {
                         "password = ?, " +
                         "first_name = ?, " +
                         "last_name = ?, " +
-                        "phone_number = ? ",
+                        "phone_number = ? " +
+                        "WHERE id = ?",
                 customer.getEmail(),
                 customer.getUsername(),
                 customer.getPassword(),
                 customer.getFirstName(),
                 customer.getLastName(),
-                customer.getPhoneNumber());
+                customer.getPhoneNumber(),
+                id);
     }
 
     @Override
@@ -106,20 +114,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         customer.setPassword(resultSetCustomer.getString("password"));
         customer.setUsername(resultSetCustomer.getString("username"));
         customer.setPhoneNumber(resultSetCustomer.getString("phone_number"));
-        String state = resultSetCustomer.getString("customer_state");
-        if (state.equals(State.ACTIVE.toString())) {
-            customer.setState(State.ACTIVE);
-        } else if (state.equals(State.BANNED.toString())) {
-            customer.setState(State.BANNED);
-        } else {
-            customer.setState(State.DELETED);
-        }
-        String role = resultSetCustomer.getString("customer_role");
-        if (role.equals(Role.ADMIN.toString())) {
-            customer.setRole(Role.ADMIN);
-        } else {
-            customer.setRole(Role.USER);
-        }
+
         return customer;
     }
 }

@@ -6,13 +6,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.BadSqlGrammarException;
+import ua.strongBody.dao.CustomerDAO;
 import ua.strongBody.dao.impl.CustomerDAOImpl;
+import ua.strongBody.exceptions.ValidationException;
 import ua.strongBody.models.forms.RegistrationForm;
 import ua.strongBody.models.Customer;
+import ua.strongBody.populator.RegistrationFormToCustomerPopulator;
+import ua.strongBody.validation.RegistrationFormValidator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RegistrationServiceImplTest {
@@ -20,7 +27,10 @@ class RegistrationServiceImplTest {
     private RegistrationForm registrationForm;
 
     @Mock
-    private PasswordEncoder passwordEncoder;
+    private RegistrationFormValidator registrationFormValidator;
+
+    @Mock
+    private RegistrationFormToCustomerPopulator registrationFormToCustomerPopulator;
 
     @Mock
     private CustomerDAOImpl customerDAOImpl;
@@ -34,9 +44,34 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    void shouldRegistration() {
-        testInstance.registration(registrationForm);
+    void shouldRegister() throws ValidationException {
+        boolean actual = testInstance.register(registrationForm);
 
+        assertThat(actual).isTrue();
+        verify(registrationFormValidator).validate(registrationForm);
+        verify(registrationFormToCustomerPopulator).populate(eq(registrationForm), any(Customer.class));
         verify(customerDAOImpl).save(any(Customer.class));
+    }
+
+    @Test
+    void shouldNotRegisterInvalidForm() throws ValidationException {
+        doThrow(ValidationException.class).when(registrationFormValidator).validate(registrationForm);
+
+        boolean actual = testInstance.register(registrationForm);
+
+        assertThat(actual).isFalse();
+        verify(registrationFormToCustomerPopulator, never()).populate(eq(registrationForm), any(Customer.class));
+        verify(customerDAOImpl, never()).save(any(Customer.class));
+    }
+
+    @Test
+    void shouldNotRegisterOnSaveFail() throws ValidationException {
+        doThrow(BadSqlGrammarException.class).when(customerDAOImpl).save(any(Customer.class));
+
+        boolean actual = testInstance.register(registrationForm);
+
+        assertThat(actual).isFalse();
+        verify(registrationFormValidator).validate(registrationForm);
+        verify(registrationFormToCustomerPopulator).populate(eq(registrationForm), any(Customer.class));
     }
 }

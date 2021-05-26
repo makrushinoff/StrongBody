@@ -14,7 +14,7 @@ import ua.strongBody.services.impl.CustomerDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan({"ua.strongBody.services", "ua.strongBody.dao", "ua.strongBody.populator"})
+@ComponentScan({"ua.strongBody.services", "ua.strongBody.dao", "ua.strongBody.populator", "ua.strongBody.validation"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomerDetailsServiceImpl customerDetailsService;
