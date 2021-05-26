@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ua.com</groupId>
-    <artifactId>sportfood</artifactId>
+    <groupId>ua</groupId>
+    <artifactId>strongBody</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sportfood</name>
+    <name>strongBody</name>
     <description>Online-market of sport food</description>
 
     <parent>
