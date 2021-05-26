@@ -1,10 +1,10 @@
 package ua.strongBody.dao.impl;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.strongBody.dao.ProductDAO;
 import ua.strongBody.models.Product;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,7 +23,19 @@ public class ProductDAOIml implements ProductDAO {
 
     @Override
     public List<Product> findAll() {
-        List<Product> allProducts = jdbcTemplate.query("SELECT * FROM product", (resultSet, i) -> parseResultSetToProduct(resultSet));
+        List<Product> allProducts = jdbcTemplate.query("SELECT * FROM product", new RowMapper<Product>() {
+            @Override
+            public Product mapRow(ResultSet resultSet, int i) throws SQLException {
+                Product product = new Product();
+                product.setId(resultSet.getObject("id", UUID.class));
+                product.setName(resultSet.getString("name"));
+                product.setPrice(resultSet.getInt("price"));
+                product.setArticle(resultSet.getString("article"));
+                product.setDescription(resultSet.getString("description"));
+                product.setAvailableAmount(resultSet.getInt("available_amount"));
+                return product;
+            }
+        });
         return allProducts;
     }
 
@@ -65,12 +77,10 @@ public class ProductDAOIml implements ProductDAO {
         List<Product> filteredList = allProducts.stream()
                 .filter(product -> product.getId().equals(id))
                 .collect(Collectors.toList());
-
         if (filteredList.size() == 1) {
             Product result = filteredList.get(0);
             return Optional.of(result);
         }
-
         return Optional.empty();
     }
 
@@ -80,7 +90,6 @@ public class ProductDAOIml implements ProductDAO {
         List<Product> filteredList = allProducts.stream()
                 .filter(product -> product.getArticle().equals(article))
                 .collect(Collectors.toList());
-
         if (filteredList.isEmpty()) {
             return Optional.empty();
         }
@@ -89,14 +98,4 @@ public class ProductDAOIml implements ProductDAO {
         return Optional.of(result);
     }
 
-    private Product parseResultSetToProduct(ResultSet resultSet) throws SQLException {
-        Product product = new Product();
-        product.setId(resultSet.getObject("id", UUID.class));
-        product.setName(resultSet.getString("name"));
-        product.setPrice(resultSet.getInt("price"));
-        product.setArticle(resultSet.getString("article"));
-        product.setDescription(resultSet.getString("description"));
-        product.setAvailableAmount(resultSet.getInt("available_amount"));
-        return product;
-    }
 }

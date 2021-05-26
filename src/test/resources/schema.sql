@@ -18,3 +18,18 @@ CREATE TABLE IF NOT EXISTS product
     description      text,
     available_amount int          not null
 );
+
+CREATE TABLE IF NOT EXISTS cart(
+    id UUID PRIMARY KEY ,
+    customer_id UUID NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE
+    );
+
+CREATE TABLE IF NOT EXISTS booking(
+    id UUID PRIMARY KEY ,
+    order_date date NOT NULL,
+    product_amount int NOT NULL,
+    order_number int NOT NULL,
+    product_id UUID NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+    );

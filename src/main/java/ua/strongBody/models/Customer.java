@@ -1,9 +1,10 @@
 package ua.strongBody.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Customer {
+public class Customer implements Serializable {
     private UUID id;
     private String email;
     private String username;

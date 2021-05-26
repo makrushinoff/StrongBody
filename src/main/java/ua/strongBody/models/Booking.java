@@ -1,23 +1,22 @@
 package ua.strongBody.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Booking {
+public class Booking implements Serializable {
     private UUID id;
     private LocalDate orderDate;
     private int productAmount;
     private int orderNumber;
     private Product product;
-    private UUID cartId;
 
-    public Booking(LocalDate orderDate, int productAmount, int orderNumber, Product product, UUID cartId) {
+    public Booking(LocalDate orderDate, int productAmount, int orderNumber, Product product) {
         this.orderDate = orderDate;
         this.productAmount = productAmount;
         this.orderNumber = orderNumber;
         this.product = product;
-        this.cartId = cartId;
     }
 
     public Booking() {
@@ -63,25 +62,18 @@ public class Booking {
         this.product = product;
     }
 
-    public UUID getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(UUID cartId) {
-        this.cartId = cartId;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return productAmount == booking.productAmount && orderNumber == booking.orderNumber && Objects.equals(id, booking.id) && Objects.equals(orderDate, booking.orderDate) && Objects.equals(product, booking.product) && Objects.equals(cartId, booking.cartId);
+        return productAmount == booking.productAmount && orderNumber == booking.orderNumber && Objects.equals(id, booking.id) && Objects.equals(orderDate, booking.orderDate) && Objects.equals(product, booking.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderDate, productAmount, orderNumber, product, cartId);
+        return Objects.hash(id, orderDate, productAmount, orderNumber, product);
     }
 
     @Override
@@ -92,7 +84,7 @@ public class Booking {
                 ", productAmount=" + productAmount +
                 ", orderNumber=" + orderNumber +
                 ", product=" + product +
-                ", cartId=" + cartId +
                 '}';
     }
+
 }
