@@ -30,19 +30,19 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
         if (customerOptional.isEmpty()) {
             processException(username);
         }
-        var customer = customerOptional.get();
 
+        Customer customer = customerOptional.get();
         return processCustomerDetails(customer);
     }
 
     private CustomerDetails processCustomerDetails(Customer customer) {
-        var customerDetails = new CustomerDetails();
+        CustomerDetails customerDetails = new CustomerDetails();
         customerToCustomerDetailsPopulator.populate(customer, customerDetails);
         return customerDetails;
     }
 
     private void processException(String username) {
-        var exceptionMessage = String.format(USER_NOT_FOUND_EXCEPTION_PATTERN, username);
+        String exceptionMessage = String.format(USER_NOT_FOUND_EXCEPTION_PATTERN, username);
         throw new UsernameNotFoundException(exceptionMessage);
     }
 }
