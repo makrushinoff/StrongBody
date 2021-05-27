@@ -5,6 +5,15 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Customer implements Serializable {
+
+    public static final String ID_FIELD = "id";
+    public static final String EMAIL_FIELD = "email";
+    public static final String USERNAME_FIELD = "username";
+    public static final String PASSWORD_FIELD = "password";
+    public static final String FIRST_NAME_FIELD = "first_name";
+    public static final String LAST_NAME_FIELD = "last_name";
+    public static final String PHONE_NUMBER_FIELD = "phone_number";
+
     private UUID id;
     private String email;
     private String username;
@@ -104,12 +113,12 @@ public class Customer implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(id, customer.id) && Objects.equals(email, customer.email) && Objects.equals(username, customer.username) && Objects.equals(password, customer.password) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(phoneNumber, customer.phoneNumber) && state == customer.state && role == customer.role;
+        return id.equals(customer.id) && email.equals(customer.email) && username.equals(customer.username) && password.equals(customer.password) && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && phoneNumber.equals(customer.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, username, password, firstName, lastName, phoneNumber, state, role);
+        return Objects.hash(id, email, username, password, firstName, lastName, phoneNumber);
     }
 
     @Override

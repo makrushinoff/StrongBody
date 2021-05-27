@@ -5,6 +5,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Product implements Serializable {
+
+    public static final String ID_FIELD = "id";
+    public static final String NAME_FIELD = "name";
+    public static final String PRICE_FIELD = "price";
+    public static final String ARTICLE_FIELD = "article";
+    public static final String DESCRIPTION_FIELD = "description";
+    public static final String AVAILABLE_AMOUNT_FIELD = "available_amount";
+
     private UUID id;
     private String name;
     private int price;
@@ -76,7 +84,7 @@ public class Product implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return price == product.price && availableAmount == product.availableAmount && Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(article, product.article) && Objects.equals(description, product.description);
+        return price == product.price && availableAmount == product.availableAmount && id.equals(product.id) && Objects.equals(name, product.name) && Objects.equals(article, product.article) && Objects.equals(description, product.description);
     }
 
     @Override

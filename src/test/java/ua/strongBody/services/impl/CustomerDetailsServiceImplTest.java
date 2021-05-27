@@ -68,7 +68,7 @@ class CustomerDetailsServiceImplTest {
     void shouldLoadUser() {
         testInstance.loadUserByUsername(USERNAME);
 
-        verify(customerToCustomerDetailsPopulator).populate(eq(customer), any());
+        verify(customerToCustomerDetailsPopulator).convert(eq(customer), any());
     }
 
     @Test

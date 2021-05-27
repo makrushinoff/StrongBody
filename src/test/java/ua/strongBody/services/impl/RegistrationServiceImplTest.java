@@ -47,8 +47,8 @@ class RegistrationServiceImplTest {
 
         assertThat(actual).isTrue();
         verify(registrationFormValidator).validate(registrationForm);
-        verify(registrationFormToCustomerPopulator).populate(eq(registrationForm), any(Customer.class));
-        verify(customerDAOImpl).save(any(Customer.class));
+        verify(registrationFormToCustomerPopulator).convert(eq(registrationForm), any(Customer.class));
+        verify(customerDAOImpl).saveWithoutId(any(Customer.class));
     }
 
     @Test
@@ -58,18 +58,18 @@ class RegistrationServiceImplTest {
         boolean actual = testInstance.register(registrationForm);
 
         assertThat(actual).isFalse();
-        verify(registrationFormToCustomerPopulator, never()).populate(eq(registrationForm), any(Customer.class));
+        verify(registrationFormToCustomerPopulator, never()).convert(eq(registrationForm), any(Customer.class));
         verify(customerDAOImpl, never()).save(any(Customer.class));
     }
 
     @Test
     void shouldNotRegisterOnSaveFail() throws ValidationException {
-        doThrow(BadSqlGrammarException.class).when(customerDAOImpl).save(any(Customer.class));
+        doThrow(BadSqlGrammarException.class).when(customerDAOImpl).saveWithoutId(any(Customer.class));
 
         boolean actual = testInstance.register(registrationForm);
 
         assertThat(actual).isFalse();
         verify(registrationFormValidator).validate(registrationForm);
-        verify(registrationFormToCustomerPopulator).populate(eq(registrationForm), any(Customer.class));
+        verify(registrationFormToCustomerPopulator).convert(eq(registrationForm), any(Customer.class));
     }
 }

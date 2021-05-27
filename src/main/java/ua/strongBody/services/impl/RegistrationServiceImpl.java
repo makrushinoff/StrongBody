@@ -9,6 +9,7 @@ import ua.strongBody.dao.impl.CustomerDAOImpl;
 import ua.strongBody.exceptions.ValidationException;
 import ua.strongBody.models.Customer;
 import ua.strongBody.models.forms.RegistrationForm;
+import ua.strongBody.populator.Populator;
 import ua.strongBody.populator.RegistrationFormToCustomerPopulator;
 import ua.strongBody.services.RegistrationService;
 import ua.strongBody.validation.RegistrationFormValidator;
@@ -22,13 +23,13 @@ public class RegistrationServiceImpl implements RegistrationService {
     private static final String SAVE_FAILED_MESSAGE = "User save process is failed. Exception: '%s'";
 
     private final RegistrationFormValidator registrationFormValidator;
-    private final RegistrationFormToCustomerPopulator registrationFormToCustomerPopulator;
+    private final Populator<RegistrationForm, Customer> populator;
     private final CustomerDAO customerDAO;
 
     public RegistrationServiceImpl(RegistrationFormValidator registrationFormValidator, CustomerDAOImpl customerDAO, RegistrationFormToCustomerPopulator populator) {
         this.registrationFormValidator = registrationFormValidator;
         this.customerDAO = customerDAO;
-        this.registrationFormToCustomerPopulator = populator;
+        this.populator = populator;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private boolean isCustomerSavedSuccessfully(Customer customer) {
         try {
-            customerDAO.save(customer);
+            customerDAO.saveWithoutId(customer);
         } catch (DataAccessException ex) {
             String message = String.format(SAVE_FAILED_MESSAGE, ex.getMessage());
             LOG.warn(message);
@@ -64,7 +65,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private Customer convertRegistrationFormToCustomer(RegistrationForm registrationForm) {
         Customer customer = new Customer();
-        registrationFormToCustomerPopulator.populate(registrationForm, customer);
+        populator.convert(registrationForm, customer);
         return customer;
     }
 }

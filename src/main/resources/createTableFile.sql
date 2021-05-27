@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS booking
     id             UUID    NOT NULL DEFAULT uuid_generate_v4(),
     order_date     DATE    NOT NULL,
     product_amount INTEGER NOT NULL,
-    order_number   INTEGER NOT NULL,
+    order_number   TEXT    NOT NULL,
     product_id     UUID    NOT NULL,
     cart_id        UUID    NOT NULL,
 

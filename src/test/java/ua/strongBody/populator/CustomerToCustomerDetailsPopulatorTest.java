@@ -31,7 +31,7 @@ class CustomerToCustomerDetailsPopulatorTest {
 
     @Test
     void shouldPopulate() {
-        testInstance.populate(customer, customerDetails);
+        testInstance.convert(customer, customerDetails);
 
         assertThat(customerDetails.getUsername()).isEqualTo(USERNAME);
         assertThat(customerDetails.getPassword()).isEqualTo(PASSWORD);

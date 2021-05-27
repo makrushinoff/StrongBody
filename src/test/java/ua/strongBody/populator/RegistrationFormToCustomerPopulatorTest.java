@@ -54,7 +54,7 @@ class RegistrationFormToCustomerPopulatorTest {
 
     @Test
     void shouldPopulate() {
-        testInstance.populate(registrationForm, customer);
+        testInstance.convert(registrationForm, customer);
 
         assertThat(customer.getEmail()).isEqualTo(EMAIL);
         assertThat(customer.getUsername()).isEqualTo(USERNAME);

@@ -1,47 +1,35 @@
 package ua.strongBody.dao.impl;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import ua.strongBody.assembly.ProductAssembly;
 import ua.strongBody.dao.ProductDAO;
 import ua.strongBody.models.Product;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Repository
 public class ProductDAOIml implements ProductDAO {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ProductAssembly productAssembly;
 
-    public ProductDAOIml(JdbcTemplate jdbcTemplate) {
+    public ProductDAOIml(JdbcTemplate jdbcTemplate, ProductAssembly productAssembly) {
         this.jdbcTemplate = jdbcTemplate;
+        this.productAssembly = productAssembly;
     }
 
     @Override
-    public List<Product> findAll() {
-        List<Product> allProducts = jdbcTemplate.query("SELECT * FROM product", new RowMapper<Product>() {
-            @Override
-            public Product mapRow(ResultSet resultSet, int i) throws SQLException {
-                Product product = new Product();
-                product.setId(resultSet.getObject("id", UUID.class));
-                product.setName(resultSet.getString("name"));
-                product.setPrice(resultSet.getInt("price"));
-                product.setArticle(resultSet.getString("article"));
-                product.setDescription(resultSet.getString("description"));
-                product.setAvailableAmount(resultSet.getInt("available_amount"));
-                return product;
-            }
-        });
-        return allProducts;
+    public List<Product> findAll() throws DataAccessException {
+        return productAssembly.findAllProduct();
     }
 
     @Override
     public void save(Product product) {
-        jdbcTemplate.update("INSERT INTO product VALUES(?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO product (id, name, price, article, description, available_amount) VALUES(?, ?, ?, ?, ?, ?)",
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
@@ -73,29 +61,24 @@ public class ProductDAOIml implements ProductDAO {
 
     @Override
     public Optional<Product> findById(UUID id) {
-        List<Product> allProducts = findAll();
-        List<Product> filteredList = allProducts.stream()
-                .filter(product -> product.getId().equals(id))
-                .collect(Collectors.toList());
-        if (filteredList.size() == 1) {
-            Product result = filteredList.get(0);
-            return Optional.of(result);
-        }
-        return Optional.empty();
+        return findAll().stream()
+                .filter(product -> isEqualsById(id, product))
+                .findFirst();
+    }
+
+    private boolean isEqualsById(UUID id, Product product) {
+        return product.getId().equals(id);
     }
 
     @Override
     public Optional<Product> findByArticle(String article) {
-        List<Product> allProducts = findAll();
-        List<Product> filteredList = allProducts.stream()
-                .filter(product -> product.getArticle().equals(article))
-                .collect(Collectors.toList());
-        if (filteredList.isEmpty()) {
-            return Optional.empty();
-        }
+        return findAll().stream()
+                .filter(product -> isEqualsByArticle(article, product))
+                .findFirst();
+    }
 
-        Product result = filteredList.get(0);
-        return Optional.of(result);
+    private boolean isEqualsByArticle(String article, Product product) {
+        return product.getArticle().equals(article);
     }
 
 }

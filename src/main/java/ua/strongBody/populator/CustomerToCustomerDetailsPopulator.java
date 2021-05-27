@@ -8,7 +8,7 @@ import ua.strongBody.models.CustomerDetails;
 public class CustomerToCustomerDetailsPopulator implements Populator<Customer, CustomerDetails> {
 
     @Override
-    public void populate(Customer customer, CustomerDetails customerDetails) {
+    public void convert(Customer customer, CustomerDetails customerDetails) {
         customerDetails.setUsername(customer.getUsername());
         customerDetails.setPassword(customer.getPassword());
         customerDetails.setAccountNonExpired(true);

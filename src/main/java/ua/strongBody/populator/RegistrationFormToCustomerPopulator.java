@@ -20,7 +20,7 @@ public class RegistrationFormToCustomerPopulator implements Populator<Registrati
     }
 
     @Override
-    public void populate(RegistrationForm registrationForm, Customer customer) {
+    public void convert(RegistrationForm registrationForm, Customer customer) {
         customer.setEmail(registrationForm.getEmail());
         customer.setUsername(registrationForm.getUsername());
         populatePassword(registrationForm, customer);

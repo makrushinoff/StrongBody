@@ -1,76 +1,100 @@
 package ua.strongBody.dao.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.strongBody.dao.CustomerDAO;
-import ua.strongBody.dao.GeneralDAO;
+import ua.strongBody.assembly.CartAssembly;
+import ua.strongBody.assembly.CustomerAssembly;
+import ua.strongBody.dao.CartDAO;
 import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;
-import ua.strongBody.models.Role;
-import ua.strongBody.models.State;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Repository
-public class CartDAOImpl implements GeneralDAO<Cart> {
+public class CartDAOImpl implements CartDAO {
 
-    private JdbcTemplate jdbcTemplate;
+    private static final Logger LOG = LoggerFactory.getLogger(CartDAOImpl.class);
 
-    public CartDAOImpl(JdbcTemplate jdbcTemplate) {
+    private static final String CUSTOMER_UNRESOLVED_EXCEPTION_PATTERN = "Cart with id: '%s' has unknown customer! (customer id: '%s')";
+
+    private final JdbcTemplate jdbcTemplate;
+    private final CartAssembly cartAssembly;
+    private final CustomerAssembly customerAssembly;
+
+    public CartDAOImpl(JdbcTemplate jdbcTemplate, CartAssembly cartAssembly, CustomerAssembly customerAssembly) {
         this.jdbcTemplate = jdbcTemplate;
+        this.cartAssembly = cartAssembly;
+        this.customerAssembly = customerAssembly;
     }
 
+    /**
+     * Definition:
+     * One layer -> class with only table data.
+     * Two layer -> class with consist of own table fields and second layer.
+     * <p>
+     * Two layer object in this method is Cart.
+     * Cart table consist of fields: id and cart id.
+     * First field is simple. Second Field is object.
+     * <p>
+     * At first jdbc template query we get single layer {@link ua.strongBody.mapper.CartRowMapper}.
+     * And then we populate Customer field (second layer).
+     *
+     * @return List with two layered carts
+     */
     @Override
-    public List<Cart> findAll() {
-        List<Cart> allCarts = jdbcTemplate.query("SELECT cart.* , customer.* FROM cart JOIN customer ON customer.id = cart.customer_id", (rs, rowNum) -> {
-            Customer customer = new Customer();
-            customer.setId(rs.getObject("customer.id", UUID.class));
-            customer.setEmail(rs.getString("customer.email"));
-            customer.setFirstName(rs.getString("customer.first_name"));
-            customer.setLastName(rs.getString("customer.last_name"));
-            customer.setPassword(rs.getString("customer.password"));
-            customer.setUsername(rs.getString("customer.username"));
-            customer.setPhoneNumber(rs.getString("customer.phone_number"));
-            String state = rs.getString("customer.customer_state");
-            if (state.equals(State.ACTIVE.toString())) {
-                customer.setState(State.ACTIVE);
-            } else if (state.equals(State.BANNED.toString())) {
-                customer.setState(State.BANNED);
-            } else {
-                customer.setState(State.DELETED);
-            }
-            String role = rs.getString("customer.customer_role");
-            if (role.equals(Role.ADMIN.toString())) {
-                customer.setRole(Role.ADMIN);
-            } else {
-                customer.setRole(Role.USER);
-            }
+    public List<Cart> findAll() throws DataAccessException {
+        List<Cart> carts = cartAssembly.findAllCartsSingleLayer();
 
-            Cart cart = new Cart();
-            cart.setId(rs.getObject("cart.id", UUID.class));
-            cart.setCustomer(customer);
+        List<Customer> allCustomers = customerAssembly.findAllCustomers();
+        carts.forEach(cart -> mapCustomerToCart(allCustomers, cart));
 
-            return cart;
-        });
-        return allCarts;
+        return carts;
+    }
+
+    private void mapCustomerToCart(List<Customer> allCustomers, Cart cart) {
+        UUID customerIdFromCart = cart.getCustomer().getId();
+
+        Optional<Customer> customerForCartOptional = allCustomers.stream()
+                .filter(customer -> isEqualsCustomerId(customerIdFromCart, customer))
+                .findFirst();
+        populateCustomerForCart(cart, customerForCartOptional);
+    }
+
+    private void populateCustomerForCart(Cart cart, Optional<Customer> customerForCartOptional) {
+        if (customerForCartOptional.isPresent()) {
+            Customer customerForCart = customerForCartOptional.get();
+            cart.setCustomer(customerForCart);
+            return;
+        }
+        processCustomerUnresolvedWarning(cart);
+    }
+
+    private void processCustomerUnresolvedWarning(Cart cart) {
+        UUID customerIdFromCart = cart.getCustomer().getId();
+        String message = String.format(CUSTOMER_UNRESOLVED_EXCEPTION_PATTERN, cart.getId(), customerIdFromCart);
+        LOG.warn(message);
+    }
+
+    private boolean isEqualsCustomerId(UUID customerIdFromCart, Customer customer) {
+        return customer.getId().equals(customerIdFromCart);
     }
 
     @Override
     public void save(Cart cart) {
-        jdbcTemplate.update("INSERT INTO cart VALUES (? , ?)",
-                cart.getId(),
-                cart.getCustomer().getId());
+        UUID customerId = cart.getCustomer().getId();
+        jdbcTemplate.update("INSERT INTO cart (id, customer_id) VALUES (? , ?)", cart.getId(), customerId);
     }
 
     @Override
     public void updateById(UUID id, Cart cart) {
-        jdbcTemplate.update("UPDATE cart SET " +
-                        "customer_id = ? WHERE id = ?",
-                cart.getCustomer().getId(),
-                id);
+        UUID customerId = cart.getCustomer().getId();
+        jdbcTemplate.update("UPDATE cart SET customer_id = ? WHERE id = ?", customerId, id);
     }
 
     @Override
@@ -80,15 +104,12 @@ public class CartDAOImpl implements GeneralDAO<Cart> {
 
     @Override
     public Optional<Cart> findById(UUID id) {
-        List<Cart> allCarts = findAll();
-        List<Cart> filteredList = allCarts.stream()
-                .filter(cart -> cart.getId().equals(id))
-                .collect(Collectors.toList());
-        if (filteredList.isEmpty()) {
-            return Optional.empty();
-        }
-        Cart result = filteredList.get(0);
-        return Optional.of(result);
+        return findAll().stream()
+                .filter(cart -> isEqualsById(id, cart))
+                .findFirst();
     }
 
+    private boolean isEqualsById(UUID id, Cart cart) {
+        return cart.getId().equals(id);
+    }
 }

@@ -1,12 +1,14 @@
 package ua.strongBody.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Cart implements Serializable {
+
+    public static final String ID_FIELD = "id";
+    public static final String CUSTOMER_ID_FIELD = "customer_id";
+
     private UUID id;
     private Customer customer;
 
@@ -38,12 +40,12 @@ public class Cart implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cart cart = (Cart) o;
-        return Objects.equals(id, cart.id) && Objects.equals(customer, cart.customer);
+        return id.equals(cart.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customer);
+        return Objects.hash(id);
     }
 
     @Override
