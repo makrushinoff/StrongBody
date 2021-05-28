@@ -56,6 +56,7 @@ class RegistrationFormToCustomerPopulatorTest {
     void shouldPopulate() {
         testInstance.convert(registrationForm, customer);
 
+        assertThat(customer.getId()).isNotNull();
         assertThat(customer.getEmail()).isEqualTo(EMAIL);
         assertThat(customer.getUsername()).isEqualTo(USERNAME);
         assertThat(customer.getPassword()).isEqualTo(ENCODED_PASSWORD);
