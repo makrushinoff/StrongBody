@@ -4,9 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import ua.strongBody.dao.CartDAO;
 import ua.strongBody.dao.CustomerDAO;
 import ua.strongBody.dao.impl.CustomerDAOImpl;
 import ua.strongBody.exceptions.ValidationException;
+import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;
 import ua.strongBody.models.forms.RegistrationForm;
 import ua.strongBody.populator.Populator;
@@ -20,16 +22,19 @@ public class RegistrationServiceImpl implements RegistrationService {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationServiceImpl.class);
 
     private static final String VALIDATION_FAILED_PATTERN = "Validation stage is failed. Message: '%s'";
-    private static final String SAVE_FAILED_MESSAGE = "User save process is failed. Exception: '%s'";
+    private static final String SAVE_FAILED_PATTERN = "Customer save process is failed. Exception: '%s'";
+    private static final String REGISTRATION_SUCCESS_PATTERN = "Customer with username '%s' was successfully registered!";
 
     private final RegistrationFormValidator registrationFormValidator;
     private final Populator<RegistrationForm, Customer> populator;
     private final CustomerDAO customerDAO;
+    private final CartDAO cartDAO;
 
-    public RegistrationServiceImpl(RegistrationFormValidator registrationFormValidator, CustomerDAOImpl customerDAO, RegistrationFormToCustomerPopulator populator) {
+    public RegistrationServiceImpl(RegistrationFormValidator registrationFormValidator, CustomerDAOImpl customerDAO, RegistrationFormToCustomerPopulator populator, CartDAO cartDAO) {
         this.registrationFormValidator = registrationFormValidator;
         this.customerDAO = customerDAO;
         this.populator = populator;
+        this.cartDAO = cartDAO;
     }
 
     @Override
@@ -37,19 +42,44 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (!isRegistrationFormValid(registrationForm)) {
             return false;
         }
+        
         Customer customer = convertRegistrationFormToCustomer(registrationForm);
-        return isCustomerSavedSuccessfully(customer);
+        
+        if (!isCustomerSavedSuccessfully(customer)) {
+            return false;
+        }
+
+        processSuccessMessage(customer);
+        return true;
+    }
+
+    private void processSuccessMessage(Customer customer) {
+        String username = customer.getUsername();
+        String message = String.format(REGISTRATION_SUCCESS_PATTERN, username);
+        LOG.info(message);
     }
 
     private boolean isCustomerSavedSuccessfully(Customer customer) {
         try {
-            customerDAO.saveWithoutId(customer);
+            processCustomerCreation(customer);
         } catch (DataAccessException ex) {
-            String message = String.format(SAVE_FAILED_MESSAGE, ex.getMessage());
+            String message = String.format(SAVE_FAILED_PATTERN, ex.getMessage());
             LOG.warn(message);
             return false;
         }
         return true;
+    }
+
+    private void processCustomerCreation(Customer customer) {
+        customerDAO.save(customer);
+        Cart cart = createCartForNewCustomer(customer);
+        cartDAO.saveWithoutId(cart);
+    }
+
+    private Cart createCartForNewCustomer(Customer customer) {
+        Cart cart = new Cart();
+        cart.setCustomer(customer);
+        return cart;
     }
 
     private boolean isRegistrationFormValid(RegistrationForm registrationForm) {

@@ -92,6 +92,12 @@ public class CartDAOImpl implements CartDAO {
     }
 
     @Override
+    public void saveWithoutId(Cart cart) {
+        UUID customerId = cart.getCustomer().getId();
+        jdbcTemplate.update("INSERT INTO cart (customer_id) VALUES (?)", customerId);
+    }
+
+    @Override
     public void updateById(UUID id, Cart cart) {
         UUID customerId = cart.getCustomer().getId();
         jdbcTemplate.update("UPDATE cart SET customer_id = ? WHERE id = ?", customerId, id);

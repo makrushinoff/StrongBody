@@ -7,6 +7,8 @@ import ua.strongBody.models.Role;
 import ua.strongBody.models.State;
 import ua.strongBody.models.forms.RegistrationForm;
 
+import java.util.UUID;
+
 @Component
 public class RegistrationFormToCustomerPopulator implements Populator<RegistrationForm, Customer> {
 
@@ -21,6 +23,7 @@ public class RegistrationFormToCustomerPopulator implements Populator<Registrati
 
     @Override
     public void convert(RegistrationForm registrationForm, Customer customer) {
+        populateId(customer);
         customer.setEmail(registrationForm.getEmail());
         customer.setUsername(registrationForm.getUsername());
         populatePassword(registrationForm, customer);
@@ -29,6 +32,11 @@ public class RegistrationFormToCustomerPopulator implements Populator<Registrati
         customer.setPhoneNumber(registrationForm.getPhoneNumber());
         customer.setState(DEFAULT_STATE);
         customer.setRole(DEFAULT_ROLE);
+    }
+
+    private void populateId(Customer customer) {
+        UUID id = UUID.randomUUID();
+        customer.setId(id);
     }
 
     private void populatePassword(RegistrationForm registrationForm, Customer customer) {

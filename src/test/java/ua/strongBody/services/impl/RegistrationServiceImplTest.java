@@ -7,8 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.BadSqlGrammarException;
+import ua.strongBody.dao.CartDAO;
 import ua.strongBody.dao.impl.CustomerDAOImpl;
 import ua.strongBody.exceptions.ValidationException;
+import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;
 import ua.strongBody.models.forms.RegistrationForm;
 import ua.strongBody.populator.RegistrationFormToCustomerPopulator;
@@ -33,6 +35,9 @@ class RegistrationServiceImplTest {
     @Mock
     private CustomerDAOImpl customerDAOImpl;
 
+    @Mock
+    private CartDAO cartDAO;
+
     @InjectMocks
     private RegistrationServiceImpl testInstance;
 
@@ -48,7 +53,8 @@ class RegistrationServiceImplTest {
         assertThat(actual).isTrue();
         verify(registrationFormValidator).validate(registrationForm);
         verify(registrationFormToCustomerPopulator).convert(eq(registrationForm), any(Customer.class));
-        verify(customerDAOImpl).saveWithoutId(any(Customer.class));
+        verify(customerDAOImpl).save(any(Customer.class));
+        verify(cartDAO).saveWithoutId(any(Cart.class));
     }
 
     @Test
@@ -63,8 +69,20 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    void shouldNotRegisterOnSaveFail() throws ValidationException {
-        doThrow(BadSqlGrammarException.class).when(customerDAOImpl).saveWithoutId(any(Customer.class));
+    void shouldNotRegisterOnCustomerSaveFail() throws ValidationException {
+        doThrow(BadSqlGrammarException.class).when(customerDAOImpl).save(any(Customer.class));
+
+        boolean actual = testInstance.register(registrationForm);
+
+        assertThat(actual).isFalse();
+        verify(registrationFormValidator).validate(registrationForm);
+        verify(registrationFormToCustomerPopulator).convert(eq(registrationForm), any(Customer.class));
+        verify(cartDAO, never()).saveWithoutId(any(Cart.class));
+    }
+
+    @Test
+    void shouldNotRegisterOnCartSaveFail() throws ValidationException {
+        doThrow(BadSqlGrammarException.class).when(cartDAO).saveWithoutId(any(Cart.class));
 
         boolean actual = testInstance.register(registrationForm);
 
