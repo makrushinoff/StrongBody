@@ -14,9 +14,9 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private Logger LOG = LoggerFactory.getLogger(CustomerServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
-    private final String LOG_INFO_EMPTY_PATTERN = "Method was called.";
+    private static final String LOG_INFO_EMPTY_PATTERN = "Method was called.";
 
     private final CustomerDAO customerDAO;
 
