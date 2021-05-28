@@ -3,18 +3,26 @@ package ua.strongBody.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ua.strongBody.exceptions.UsernameNotFoundException;
+import ua.strongBody.models.Customer;
 import ua.strongBody.models.forms.LoginForm;
 import ua.strongBody.models.forms.RegistrationForm;
+import ua.strongBody.services.CustomerService;
 import ua.strongBody.services.RegistrationService;
+
+import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
 
     private final RegistrationService registrationService;
+    private final CustomerService customerService;
 
-    public MainController(RegistrationService registrationService) {
+    public MainController(RegistrationService registrationService, CustomerService customerService) {
         this.registrationService = registrationService;
+        this.customerService = customerService;
     }
 
     @GetMapping("/")
@@ -48,5 +56,19 @@ public class MainController {
             return "redirect:/registration?regFail";
         }
         return "redirect:/login?regSuccess";
+    }
+
+    @GetMapping("/profile")
+    public String profilePage(Principal principal, Model model) {
+        try {
+            String username = principal.getName();
+            Customer customer = customerService.findByUsername(username);
+            model.addAttribute("customer", customer);
+        } catch (UsernameNotFoundException ex) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("firstName", principal.getName());
+        return "other/profile";
     }
 }

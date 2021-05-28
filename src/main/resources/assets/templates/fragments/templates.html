@@ -9,7 +9,7 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 
-<div class="navbar-container" th:fragment="navbar">
+<div class="navbar-container" th:fragment="anonimus-navbar">
     <div class="bg-success navbar-dark">
         <div class="container">
             <nav class="navbar navbar-expand-lg">
@@ -35,6 +35,46 @@
                     </ul>
 
                     <ul class="navbar-nav">
+                        <li class="nav-item d-flex align-items-center">
+                            <a href="https://github.com/makrushinoff/StrongBody" class="btn btn-dark">Github Repo</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="navbar-container" th:fragment="auth-navbar">
+    <div class="bg-success navbar-dark">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" th:href="@{/}">Strong Body</a>
+
+                <div class="collapse navbar-collapse justify-content-between">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/catalog/}">Catalog</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/cart/}">Cart</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/profile/}">Profile</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item me-2">
+                            <a class="nav-link" th:href="@{/logout}">Logout</a>
+                        </li>
+
                         <li class="nav-item d-flex align-items-center">
                             <a href="https://github.com/makrushinoff/StrongBody" class="btn btn-dark">Github Repo</a>
                         </li>
