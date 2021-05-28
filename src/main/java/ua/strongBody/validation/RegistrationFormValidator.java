@@ -1,14 +1,12 @@
 package ua.strongBody.validation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.strongBody.dao.CustomerDAO;
 import ua.strongBody.dao.impl.CustomerDAOImpl;
 import ua.strongBody.exceptions.FieldValidationException;
 import ua.strongBody.exceptions.ValidationException;
-import ua.strongBody.models.forms.RegistrationForm;
 import ua.strongBody.models.Customer;
+import ua.strongBody.models.forms.RegistrationForm;
 
 import java.util.List;
 
@@ -19,12 +17,10 @@ import static ua.strongBody.models.forms.RegistrationForm.*;
  * from {@link RegistrationForm}
  */
 @Service
-public class RegistrationFormValidator implements Validator<Customer, RegistrationForm> {
-    private static final Logger LOG = LoggerFactory.getLogger(RegistrationFormValidator.class);
-
+public class RegistrationFormValidator implements Validator<RegistrationForm> {
     private final CustomerDAO customerDAO;
 
-    private static final String VALIDATION_EXCEPTION_PATTERN = "VALIDATION FAIL. Field: '%s', value: '%s' , reason: '%s'";
+    private static final String VALIDATION_EXCEPTION_PATTERN = "Field: '%s', value: '%s' , reason: '%s'";
     private static final String DUPLICATION_REASON = "Duplicated instance in database";
 
     public RegistrationFormValidator(CustomerDAOImpl customerDAO) {
@@ -32,27 +28,23 @@ public class RegistrationFormValidator implements Validator<Customer, Registrati
     }
 
     /**
-     * Method check: Customer data from {@link RegistrationForm} is present
-     * in database or not.
-     * If present - throws {@link FieldValidationException} - custom Exception,
-     * that was made for identifying this problem
-     * If does not - returns empty {@link Customer} object, that will be registered in database,
-     * due to his/her registration form.
+     * Method validates fields from {@link RegistrationForm}.
      *
-     * @param form - data from customer, that is got from registration form
-     * @return new Customer object.
+     * If some conditions is not passed,
+     * method going to throw FieldValidationException {@link FieldValidationException}.
+     * And then it wraps it into {@link ValidationException}
+     *
+     * @param registrationForm - data from customer, that is got from registration process.
      * @see Customer
      */
-    public Customer validate(RegistrationForm form) throws ValidationException {
+    public void validate(RegistrationForm registrationForm) throws ValidationException {
         List<Customer> allCustomers = customerDAO.findAll();
         try {
-            allCustomers.forEach(customer -> validateFields(form, customer));
+            allCustomers.forEach(customer -> validateFields(registrationForm, customer));
         } catch (FieldValidationException ex) {
             String message = generateValidationMessage(ex);
-            LOG.warn(message);
             throw new ValidationException(message);
         }
-        return new Customer();
     }
 
     private String generateValidationMessage(FieldValidationException ex) {

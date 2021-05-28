@@ -12,6 +12,15 @@
     <div class="mt-5 ms-5 me-5">
         <h1 class="text-center">Registration</h1>
 
+        <div class="row justify-content-center" th:if="${regFail}">
+            <div class="col-lg-4 mt-4">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Registration failed
+                    <button type="button" class="btn-close" data-dismiss="alert"></button>
+                </div>
+            </div>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-lg-4 mt-4">
                 <form class="row" th:object="${registrationForm}" th:action="@{/registration}" method="post">
@@ -53,10 +62,11 @@
 
                     <div class="mb-4">
                         <label class="form-label h5" th:for="confirmPassword">Confirm password</label>
-                        <input class="form-control" type="password" placeholder="Password" required id="confirmPassword">
+                        <input class="form-control" type="password" placeholder="Password" required
+                               id="confirmPassword">
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-5">
                         <input class="btn btn-success" type="submit" value="Register">
                     </div>
                 </form>
@@ -65,7 +75,8 @@
     </div>
 </div>
 
-<th:block th:replace="fragments/templates :: passwords_match_script"></th:block>
+<th:block th:replace="fragments/templates :: passwords_match_script"/>
+<th:block th:include="fragments/templates :: allJss"/>
 
 </body>
 </html>

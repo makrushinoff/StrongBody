@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJdbcTest
 @ComponentScan(basePackages = "ua.strongBody.dao")
-class ProductDAOImlTest {
+class ProductDAOImplIntegrationTest {
 
     private static final String PRODUCT_NAME1 = "prod1";
     private static final String PRODUCT_NAME2 = "prod2";
@@ -39,17 +39,17 @@ class ProductDAOImlTest {
     private EmbeddedDatabase database;
 
     @Autowired
-    private ProductDAO productDAO;
+    private ProductDAO testInstance;
 
     @BeforeEach
     void setUp() {
         product1 = new Product();
+        product1.setId(UUID.randomUUID());
         product1.setName(PRODUCT_NAME1);
         product1.setPrice(PRICE1);
         product1.setArticle(ARTICLE1);
         product1.setDescription(DESCRIPTION1);
         product1.setAvailableAmount(AVAILABLE_AMOUNT1);
-        product1.setId(UUID.randomUUID());
 
         product2 = new Product();
         product2.setName(PRODUCT_NAME2);
@@ -72,13 +72,12 @@ class ProductDAOImlTest {
     @Test
     void shouldFindAll() {
         product2.setId(UUID.randomUUID());
+        testInstance.save(product1);
+        testInstance.save(product2);
 
-        productDAO.save(product1);
-        productDAO.save(product2);
-        List<Product> result = productDAO.findAll();
+        List<Product> actual = testInstance.findAll();
 
-        assertThat(result.contains(product1)).isTrue();
-        assertThat(result.contains(product2)).isTrue();
+        assertThat(actual).contains(product1).contains(product2);
     }
 
     @Test
@@ -86,77 +85,70 @@ class ProductDAOImlTest {
         product2.setId(UUID.randomUUID());
         Product unexpected = new Product();
         unexpected.setId(UUID.randomUUID());
+        testInstance.save(product1);
+        testInstance.save(product2);
 
-        productDAO.save(product1);
-        productDAO.save(product2);
-        List<Product> result = productDAO.findAll();
+        List<Product> actual = testInstance.findAll();
 
-        assertThat(result.contains(unexpected)).isFalse();
+        assertThat(actual.contains(unexpected)).isFalse();
     }
 
     @Test
     void shouldSave() {
-        productDAO.save(product1);
+        testInstance.save(product1);
 
-        List<Product> result = productDAO.findAll();
+        List<Product> actual = testInstance.findAll();
 
-        assertThat(result.size()).isEqualTo(1);
+        assertThat(actual.size()).isEqualTo(1);
     }
 
     @Test
     void shouldUpdateById() {
         product2.setId(product1.getId());
+        testInstance.save(product1);
 
-        productDAO.save(product1);
-        productDAO.updateById(product1.getId(), product2);
-        List<Product> actualList = productDAO.findAll();
-        Product actual = actualList.get(0);
+        testInstance.updateById(product1.getId(), product2);
+        List<Product> actual = testInstance.findAll();
 
-        assertThat(actual).isEqualTo(product2);
+        assertThat(actual).isNotEmpty().contains(product2);
     }
 
     @Test
     void shouldNotFindProductAfterUpdate() {
         product2.setId(product1.getId());
+        testInstance.save(product1);
 
-        productDAO.save(product1);
-        productDAO.updateById(product1.getId(), product2);
-        List<Product> actualList = productDAO.findAll();
-        Product actual = actualList.get(0);
+        testInstance.updateById(product1.getId(), product2);
+        List<Product> actual = testInstance.findAll();
 
-        assertThat(actual).isNotEqualTo(product1);
+        assertThat(actual.contains(product1)).isFalse();
     }
 
     @Test
     void shouldDeleteById() {
-        productDAO.save(product1);
-        List<Product> resultListAfterSave = productDAO.findAll();
-        int resultSizeAfterSave = resultListAfterSave.size();
-        productDAO.deleteById(product1.getId());
-        List<Product> resultListAfterDelete = productDAO.findAll();
-        int resultSizeAfterDelete = resultListAfterDelete.size();
-        int actual = resultSizeAfterSave - resultSizeAfterDelete;
+        testInstance.save(product1);
 
-        assertThat(actual).isEqualTo(1);
+        testInstance.deleteById(product1.getId());
+        List<Product> actual = testInstance.findAll();
+
+        assertThat(actual).isEmpty();
     }
 
     @Test
     void shouldNotDeleteByIdByIrregularId() {
-        productDAO.save(product1);
-        List<Product> resultListAfterSave = productDAO.findAll();
-        int resultSizeAfterSave = resultListAfterSave.size();
-        productDAO.deleteById(UUID.randomUUID());
-        List<Product> resultListAfterDelete = productDAO.findAll();
-        int resultSizeAfterDelete = resultListAfterDelete.size();
-        int actual = resultSizeAfterSave - resultSizeAfterDelete;
+        testInstance.save(product1);
 
-        assertThat(actual).isZero();
+        testInstance.deleteById(UUID.randomUUID());
+        List<Product> actual = testInstance.findAll();
+
+        assertThat(actual).contains(product1);
     }
 
     @Test
     void shouldFindById() {
-        productDAO.save(product1);
-        Optional<Product> actualProductOptional = productDAO.findById(product1.getId());
+        testInstance.save(product1);
+
+        Optional<Product> actualProductOptional = testInstance.findById(product1.getId());
 
         assertThat(actualProductOptional).isPresent();
         Product actualProduct = actualProductOptional.get();
@@ -165,16 +157,18 @@ class ProductDAOImlTest {
 
     @Test
     void shouldFindNotByWrongId() {
-        productDAO.save(product1);
-        Optional<Product> actual = productDAO.findById(UUID.randomUUID());
+        testInstance.save(product1);
+
+        Optional<Product> actual = testInstance.findById(UUID.randomUUID());
 
         assertThat(actual).isEmpty();
     }
 
     @Test
     void shouldFindByArticle() {
-        productDAO.save(product1);
-        Optional<Product> actualOptionalProduct = productDAO.findByArticle(ARTICLE1);
+        testInstance.save(product1);
+
+        Optional<Product> actualOptionalProduct = testInstance.findByArticle(ARTICLE1);
 
         assertThat(actualOptionalProduct).isNotEmpty();
         Product actualProduct = actualOptionalProduct.get();
@@ -183,8 +177,9 @@ class ProductDAOImlTest {
 
     @Test
     void shouldNotFindByIdCauseOfWrongArticle() {
-        productDAO.save(product1);
-        Optional<Product> actual = productDAO.findByArticle(WRONG_ARTICLE);
+        testInstance.save(product1);
+
+        Optional<Product> actual = testInstance.findByArticle(WRONG_ARTICLE);
 
         assertThat(actual).isEmpty();
     }
