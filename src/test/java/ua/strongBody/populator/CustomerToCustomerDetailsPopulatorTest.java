@@ -24,7 +24,6 @@ class CustomerToCustomerDetailsPopulatorTest {
         customer = new Customer();
         customer.setUsername(USERNAME);
         customer.setPassword(PASSWORD);
-        customer.setRole(USER_ROLE);
 
         customerDetails = new CustomerDetails();
     }
@@ -36,8 +35,9 @@ class CustomerToCustomerDetailsPopulatorTest {
         assertThat(customerDetails.getUsername()).isEqualTo(USERNAME);
         assertThat(customerDetails.getPassword()).isEqualTo(PASSWORD);
         assertThat(customerDetails.isAccountNonExpired()).isTrue();
+        assertThat(customerDetails.isAccountNonLocked()).isTrue();
         assertThat(customerDetails.isCredentialsNonExpired()).isTrue();
         assertThat(customerDetails.isEnabled()).isTrue();
-        assertThat(customerDetails.getRole()).isEqualTo(Role.USER);
+        assertThat(customerDetails.getRole()).isEqualTo(USER_ROLE);
     }
 }

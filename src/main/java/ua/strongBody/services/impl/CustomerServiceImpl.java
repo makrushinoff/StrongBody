@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.strongBody.dao.CustomerDAO;
+import ua.strongBody.exceptions.UsernameNotFoundException;
 import ua.strongBody.models.Customer;
 import ua.strongBody.services.CustomerService;
 
@@ -14,9 +15,14 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private Logger LOG = LoggerFactory.getLogger(CustomerServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
-    private final String LOG_INFO_EMPTY_PATTERN = "Method was called.";
+    private static final String LOG_INFO_EMPTY_PATTERN = "Method was called.";
+    private static final String LOG_INFO_ONE_ARG_PATTERN = "Method was called with argument: '{}'.";
+    private static final String LOG_INFO_TWO_ARG_PATTERN = "Method was called with argument(s): Customer: '{}', id: '{}'.";
+
+    private static final String GENERAL_CUSTOMER_NOT_FOUND_PATTERN = "Customer with %s: '%s' not found!";
+
 
     private final CustomerDAO customerDAO;
 
@@ -25,9 +31,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<Customer> findByUsername(String username) {
-        LOG.info(String.format("Method was called with argument(s): '%s'.", username));
-        return customerDAO.findFirstByUsername(username);
+    public Customer findByUsername(String username) throws UsernameNotFoundException {
+        LOG.info(LOG_INFO_ONE_ARG_PATTERN, username);
+        Optional<Customer> customerOptional = customerDAO.findFirstByUsername(username);
+        if (customerOptional.isPresent()) {
+            return customerOptional.get();
+        }
+        processUsernameNotFoundException(username);
+        return null;
+    }
+
+    private void processUsernameNotFoundException(String username) throws UsernameNotFoundException {
+        String message = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, Customer.USERNAME_FIELD, username);
+        LOG.warn(message);
+        throw new UsernameNotFoundException(message);
     }
 
     @Override
@@ -38,26 +55,25 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void save(Customer customer) {
-        LOG.info(String.format("Method was called with argument(s): '%s'.", customer));
+        LOG.info(LOG_INFO_ONE_ARG_PATTERN, customer);
         customerDAO.save(customer);
     }
 
     @Override
     public void updateById(UUID id, Customer customer) {
-        String logMessage = "Method was called with argument(s): Customer: '%s', id: '%s'.";
-        LOG.info(String.format(logMessage, customer, id));
+        LOG.info(LOG_INFO_TWO_ARG_PATTERN, customer, id);
         customerDAO.updateById(id, customer);
     }
 
     @Override
     public void deleteById(UUID id) {
-        LOG.info(String.format("Method was called with argument(s): '%s'.", id));
+        LOG.info(LOG_INFO_ONE_ARG_PATTERN, id);
         customerDAO.deleteById(id);
     }
 
     @Override
     public Optional<Customer> findById(UUID id) {
-        LOG.info(String.format("Method was called with argument(s): '%s'.", id));
+        LOG.info(LOG_INFO_ONE_ARG_PATTERN, id);
         return customerDAO.findById(id);
     }
 }
