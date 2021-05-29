@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+<th:block th:replace="fragments/templates :: auth-navbar"/>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-6 align-self-center">
+            <div class="card text-center fs-5" th:object="${product}">
+                <div class="card-header fw-bold" th:text="*{name}"></div>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:text="'Id: ' + *{id}"></li>
+
+                    <li class="list-group-item" th:text="'Price: ' + *{price}"></li>
+
+                    <li class="list-group-item" th:text="'Article: ' + *{article}"></li>
+
+                    <li class="list-group-item" th:text="'Description: ' + *{description}"></li>
+
+                    <li class="list-group-item" th:text="'Available amount: ' + *{availableAmount}"></li>
+
+                    <li class="list-group-item" th:text="'Reserved amount: ' + *{reservedAmount}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h2 class="text-center mt-5">
+            <a th:href="@{/catalog/}" class="btn btn-success" role="button">Back</a>
+        </h2>
+    </div>
+</div>
+
+</body>
+</html>

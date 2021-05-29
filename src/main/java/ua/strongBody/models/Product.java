@@ -2,6 +2,7 @@ package ua.strongBody.models;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 public class Product implements Serializable {
@@ -12,6 +13,7 @@ public class Product implements Serializable {
     public static final String ARTICLE_FIELD = "article";
     public static final String DESCRIPTION_FIELD = "description";
     public static final String AVAILABLE_AMOUNT_FIELD = "available_amount";
+    public static final String RESERVED_AMOUNT_FIELD = "reserved_amount";
 
     private UUID id;
     private String name;
@@ -19,6 +21,7 @@ public class Product implements Serializable {
     private String article;
     private String description;
     private int availableAmount;
+    private int reservedAmount;
 
     public Product(String name, int price, String article, String description, int availableAmount) {
         this.name = name;
@@ -79,28 +82,37 @@ public class Product implements Serializable {
         this.availableAmount = availableAmount;
     }
 
+    public int getReservedAmount() {
+        return reservedAmount;
+    }
+
+    public void setReservedAmount(int reservedAmount) {
+        this.reservedAmount = reservedAmount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return price == product.price && availableAmount == product.availableAmount && id.equals(product.id) && Objects.equals(name, product.name) && Objects.equals(article, product.article) && Objects.equals(description, product.description);
+        return price == product.price && availableAmount == product.availableAmount && reservedAmount == product.reservedAmount && id.equals(product.id) && name.equals(product.name) && article.equals(product.article) && description.equals(product.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, article, description, availableAmount);
+        return Objects.hash(id, name, price, article, description, availableAmount, reservedAmount);
     }
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", article='" + article + '\'' +
-                ", description='" + description + '\'' +
-                ", availableAmount=" + availableAmount +
-                '}';
+        return new StringJoiner(", ", Product.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("price=" + price)
+                .add("article='" + article + "'")
+                .add("description='" + description + "'")
+                .add("availableAmount=" + availableAmount)
+                .add("reservedAmount=" + reservedAmount)
+                .toString();
     }
 }

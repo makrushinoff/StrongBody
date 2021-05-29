@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS product
     price            NUMERIC NOT NULL,
     article          TEXT    NOT NULL UNIQUE,
     description      TEXT,
-    available_amount INTEGER not null,
+    available_amount INTEGER NOT NULL,
+    reserved_amount  INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "product_pkey" PRIMARY KEY (id)
 );

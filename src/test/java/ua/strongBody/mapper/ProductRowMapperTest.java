@@ -24,6 +24,7 @@ class ProductRowMapperTest {
     private static final String ARTICLE = "PP-01";
     private static final String DESCRIPTION = "Super-puper product1";
     private static final int AVAILABLE_AMOUNT = 5;
+    private static final int RESERVED_AMOUNT = 5;
 
     private static final int ROW_NUM = 10;
 
@@ -40,6 +41,7 @@ class ProductRowMapperTest {
         when(resultSet.getString(ARTICLE_FIELD)).thenReturn(ARTICLE);
         when(resultSet.getString(DESCRIPTION_FIELD)).thenReturn(DESCRIPTION);
         when(resultSet.getInt(AVAILABLE_AMOUNT_FIELD)).thenReturn(AVAILABLE_AMOUNT);
+        when(resultSet.getInt(RESERVED_AMOUNT_FIELD)).thenReturn(RESERVED_AMOUNT);
     }
 
     @Test
@@ -53,5 +55,6 @@ class ProductRowMapperTest {
         assertThat(actual.getArticle()).isEqualTo(ARTICLE);
         assertThat(actual.getDescription()).isEqualTo(DESCRIPTION);
         assertThat(actual.getAvailableAmount()).isEqualTo(AVAILABLE_AMOUNT);
+        assertThat(actual.getReservedAmount()).isEqualTo(RESERVED_AMOUNT);
     }
 }

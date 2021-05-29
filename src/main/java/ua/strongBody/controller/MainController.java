@@ -11,7 +11,6 @@ import ua.strongBody.services.CustomerService;
 import ua.strongBody.services.RegistrationService;
 
 import java.security.Principal;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/")

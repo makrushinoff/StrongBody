@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+<th:block th:replace="fragments/templates :: auth-navbar"/>
+
+<main class="container">
+    <div class="content mt-5 ms-5 me-5">
+        <h1 class="text-center">Catalog</h1>
+        <div th:if="${productList.isEmpty()} == false">
+            <div class="d-flex justify-content-end mb-4 mt-4">
+                <a th:href="@{/catalog/add}" class="btn btn-success">Add new Product</a>
+            </div>
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead>
+                <tr class="active">
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Article</th>
+                    <th>Available amount</th>
+                    <th>Reserved amount</th>
+                </tr>
+                </thead>
+
+                <tbody th:each="product : ${productList}">
+                <tr th:object="${product}">
+                    <td class="data" th:text="*{name}"></td>
+                    <td class="data" th:text="*{price}"></td>
+                    <td class="data" th:text="*{article}"></td>
+                    <td class="data" th:text="*{availableAmount}"></td>
+                    <td class="data" th:text="*{reservedAmount}"></td>
+                    <td>
+                        <a th:if="*{availableAmount} > 0" th:href="@{'/cart/add/' + ${product.id}}"
+                           class="btn btn-success me-1">ADD TO CART</a>
+                        <a th:if="*{availableAmount} < 1" th:href="@{'/cart/add/' + ${product.id}}"
+                           class="btn btn-success me-1 disabled">ADD TO CART</a>
+                        <a th:href="@{'/catalog/' + ${product.id}}" style="color: #FFF;" class="btn btn-info me-1">VIEW
+                            DETAILS</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${productList.isEmpty()}" class="text-center">
+            <h5 class="mb-4 mt-4">There are no products ☹️</h5>
+            <a th:href="@{/catalog/add}" class="btn btn-success mt-2">Add new Product!</a>
+        </div>
+    </div>
+</main>
+
+<th:block th:include="fragments/templates :: allJss"/>
+
+</body>
+</html>

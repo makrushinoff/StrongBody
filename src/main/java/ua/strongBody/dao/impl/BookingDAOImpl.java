@@ -16,6 +16,7 @@ import ua.strongBody.models.Product;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookingDAOImpl implements BookingDAO {
@@ -148,5 +149,26 @@ public class BookingDAOImpl implements BookingDAO {
 
     private boolean isEqualsById(UUID id, Booking booking) {
         return booking.getId().equals(id);
+    }
+
+    @Override
+    public void saveWithoutId(Booking booking) {
+        jdbcTemplate.update("INSERT INTO booking(order_date, product_amount, order_number, product_id, cart_id) VALUES(?, ?, ?, ?, ?)",
+                booking.getOrderDate(),
+                booking.getProductAmount(),
+                booking.getOrderNumber(),
+                booking.getProduct().getId(),
+                booking.getCart().getId());
+    }
+
+    @Override
+    public List<Booking> getBookingsByCartId(UUID cartId) {
+        return findAll().stream()
+                .filter(booking -> isEqualsByCartId(cartId, booking))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isEqualsByCartId(UUID cartId, Booking booking) {
+        return booking.getCart().getId().equals(cartId);
     }
 }
