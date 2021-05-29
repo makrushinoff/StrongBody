@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+<th:block th:replace="fragments/templates :: auth-navbar"/>
+
+<main class="container">
+    <div class="content mt-5 ms-5 me-5">
+        <h5 class="mb-4 mt-4">Cart successfully submitted 😀️</h5>
+        <a th:href="@{/catalog/}" class="btn btn-success mt-2">To catalog!</a>
+    </div>
+</main>
+
+<th:block th:include="fragments/templates :: allJss"/>
+
+</body>
+</html>

@@ -12,11 +12,12 @@ CREATE TABLE customer
 CREATE TABLE IF NOT EXISTS product
 (
     id               UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
-    name             VARCHAR(100) NOT NULL,
-    price            int          NOT NULL,
-    article          VARCHAR(50)  NOT NULL UNIQUE,
+    name             VARCHAR(100)   NOT NULL,
+    price            int            NOT NULL,
+    article          VARCHAR(50)    NOT NULL UNIQUE,
     description      text,
-    available_amount int          NOT NULL
+    available_amount int            NOT NULL,
+    reserved_amount  int  DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS cart

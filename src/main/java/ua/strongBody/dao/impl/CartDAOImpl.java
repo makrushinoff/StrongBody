@@ -98,6 +98,15 @@ public class CartDAOImpl implements CartDAO {
     }
 
     @Override
+    public Optional<Cart> findCartByCustomerId(UUID customerId) {
+        return findAll().stream().filter(cart -> isEqualsByCustomerId(customerId, cart)).findFirst();
+    }
+
+    private boolean isEqualsByCustomerId(UUID customerId, Cart cart) {
+        return cart.getCustomer().getId().equals(customerId);
+    }
+
+    @Override
     public void updateById(UUID id, Cart cart) {
         UUID customerId = cart.getCustomer().getId();
         jdbcTemplate.update("UPDATE cart SET customer_id = ? WHERE id = ?", customerId, id);

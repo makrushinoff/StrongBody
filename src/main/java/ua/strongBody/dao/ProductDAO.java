@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface ProductDAO extends GeneralDAO<Product> {
     Optional<Product> findByArticle(String article);
+
+    void saveWithoutId(Product product);
 }

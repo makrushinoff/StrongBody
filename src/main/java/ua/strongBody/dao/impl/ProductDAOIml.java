@@ -39,18 +39,30 @@ public class ProductDAOIml implements ProductDAO {
     }
 
     @Override
+    public void saveWithoutId(Product product) {
+        jdbcTemplate.update("INSERT INTO product (name, price, article, description, available_amount) VALUES(?, ?, ?, ?, ?)",
+                product.getName(),
+                product.getPrice(),
+                product.getArticle(),
+                product.getDescription(),
+                product.getAvailableAmount());
+    }
+
+    @Override
     public void updateById(UUID id, Product product) {
         jdbcTemplate.update("UPDATE product SET " +
                         "name = ?," +
                         "price = ?," +
                         "article = ?," +
                         "description = ?," +
-                        "available_amount = ? WHERE id = ?",
+                        "available_amount = ?," +
+                        "reserved_amount = ? WHERE id = ?",
                 product.getName(),
                 product.getPrice(),
                 product.getArticle(),
                 product.getDescription(),
                 product.getAvailableAmount(),
+                product.getReservedAmount(),
                 id);
     }
 

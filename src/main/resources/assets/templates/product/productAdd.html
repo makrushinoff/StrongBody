@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<th:block th:replace="fragments/templates :: header"/>
+
+<body>
+
+<th:block th:replace="fragments/templates :: auth-navbar"/>
+
+<div class="container">
+
+  <div class="mt-5 ms-5 me-5">
+    <h1 class="text-center">Create product</h1>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-4 mt-4">
+        <form class="row" th:object="${product}" th:action="@{/catalog/add}" method="post">
+          <div class="mb-4">
+            <label class="form-label h5" th:for="username">Name</label>
+            <input class="form-control" type="text" placeholder="Name" th:field="*{name}"
+                   required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label h5" th:for="firstName">Price</label>
+            <input class="form-control" type="text" placeholder="Price" th:field="*{price}"
+                   required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label h5" th:for="firstName">Article</label>
+            <input class="form-control" type="text" placeholder="Article" th:field="*{article}"
+                   required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label h5" th:for="email">Description</label>
+            <input class="form-control" type="text" placeholder="Description" th:field="*{description}"
+                   required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label h5" th:for="phoneNumber">Available amount</label>
+            <input class="form-control" type="text" placeholder="Available amount" th:field="*{availableAmount}"
+                   required>
+          </div>
+
+          <div class="col-lg-4 mb-5">
+            <input class="btn btn-success" type="submit" value="Create product">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<th:block th:include="fragments/templates :: allJss"/>
+
+</body>
+</html>

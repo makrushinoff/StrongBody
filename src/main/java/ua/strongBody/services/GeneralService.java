@@ -1,7 +1,6 @@
 package ua.strongBody.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface GeneralService<T> {
@@ -14,6 +13,6 @@ public interface GeneralService<T> {
 
     void deleteById(UUID id);
 
-    Optional<T> findById(UUID id);
+    T findById(UUID id);
 
 }
