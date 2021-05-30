@@ -9,7 +9,6 @@ import ua.strongBody.models.Cart;
 import ua.strongBody.services.CartService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static ua.strongBody.constants.LoggingConstants.*;
@@ -52,28 +51,20 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart findById(UUID id) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
-        Optional<Cart> cartOptional = cartDAO.findById(id);
-        return processInstanceExport(cartOptional, id.toString(), Cart.ID_FIELD);
+        return cartDAO.findById(id)
+                .orElseThrow(() -> generateGeneralCartException(Cart.ID_FIELD, id.toString()));
     }
 
     @Override
     public Cart findCartByCustomerId(UUID customerId) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, customerId);
-        Optional<Cart> customerOptional = cartDAO.findCartByCustomerId(customerId);
-        return processInstanceExport(customerOptional, customerId.toString(), Cart.CUSTOMER_ID_FIELD);
+        return cartDAO.findCartByCustomerId(customerId)
+                .orElseThrow(() -> generateGeneralCartException(Cart.CUSTOMER_ID_FIELD, customerId.toString()));
     }
 
-    private Cart processInstanceExport(Optional<Cart> cartOptional, String requestedValue, String fieldName) {
-        if (cartOptional.isPresent()) {
-            return cartOptional.get();
-        }
-        processGeneralCartException(fieldName, requestedValue);
-        return null;
-    }
-
-    private void processGeneralCartException(String invalidField, String invalidValue) {
+    private RuntimeException generateGeneralCartException(String invalidField, String invalidValue) {
         String message = String.format(GENERAL_CART_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
-        throw new FieldNotFoundException(message);
+        return new FieldNotFoundException(message);
     }
 }

@@ -9,7 +9,6 @@ import ua.strongBody.models.Customer;
 import ua.strongBody.services.CustomerService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static ua.strongBody.constants.LoggingConstants.*;
@@ -28,8 +27,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findByUsername(String username) throws FieldNotFoundException {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, username);
-        Optional<Customer> customerOptional = customerDAO.findFirstByUsername(username);
-        return processInstanceExport(customerOptional, username, Customer.USERNAME_FIELD);
+        return customerDAO.findFirstByUsername(username)
+                .orElseThrow(() -> generateGeneralCustomerException(Customer.USERNAME_FIELD, username));
     }
 
     @Override
@@ -58,22 +57,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer findById(UUID id) {
-        LOG.info(LOG_DEBUG_ONE_ARG_PATTERN, id);
-        Optional<Customer> customerOptional = customerDAO.findById(id);
-        return processInstanceExport(customerOptional, id.toString(), Customer.ID_FIELD);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        return customerDAO.findById(id)
+                .orElseThrow(() -> generateGeneralCustomerException(Customer.ID_FIELD, id.toString()));
     }
 
-    private Customer processInstanceExport(Optional<Customer> customerOptional, String requestedValue, String fieldName) {
-        if (customerOptional.isPresent()) {
-            return customerOptional.get();
-        }
-        processGeneralCustomerException(fieldName, requestedValue);
-        return null;
-    }
-
-    private void processGeneralCustomerException(String invalidField, String invalidValue) {
+    private RuntimeException generateGeneralCustomerException(String invalidField, String invalidValue) {
         String message = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
-        throw new FieldNotFoundException(message);
+        return new FieldNotFoundException(message);
     }
 }

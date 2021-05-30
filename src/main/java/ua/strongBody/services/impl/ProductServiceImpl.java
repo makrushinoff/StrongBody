@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 import ua.strongBody.dao.ProductDAO;
 import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Product;
+import ua.strongBody.processors.post.PostProcessor;
 import ua.strongBody.services.ProductService;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static ua.strongBody.constants.LoggingConstants.*;
@@ -21,27 +20,19 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private final ProductDAO productDAO;
+    private final PostProcessor<Product> productPostProcessor;
 
-    public ProductServiceImpl(ProductDAO productDAO) {
+    public ProductServiceImpl(ProductDAO productDAO, PostProcessor<Product> productPostProcessor) {
         this.productDAO = productDAO;
+        this.productPostProcessor = productPostProcessor;
     }
 
     @Override
     public List<Product> findAll() {
         LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
         List<Product> allProducts = productDAO.findAll();
-        processAvailableAmount(allProducts);
-        allProducts.sort(Comparator.comparing(Product::getName));
+        productPostProcessor.postProcess(allProducts);
         return allProducts;
-    }
-
-    private void processAvailableAmount(List<Product> products) {
-        products.forEach(this::processAvailableAmount);
-    }
-
-    private void processAvailableAmount(Product product) {
-        int availableAmount = product.getAvailableAmount() - product.getReservedAmount();
-        product.setAvailableAmount(availableAmount);
     }
 
     @Override
@@ -65,22 +56,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(UUID id) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
-        Optional<Product> productOptional = productDAO.findById(id);
-        return processInstanceExport(productOptional, id.toString(), Product.ID_FIELD);
+        Product product = productDAO.findById(id)
+                .orElseThrow(() -> generateGeneralProductException(Product.ID_FIELD, id.toString()));
+        productPostProcessor.postProcess(product);
+        return product;
     }
 
-    private Product processInstanceExport(Optional<Product> productOptional, String requestedValue, String fieldName) {
-        if (productOptional.isPresent()) {
-            return productOptional.get();
-        }
-        processGeneralProductException(fieldName, requestedValue);
-        return null;
-    }
-
-    private void processGeneralProductException(String invalidField, String invalidValue) {
+    private RuntimeException generateGeneralProductException(String invalidField, String invalidValue) {
         String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
-        throw new FieldNotFoundException(message);
+        return new FieldNotFoundException(message);
     }
 
     @Override

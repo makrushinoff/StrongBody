@@ -33,12 +33,8 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, username);
         Optional<Customer> customerOptional = customerDAO.findFirstByUsername(username);
-        if (customerOptional.isPresent()) {
-            Customer customer = customerOptional.get();
-            return processCustomerDetails(customer);
-        }
-        processException(username);
-        return null;
+        Customer customer = customerOptional.orElseThrow(() -> processException(username));
+        return processCustomerDetails(customer);
     }
 
     private CustomerDetails processCustomerDetails(Customer customer) {
@@ -47,9 +43,9 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
         return customerDetails;
     }
 
-    private void processException(String username) {
+    private RuntimeException processException(String username) {
         String exceptionMessage = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, Customer.USERNAME_FIELD, username);
         LOG.warn(exceptionMessage);
-        throw new UsernameNotFoundException(exceptionMessage);
+        return new UsernameNotFoundException(exceptionMessage);
     }
 }
