@@ -1,5 +1,9 @@
 package ua.strongBody.models.forms;
 
+import ua.strongBody.models.Product;
+
+import java.util.StringJoiner;
+
 public class RegistrationForm {
     private String firstName;
     private String lastName;
@@ -70,5 +74,17 @@ public class RegistrationForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", RegistrationForm.class.getSimpleName() + "[", "]")
+                .add("firstName=" + firstName)
+                .add("lastName='" + lastName + "'")
+                .add("username=" + username)
+                .add("password='" + password + "'")
+                .add("email='" + email + "'")
+                .add("phoneNumber=" + phoneNumber)
+                .toString();
     }
 }

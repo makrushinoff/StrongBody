@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.StringJoiner;
 
 public class CustomerDetails implements UserDetails {
 
@@ -97,5 +98,18 @@ public class CustomerDetails implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", CustomerDetails.class.getSimpleName() + "[", "]")
+                .add("username=" + username)
+                .add("password=" + password)
+                .add("accountNonExpired=" + accountNonExpired)
+                .add("accountNonLocked=" + accountNonLocked)
+                .add("credentialsNonExpired=" + credentialsNonExpired)
+                .add("enabled=" + enabled)
+                .add("role=" + role)
+                .toString();
     }
 }
