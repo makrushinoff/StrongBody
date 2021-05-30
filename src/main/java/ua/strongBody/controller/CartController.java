@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.strongBody.exceptions.UsernameNotFoundException;
+import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Booking;
 import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;
@@ -74,7 +74,7 @@ public class CartController {
             bookingService.createBooking(newBooking);
             reservedProduct.setReservedAmount(reservedProduct.getReservedAmount() + 1);
             productService.updateById(reservedProduct.getId(), reservedProduct);
-        } catch (UsernameNotFoundException ex) {
+        } catch (FieldNotFoundException ex) {
             return "redirect:/";
         }
 

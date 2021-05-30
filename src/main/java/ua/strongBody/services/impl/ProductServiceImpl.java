@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.strongBody.dao.ProductDAO;
-import ua.strongBody.exceptions.IdNotFoundException;
+import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Product;
 import ua.strongBody.services.ProductService;
 
@@ -66,17 +66,21 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(UUID id) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
         Optional<Product> productOptional = productDAO.findById(id);
+        return processInstanceExport(productOptional, id.toString(), Product.ID_FIELD);
+    }
+
+    private Product processInstanceExport(Optional<Product> productOptional, String requestedValue, String fieldName) {
         if (productOptional.isPresent()) {
             return productOptional.get();
         }
-        processIdNotFoundException(id);
+        processGeneralProductException(fieldName, requestedValue);
         return null;
     }
 
-    private void processIdNotFoundException(UUID id) {
-        String message = String.format(GENERAL_BOOKING_NOT_FOUND_PATTERN, Product.ID_FIELD, id);
+    private void processGeneralProductException(String invalidField, String invalidValue) {
+        String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
-        throw new IdNotFoundException(message);
+        throw new FieldNotFoundException(message);
     }
 
     @Override
