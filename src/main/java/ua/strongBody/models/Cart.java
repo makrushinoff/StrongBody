@@ -2,6 +2,7 @@ package ua.strongBody.models;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 public class Cart implements Serializable {
@@ -50,9 +51,9 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "Cart{" +
-                "id=" + id +
-                ", customer=" + customer +
-                '}';
+        return new StringJoiner(", ", Cart.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("customer_id=" + customer.getId())
+                .toString();
     }
 }
