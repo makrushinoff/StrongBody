@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ua.strongBody.constants.LoggingConstants.*;
+
 @Service
 public class CartServiceImpl implements CartService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CartServiceImpl.class);
-
-    private static final String GENERAL_CART_NOT_FOUND_PATTERN = "Cart with %s: '%s' not found!";
 
     private final CartDAO cartDAO;
 
@@ -27,41 +27,52 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<Cart> findAll() {
-        return null;
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
+        return cartDAO.findAll();
     }
 
     @Override
     public void save(Cart cart) {
-
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, cart);
+        cartDAO.save(cart);
     }
 
     @Override
     public void updateById(UUID id, Cart cart) {
-
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, cart, id);
+        cartDAO.updateById(id, cart);
     }
 
     @Override
     public void deleteById(UUID id) {
-
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        cartDAO.deleteById(id);
     }
 
     @Override
     public Cart findById(UUID id) {
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        Optional<Cart> cartOptional = cartDAO.findById(id);
+        if (cartOptional.isPresent()) {
+            return cartOptional.get();
+        }
+        processGeneralCartException(Cart.ID_FIELD, id.toString());
         return null;
     }
 
     @Override
     public Cart findCartByCustomerId(UUID customerId) {
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, customerId);
         Optional<Cart> customerOptional = cartDAO.findCartByCustomerId(customerId);
         if (customerOptional.isPresent()) {
             return customerOptional.get();
         }
-        processCustomerIdNotFoundException(customerId);
+        processGeneralCartException(Cart.CUSTOMER_ID_FIELD, customerId.toString());
         return null;
     }
 
-    private void processCustomerIdNotFoundException(UUID id) {
-        String message = String.format(GENERAL_CART_NOT_FOUND_PATTERN, Cart.CUSTOMER_ID_FIELD, id);
+    private void processGeneralCartException(String invalidField, String invalidValue) {
+        String message = String.format(GENERAL_CART_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
         throw new IdNotFoundException(message);
     }

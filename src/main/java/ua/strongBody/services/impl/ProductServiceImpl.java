@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ua.strongBody.constants.LoggingConstants.*;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
-
-    private static final String GENERAL_PRODUCT_NOT_FOUND_PATTERN = "Product with %s: '%s' not found!";
 
     private final ProductDAO productDAO;
 
@@ -28,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
         List<Product> allProducts = productDAO.findAll();
         processAvailableAmount(allProducts);
         allProducts.sort(Comparator.comparing(Product::getName));
@@ -45,21 +46,25 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(Product product) {
-
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, product);
+        productDAO.save(product);
     }
 
     @Override
     public void updateById(UUID id, Product product) {
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, product, id);
         productDAO.updateById(id, product);
     }
 
     @Override
     public void deleteById(UUID id) {
-
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        productDAO.deleteById(id);
     }
 
     @Override
     public Product findById(UUID id) {
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
         Optional<Product> productOptional = productDAO.findById(id);
         if (productOptional.isPresent()) {
             return productOptional.get();
@@ -69,13 +74,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void processIdNotFoundException(UUID id) {
-        String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN, Product.ID_FIELD, id);
+        String message = String.format(GENERAL_BOOKING_NOT_FOUND_PATTERN, Product.ID_FIELD, id);
         LOG.warn(message);
         throw new IdNotFoundException(message);
     }
 
     @Override
     public void createProduct(Product product) {
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, product);
         productDAO.saveWithoutId(product);
     }
 }

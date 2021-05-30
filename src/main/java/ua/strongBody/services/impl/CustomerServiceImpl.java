@@ -13,16 +13,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ua.strongBody.constants.LoggingConstants.*;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomerServiceImpl.class);
-
-    private static final String LOG_INFO_EMPTY_PATTERN = "Method was called.";
-    private static final String LOG_INFO_ONE_ARG_PATTERN = "Method was called with argument: '{}'.";
-    private static final String LOG_INFO_TWO_ARG_PATTERN = "Method was called with argument(s): Customer: '{}', id: '{}'.";
-
-    private static final String GENERAL_CUSTOMER_NOT_FOUND_PATTERN = "Customer with %s: '%s' not found!";
 
     private final CustomerDAO customerDAO;
 
@@ -32,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer findByUsername(String username) throws UsernameNotFoundException {
-        LOG.info(LOG_INFO_ONE_ARG_PATTERN, username);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, username);
         Optional<Customer> customerOptional = customerDAO.findFirstByUsername(username);
         if (customerOptional.isPresent()) {
             return customerOptional.get();
@@ -55,31 +51,31 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> findAll() {
-        LOG.info(LOG_INFO_EMPTY_PATTERN);
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
         return customerDAO.findAll();
     }
 
     @Override
     public void save(Customer customer) {
-        LOG.info(LOG_INFO_ONE_ARG_PATTERN, customer);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, customer);
         customerDAO.save(customer);
     }
 
     @Override
     public void updateById(UUID id, Customer customer) {
-        LOG.info(LOG_INFO_TWO_ARG_PATTERN, customer, id);
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, customer, id);
         customerDAO.updateById(id, customer);
     }
 
     @Override
     public void deleteById(UUID id) {
-        LOG.info(LOG_INFO_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
         customerDAO.deleteById(id);
     }
 
     @Override
     public Customer findById(UUID id) {
-        LOG.info(LOG_INFO_ONE_ARG_PATTERN, id);
+        LOG.info(LOG_DEBUG_ONE_ARG_PATTERN, id);
         Optional<Customer> customerOptional = customerDAO.findById(id);
         if (customerOptional.isPresent()) {
             return customerOptional.get();
