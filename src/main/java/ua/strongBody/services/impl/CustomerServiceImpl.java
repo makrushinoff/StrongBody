@@ -4,8 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.strongBody.dao.CustomerDAO;
-import ua.strongBody.exceptions.IdNotFoundException;
-import ua.strongBody.exceptions.UsernameNotFoundException;
+import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Customer;
 import ua.strongBody.services.CustomerService;
 
@@ -27,26 +26,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findByUsername(String username) throws UsernameNotFoundException {
+    public Customer findByUsername(String username) throws FieldNotFoundException {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, username);
         Optional<Customer> customerOptional = customerDAO.findFirstByUsername(username);
-        if (customerOptional.isPresent()) {
-            return customerOptional.get();
-        }
-        processUsernameNotFoundException(username);
-        return null;
-    }
-
-    private void processUsernameNotFoundException(String username) throws UsernameNotFoundException {
-        String message = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, Customer.USERNAME_FIELD, username);
-        LOG.warn(message);
-        throw new UsernameNotFoundException(message);
-    }
-
-    private void processIdNotFoundException(UUID id) {
-        String message = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, Customer.ID_FIELD, id);
-        LOG.warn(message);
-        throw new IdNotFoundException(message);
+        return processInstanceExport(customerOptional, username, Customer.USERNAME_FIELD);
     }
 
     @Override
@@ -77,10 +60,20 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findById(UUID id) {
         LOG.info(LOG_DEBUG_ONE_ARG_PATTERN, id);
         Optional<Customer> customerOptional = customerDAO.findById(id);
+        return processInstanceExport(customerOptional, id.toString(), Customer.ID_FIELD);
+    }
+
+    private Customer processInstanceExport(Optional<Customer> customerOptional, String requestedValue, String fieldName) {
         if (customerOptional.isPresent()) {
             return customerOptional.get();
         }
-        processIdNotFoundException(id);
+        processGeneralCustomerException(fieldName, requestedValue);
         return null;
+    }
+
+    private void processGeneralCustomerException(String invalidField, String invalidValue) {
+        String message = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, invalidField, invalidValue);
+        LOG.warn(message);
+        throw new FieldNotFoundException(message);
     }
 }

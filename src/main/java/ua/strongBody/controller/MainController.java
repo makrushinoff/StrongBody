@@ -3,7 +3,7 @@ package ua.strongBody.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ua.strongBody.exceptions.UsernameNotFoundException;
+import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Customer;
 import ua.strongBody.models.forms.LoginForm;
 import ua.strongBody.models.forms.RegistrationForm;
@@ -63,7 +63,7 @@ public class MainController {
             String username = principal.getName();
             Customer customer = customerService.findByUsername(username);
             model.addAttribute("customer", customer);
-        } catch (UsernameNotFoundException ex) {
+        } catch (FieldNotFoundException ex) {
             return "redirect:/";
         }
 

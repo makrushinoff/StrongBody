@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.strongBody.dao.BookingDAO;
-import ua.strongBody.exceptions.IdNotFoundException;
+import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Booking;
 import ua.strongBody.services.BookingService;
 
@@ -53,17 +53,21 @@ public class BookingServiceImpl implements BookingService {
     public Booking findById(UUID id) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
         Optional<Booking> bookingOptional = bookingDAO.findById(id);
+        return processInstanceExport(bookingOptional, id.toString(), Booking.ID_FIELD);
+    }
+
+    private Booking processInstanceExport(Optional<Booking> bookingOptional, String requestedValue, String fieldName) {
         if (bookingOptional.isPresent()) {
             return bookingOptional.get();
         }
-        processIdNotFoundException(id);
-        return bookingOptional.orElse(null);
+        processGeneralBookingException(fieldName, requestedValue);
+        return null;
     }
 
-    private void processIdNotFoundException(UUID id) {
-        String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN, Booking.ID_FIELD, id);
+    private void processGeneralBookingException(String invalidField, String invalidValue) {
+        String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
-        throw new IdNotFoundException(message);
+        throw new FieldNotFoundException(message);
     }
 
     @Override

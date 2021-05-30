@@ -1,12 +1,10 @@
 package ua.strongBody.services;
 
-import ua.strongBody.exceptions.UsernameNotFoundException;
+import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Customer;
-
-import java.util.Optional;
 
 public interface CustomerService extends GeneralService<Customer> {
 
-    Customer findByUsername(String username) throws UsernameNotFoundException;
+    Customer findByUsername(String username) throws FieldNotFoundException;
 
 }

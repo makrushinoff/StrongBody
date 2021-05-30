@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.strongBody.dao.CartDAO;
-import ua.strongBody.exceptions.IdNotFoundException;
+import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Cart;
 import ua.strongBody.services.CartService;
 
@@ -53,27 +53,27 @@ public class CartServiceImpl implements CartService {
     public Cart findById(UUID id) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
         Optional<Cart> cartOptional = cartDAO.findById(id);
-        if (cartOptional.isPresent()) {
-            return cartOptional.get();
-        }
-        processGeneralCartException(Cart.ID_FIELD, id.toString());
-        return null;
+        return processInstanceExport(cartOptional, id.toString(), Cart.ID_FIELD);
     }
 
     @Override
     public Cart findCartByCustomerId(UUID customerId) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, customerId);
         Optional<Cart> customerOptional = cartDAO.findCartByCustomerId(customerId);
-        if (customerOptional.isPresent()) {
-            return customerOptional.get();
+        return processInstanceExport(customerOptional, customerId.toString(), Cart.CUSTOMER_ID_FIELD);
+    }
+
+    private Cart processInstanceExport(Optional<Cart> cartOptional, String requestedValue, String fieldName) {
+        if (cartOptional.isPresent()) {
+            return cartOptional.get();
         }
-        processGeneralCartException(Cart.CUSTOMER_ID_FIELD, customerId.toString());
+        processGeneralCartException(fieldName, requestedValue);
         return null;
     }
 
     private void processGeneralCartException(String invalidField, String invalidValue) {
         String message = String.format(GENERAL_CART_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
-        throw new IdNotFoundException(message);
+        throw new FieldNotFoundException(message);
     }
 }
