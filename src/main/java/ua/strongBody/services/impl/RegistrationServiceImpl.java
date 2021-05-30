@@ -16,14 +16,12 @@ import ua.strongBody.populator.RegistrationFormToCustomerPopulator;
 import ua.strongBody.services.RegistrationService;
 import ua.strongBody.validation.RegistrationFormValidator;
 
+import static ua.strongBody.constants.LoggingConstants.*;
+
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationServiceImpl.class);
-
-    private static final String VALIDATION_FAILED_PATTERN = "Validation stage is failed. Message: '%s'";
-    private static final String SAVE_FAILED_PATTERN = "Customer save process is failed. Exception: '%s'";
-    private static final String REGISTRATION_SUCCESS_PATTERN = "Customer with username '%s' was successfully registered!";
 
     private final RegistrationFormValidator registrationFormValidator;
     private final Populator<RegistrationForm, Customer> populator;
@@ -39,12 +37,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public boolean register(RegistrationForm registrationForm) {
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, registrationForm);
         if (!isRegistrationFormValid(registrationForm)) {
             return false;
         }
-        
+
         Customer customer = convertRegistrationFormToCustomer(registrationForm);
-        
+
         if (!isCustomerSavedSuccessfully(customer)) {
             return false;
         }

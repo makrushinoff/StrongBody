@@ -1,5 +1,7 @@
 package ua.strongBody.validation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.strongBody.dao.CustomerDAO;
 import ua.strongBody.dao.impl.CustomerDAOImpl;
@@ -10,6 +12,7 @@ import ua.strongBody.models.forms.RegistrationForm;
 
 import java.util.List;
 
+import static ua.strongBody.constants.LoggingConstants.LOG_DEBUG_ONE_ARG_PATTERN;
 import static ua.strongBody.models.forms.RegistrationForm.*;
 
 /**
@@ -18,10 +21,13 @@ import static ua.strongBody.models.forms.RegistrationForm.*;
  */
 @Service
 public class RegistrationFormValidator implements Validator<RegistrationForm> {
-    private final CustomerDAO customerDAO;
+
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationFormValidator.class);
 
     private static final String VALIDATION_EXCEPTION_PATTERN = "Field: '%s', value: '%s' , reason: '%s'";
     private static final String DUPLICATION_REASON = "Duplicated instance in database";
+
+    private final CustomerDAO customerDAO;
 
     public RegistrationFormValidator(CustomerDAOImpl customerDAO) {
         this.customerDAO = customerDAO;
@@ -29,7 +35,7 @@ public class RegistrationFormValidator implements Validator<RegistrationForm> {
 
     /**
      * Method validates fields from {@link RegistrationForm}.
-     *
+     * <p>
      * If some conditions is not passed,
      * method going to throw FieldValidationException {@link FieldValidationException}.
      * And then it wraps it into {@link ValidationException}
@@ -38,11 +44,13 @@ public class RegistrationFormValidator implements Validator<RegistrationForm> {
      * @see Customer
      */
     public void validate(RegistrationForm registrationForm) throws ValidationException {
+        LOG.info(LOG_DEBUG_ONE_ARG_PATTERN, registrationForm);
         List<Customer> allCustomers = customerDAO.findAll();
         try {
             allCustomers.forEach(customer -> validateFields(registrationForm, customer));
         } catch (FieldValidationException ex) {
             String message = generateValidationMessage(ex);
+            LOG.warn(message);
             throw new ValidationException(message);
         }
     }

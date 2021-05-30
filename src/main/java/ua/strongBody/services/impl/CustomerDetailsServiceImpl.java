@@ -1,5 +1,7 @@
 package ua.strongBody.services.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,10 +13,13 @@ import ua.strongBody.populator.Populator;
 
 import java.util.Optional;
 
+import static ua.strongBody.constants.LoggingConstants.GENERAL_CUSTOMER_NOT_FOUND_PATTERN;
+import static ua.strongBody.constants.LoggingConstants.LOG_DEBUG_ONE_ARG_PATTERN;
+
 @Service
 public class CustomerDetailsServiceImpl implements UserDetailsService {
 
-    private static final String USER_NOT_FOUND_EXCEPTION_PATTERN = "user with username '%s' not found";
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerDetailsServiceImpl.class);
 
     private final CustomerDAO customerDAO;
     private final Populator<Customer, CustomerDetails> populator;
@@ -26,13 +31,14 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, username);
         Optional<Customer> customerOptional = customerDAO.findFirstByUsername(username);
-        if (customerOptional.isEmpty()) {
-            processException(username);
+        if (customerOptional.isPresent()) {
+            Customer customer = customerOptional.get();
+            return processCustomerDetails(customer);
         }
-
-        Customer customer = customerOptional.get();
-        return processCustomerDetails(customer);
+        processException(username);
+        return null;
     }
 
     private CustomerDetails processCustomerDetails(Customer customer) {
@@ -42,7 +48,8 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
     }
 
     private void processException(String username) {
-        String exceptionMessage = String.format(USER_NOT_FOUND_EXCEPTION_PATTERN, username);
+        String exceptionMessage = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, Customer.USERNAME_FIELD, username);
+        LOG.warn(exceptionMessage);
         throw new UsernameNotFoundException(exceptionMessage);
     }
 }
