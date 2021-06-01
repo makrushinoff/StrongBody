@@ -73,6 +73,16 @@ class CustomerDAOImplIntegrationTest {
     }
 
     @Test
+    void shouldSave() {
+        testInstance.save(customer1);
+
+        List<Customer> actual = testInstance.findAll();
+
+        assertThat(actual.size()).isEqualTo(1);
+        assertThat(actual).contains(customer1);
+    }
+
+    @Test
     void shouldFindAll() {
         customer2.setId(UUID.randomUUID());
         testInstance.save(customer1);
