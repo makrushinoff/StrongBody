@@ -16,15 +16,15 @@ public class ProductPostProcessor implements PostProcessor<Product> {
 
     @Override
     public void postProcess(Product product) {
-        processAvailableAmount(product);
+        calculateAvailableAmount(product);
     }
 
     private void sortProducts(List<Product> products) {
         products.sort(Comparator.comparing(Product::getName));
     }
 
-    private void processAvailableAmount(Product product) {
-        int actualAvailableAmount = product.getAvailableAmount() - product.getReservedAmount();
-        product.setAvailableAmount(actualAvailableAmount);
+    private void calculateAvailableAmount(Product product) {
+        int availableAmount = product.getAmount() - product.getReservedAmount();
+        product.setAvailableAmount(availableAmount);
     }
 }

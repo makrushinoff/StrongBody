@@ -73,7 +73,7 @@ class BookingDAOImplIntegrationTest {
         product1.setPrice(PRICE);
         product1.setArticle(ARTICLE);
         product1.setDescription(DESCRIPTION);
-        product1.setAvailableAmount(AVAILABLE_AMOUNT);
+        product1.setAmount(AVAILABLE_AMOUNT);
         productDAO.save(product1);
 
         Customer customer1 = new Customer();

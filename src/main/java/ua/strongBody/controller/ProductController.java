@@ -29,7 +29,6 @@ public class ProductController {
     @GetMapping("/{id}")
     public String getProductPage(@PathVariable UUID id, Model model) {
         Product product = productService.findById(id);
-        product.setAvailableAmount(product.getAvailableAmount() - product.getReservedAmount());
         model.addAttribute("product", product);
         return "product/productView";
     }

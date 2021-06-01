@@ -24,13 +24,13 @@ CREATE TABLE IF NOT EXISTS cart
 
 CREATE TABLE IF NOT EXISTS product
 (
-    id               UUID    NOT NULL DEFAULT uuid_generate_v4(),
-    name             TEXT    NOT NULL,
-    price            NUMERIC NOT NULL,
-    article          TEXT    NOT NULL UNIQUE,
-    description      TEXT,
-    available_amount INTEGER NOT NULL,
-    reserved_amount  INTEGER NOT NULL DEFAULT 0,
+    id              UUID    NOT NULL DEFAULT uuid_generate_v4(),
+    name            TEXT    NOT NULL,
+    price           NUMERIC NOT NULL,
+    article         TEXT    NOT NULL UNIQUE,
+    description     TEXT,
+    amount          INTEGER NOT NULL,
+    reserved_amount INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "product_pkey" PRIMARY KEY (id)
 );

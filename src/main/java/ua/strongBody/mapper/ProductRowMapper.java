@@ -21,7 +21,7 @@ public class ProductRowMapper implements RowMapper<Product> {
         product.setPrice(resultSet.getInt(PRICE_FIELD));
         product.setArticle(resultSet.getString(ARTICLE_FIELD));
         product.setDescription(resultSet.getString(DESCRIPTION_FIELD));
-        product.setAvailableAmount(resultSet.getInt(AVAILABLE_AMOUNT_FIELD));
+        product.setAmount(resultSet.getInt(AMOUNT_FIELD));
         product.setReservedAmount(resultSet.getInt(RESERVED_AMOUNT_FIELD));
 
         return product;

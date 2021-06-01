@@ -11,7 +11,10 @@ import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Booking;
 import ua.strongBody.models.Cart;
 import ua.strongBody.models.Product;
+import ua.strongBody.processors.post.PostProcessor;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,9 +29,13 @@ class BookingServiceImplTest {
     private static final UUID ID = UUID.randomUUID();
 
     private Booking booking;
+    private List<Booking> bookingList;
 
     @Mock
     private BookingDAO bookingDAO;
+
+    @Mock
+    private PostProcessor<Booking> bookingPostProcessor;
 
     @InjectMocks
     private BookingServiceImpl testInstance;
@@ -38,6 +45,8 @@ class BookingServiceImplTest {
         booking = new Booking();
         booking.setProduct(new Product());
         booking.setCart(new Cart());
+
+        bookingList = Collections.singletonList(booking);
     }
 
     @Test
@@ -94,8 +103,11 @@ class BookingServiceImplTest {
 
     @Test
     void shouldGetCustomerBookingsByCartId() {
+        when(bookingDAO.getBookingsByCartId(ID)).thenReturn(bookingList);
+
         testInstance.getCustomerBookingsByCartId(ID);
 
         verify(bookingDAO).getBookingsByCartId(ID);
+        verify(bookingPostProcessor).postProcess(bookingList);
     }
 }
