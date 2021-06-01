@@ -1,5 +1,9 @@
 package ua.strongBody.models.forms;
 
+import ua.strongBody.models.Product;
+
+import java.util.StringJoiner;
+
 public class LoginForm {
     private String username;
     private String password;
@@ -26,5 +30,13 @@ public class LoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", LoginForm.class.getSimpleName() + "[", "]")
+                .add("username=" + username)
+                .add("password='" + password + "'")
+                .toString();
     }
 }

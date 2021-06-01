@@ -1,7 +1,10 @@
 package ua.strongBody.models;
 
+import ua.strongBody.models.forms.RegistrationForm;
+
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 public class Customer implements Serializable {
@@ -123,16 +126,16 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", state=" + state +
-                ", role=" + role +
-                '}';
+        return new StringJoiner(", ", Customer.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("firstName=" + firstName)
+                .add("lastName='" + lastName + "'")
+                .add("username=" + username)
+                .add("password='" + password + "'")
+                .add("email='" + email + "'")
+                .add("phoneNumber=" + phoneNumber)
+                .add("state=" + state)
+                .add("role=" + role)
+                .toString();
     }
 }
