@@ -44,14 +44,14 @@
 
                     <div class="mb-4">
                         <label class="form-label h5" th:for="email">Email</label>
-                        <input class="form-control" type="text" placeholder="Email" th:field="*{email}"
+                        <input class="form-control" type="email" placeholder="Email" th:field="*{email}"
                                required>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label h5" th:for="phoneNumber">Phone number</label>
-                        <input class="form-control" type="text" placeholder="Phone number" th:field="*{phoneNumber}"
-                               required>
+                        <input class="form-control" type="tel" placeholder="Phone number" th:field="*{phoneNumber}"
+                               required maxlength="13" minlength="13" pattern="[\+]\d{12}" >
                     </div>
 
                     <div class="mb-4">
