@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ua.strongBody.dao.BookingDAO;
 import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Booking;
+import ua.strongBody.processors.post.PostProcessor;
 import ua.strongBody.services.BookingService;
 
 import java.util.List;
@@ -20,8 +21,11 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingDAO bookingDAO;
 
-    public BookingServiceImpl(BookingDAO bookingDAO) {
+    private final PostProcessor<Booking> bookingPostProcessor;
+
+    public BookingServiceImpl(BookingDAO bookingDAO, PostProcessor<Booking> bookingPostProcessor) {
         this.bookingDAO = bookingDAO;
+        this.bookingPostProcessor = bookingPostProcessor;
     }
 
     @Override
@@ -70,6 +74,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getCustomerBookingsByCartId(UUID cartId) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, cartId);
-        return bookingDAO.getBookingsByCartId(cartId);
+        List<Booking> bookings = bookingDAO.getBookingsByCartId(cartId);
+        bookingPostProcessor.postProcess(bookings);
+        return bookings;
     }
 }

@@ -12,7 +12,7 @@ public class Product implements Serializable {
     public static final String PRICE_FIELD = "price";
     public static final String ARTICLE_FIELD = "article";
     public static final String DESCRIPTION_FIELD = "description";
-    public static final String AVAILABLE_AMOUNT_FIELD = "available_amount";
+    public static final String AMOUNT_FIELD = "amount";
     public static final String RESERVED_AMOUNT_FIELD = "reserved_amount";
 
     private UUID id;
@@ -20,15 +20,16 @@ public class Product implements Serializable {
     private int price;
     private String article;
     private String description;
-    private int availableAmount;
+    private int amount;
     private int reservedAmount;
+    private int availableAmount;
 
-    public Product(String name, int price, String article, String description, int availableAmount) {
+    public Product(String name, int price, String article, String description, int amount) {
         this.name = name;
         this.price = price;
         this.article = article;
         this.description = description;
-        this.availableAmount = availableAmount;
+        this.amount = amount;
     }
 
     public Product() {
@@ -74,12 +75,12 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public int getAvailableAmount() {
-        return availableAmount;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setAvailableAmount(int availableAmount) {
-        this.availableAmount = availableAmount;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public int getReservedAmount() {
@@ -90,17 +91,25 @@ public class Product implements Serializable {
         this.reservedAmount = reservedAmount;
     }
 
+    public int getAvailableAmount() {
+        return availableAmount;
+    }
+
+    public void setAvailableAmount(int availableAmount) {
+        this.availableAmount = availableAmount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return price == product.price && availableAmount == product.availableAmount && reservedAmount == product.reservedAmount && id.equals(product.id) && name.equals(product.name) && article.equals(product.article) && description.equals(product.description);
+        return price == product.price && amount == product.amount && reservedAmount == product.reservedAmount && id.equals(product.id) && name.equals(product.name) && article.equals(product.article) && description.equals(product.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, article, description, availableAmount, reservedAmount);
+        return Objects.hash(id, name, price, article, description, amount, reservedAmount);
     }
 
     @Override
@@ -111,8 +120,9 @@ public class Product implements Serializable {
                 .add("price=" + price)
                 .add("article='" + article + "'")
                 .add("description='" + description + "'")
-                .add("availableAmount=" + availableAmount)
+                .add("amount=" + amount)
                 .add("reservedAmount=" + reservedAmount)
+                .add("availableAmount=" + availableAmount)
                 .toString();
     }
 }

@@ -49,14 +49,14 @@ class ProductDAOImplIntegrationTest {
         product1.setPrice(PRICE1);
         product1.setArticle(ARTICLE1);
         product1.setDescription(DESCRIPTION1);
-        product1.setAvailableAmount(AVAILABLE_AMOUNT1);
+        product1.setAmount(AVAILABLE_AMOUNT1);
 
         product2 = new Product();
         product2.setName(PRODUCT_NAME2);
         product2.setPrice(PRICE2);
         product2.setArticle(ARTICLE2);
         product2.setDescription(DESCRIPTION2);
-        product2.setAvailableAmount(AVAILABLE_AMOUNT2);
+        product2.setAmount(AVAILABLE_AMOUNT2);
 
         database = new EmbeddedDatabaseBuilder().
                 setType(EmbeddedDatabaseType.H2)
