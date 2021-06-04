@@ -23,6 +23,18 @@ public class BookingDAOImpl implements BookingDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(BookingDAOImpl.class);
 
+    private static final String SAVE_QUERY = "INSERT INTO booking(id, order_date, product_amount, order_number, product_id, cart_id)" +
+            " VALUES('%s', '%s', '%s', '%s', '%s', '%s')";
+    private static final String UPDATE_QUERY = "UPDATE booking SET " +
+            "order_date = '%s'," +
+            "product_amount = '%s'," +
+            "order_number = '%s'," +
+            "product_id = '%s' " +
+            "WHERE id = '%s'";
+    private static final String DELETE_QUERY = "DELETE FROM booking WHERE id = '%s'";
+    private static final String SAVE_WITHOUT_ID_QUERY = "INSERT INTO booking(order_date, product_amount, order_number, product_id, cart_id)" +
+            " VALUES('%s', '%s', '%s', '%s', '%s')";
+
     private static final String PRODUCT_UNRESOLVED_EXCEPTION_PATTERN = "Booking with id: '%s' has unknown product! (product id: '%s')";
     private static final String CART_UNRESOLVED_EXCEPTION_PATTERN = "Booking with id: '%s' has unknown cart! (cart id: '%s')";
 
@@ -112,32 +124,30 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public void save(Booking booking) {
-        jdbcTemplate.update("INSERT INTO booking(id, order_date, product_amount, order_number, product_id, cart_id) VALUES(?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update(String.format(SAVE_QUERY,
                 booking.getId(),
                 booking.getOrderDate(),
                 booking.getProductAmount(),
                 booking.getOrderNumber(),
                 booking.getProduct().getId(),
-                booking.getCart().getId());
+                booking.getCart().getId())
+        );
     }
 
     @Override
     public void updateById(UUID id, Booking booking) {
-        jdbcTemplate.update("UPDATE booking SET " +
-                        "order_date = ?," +
-                        "product_amount = ?," +
-                        "order_number = ?," +
-                        "product_id = ? WHERE id = ?",
+        jdbcTemplate.update(String.format(UPDATE_QUERY,
                 booking.getOrderDate(),
                 booking.getProductAmount(),
                 booking.getOrderNumber(),
                 booking.getProduct().getId(),
-                id);
+                id)
+        );
     }
 
     @Override
     public void deleteById(UUID id) {
-        jdbcTemplate.update("DELETE FROM booking WHERE id = ?", id);
+        jdbcTemplate.update(String.format(DELETE_QUERY, id));
     }
 
     @Override
@@ -153,12 +163,13 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public void saveWithoutId(Booking booking) {
-        jdbcTemplate.update("INSERT INTO booking(order_date, product_amount, order_number, product_id, cart_id) VALUES(?, ?, ?, ?, ?)",
+        jdbcTemplate.update(String.format(SAVE_WITHOUT_ID_QUERY,
                 booking.getOrderDate(),
                 booking.getProductAmount(),
                 booking.getOrderNumber(),
                 booking.getProduct().getId(),
-                booking.getCart().getId());
+                booking.getCart().getId())
+        );
     }
 
     @Override

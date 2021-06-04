@@ -21,6 +21,11 @@ public class CartDAOImpl implements CartDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(CartDAOImpl.class);
 
+    private static final String SAVE_QUERY = "INSERT INTO cart (id, customer_id) VALUES ('%s' , '%s')";
+    private static final String SAVE_WITHOUT_ID_QUERY = "INSERT INTO cart (customer_id) VALUES ('%s')";
+    private static final String UPDATE_QUERY = "UPDATE cart SET customer_id = '%s' WHERE id = '%s'";
+    private static final String DELETE_QUERY = "DELETE FROM cart WHERE id = '%s'";
+
     private static final String CUSTOMER_UNRESOLVED_EXCEPTION_PATTERN = "Cart with id: '%s' has unknown customer! (customer id: '%s')";
 
     private final JdbcTemplate jdbcTemplate;
@@ -88,13 +93,13 @@ public class CartDAOImpl implements CartDAO {
     @Override
     public void save(Cart cart) {
         UUID customerId = cart.getCustomer().getId();
-        jdbcTemplate.update("INSERT INTO cart (id, customer_id) VALUES (? , ?)", cart.getId(), customerId);
+        jdbcTemplate.update(String.format(SAVE_QUERY, cart.getId(), customerId));
     }
 
     @Override
     public void saveWithoutId(Cart cart) {
         UUID customerId = cart.getCustomer().getId();
-        jdbcTemplate.update("INSERT INTO cart (customer_id) VALUES (?)", customerId);
+        jdbcTemplate.update(String.format(SAVE_WITHOUT_ID_QUERY, customerId));
     }
 
     @Override
@@ -109,12 +114,12 @@ public class CartDAOImpl implements CartDAO {
     @Override
     public void updateById(UUID id, Cart cart) {
         UUID customerId = cart.getCustomer().getId();
-        jdbcTemplate.update("UPDATE cart SET customer_id = ? WHERE id = ?", customerId, id);
+        jdbcTemplate.update(String.format(UPDATE_QUERY, customerId, id));
     }
 
     @Override
     public void deleteById(UUID id) {
-        jdbcTemplate.update("DELETE FROM cart WHERE id = ?", id);
+        jdbcTemplate.update(String.format(DELETE_QUERY, id));
     }
 
     @Override
