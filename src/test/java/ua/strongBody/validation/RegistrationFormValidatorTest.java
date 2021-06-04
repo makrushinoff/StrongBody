@@ -1,4 +1,4 @@
-package ua.strongBody.services.impl;
+package ua.strongBody.validation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
