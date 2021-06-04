@@ -14,6 +14,13 @@ import java.util.UUID;
 @Repository
 public class CustomerDAOImpl implements CustomerDAO {
 
+    private static final String SAVE_QUERY = "INSERT INTO customer (id, email, username, password, first_name, last_name, phone_number)" +
+            " VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+    private static final String SAVE_WITHOUT_ID_QUERY = "INSERT INTO customer (email, username, password, first_name, last_name, phone_number)" +
+            " VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
+    private static final String UPDATE_BY_ID_QUERY = "UPDATE customer SET email = '%s', username = '%s', password = '%s', first_name = '%s', last_name = '%s', phone_number = '%s' WHERE id = '%s'";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM customer WHERE id = '%s'";
+
     private final JdbcTemplate jdbcTemplate;
     private final CustomerAssembly customerAssembly;
 
@@ -29,44 +36,45 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public void save(Customer customer) throws DataAccessException {
-        jdbcTemplate.update("INSERT INTO customer (id, email, username, password, first_name, last_name, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update(String.format(SAVE_QUERY,
                 customer.getId(),
                 customer.getEmail(),
                 customer.getUsername(),
                 customer.getPassword(),
                 customer.getFirstName(),
                 customer.getLastName(),
-                customer.getPhoneNumber()
+                customer.getPhoneNumber())
         );
     }
 
     @Override
     public void saveWithoutId(Customer customer) throws DataAccessException {
-        jdbcTemplate.update("INSERT INTO customer (email, username, password, first_name, last_name, phone_number) VALUES (?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update(String.format(SAVE_WITHOUT_ID_QUERY,
                 customer.getEmail(),
                 customer.getUsername(),
                 customer.getPassword(),
                 customer.getFirstName(),
                 customer.getLastName(),
-                customer.getPhoneNumber()
+                customer.getPhoneNumber())
         );
     }
 
     @Override
     public void updateById(UUID id, Customer customer) {
-        jdbcTemplate.update("UPDATE customer SET email = ?, username = ?, password = ?, first_name = ?, last_name = ?, phone_number = ? WHERE id = ?",
+        jdbcTemplate.update(String.format(UPDATE_BY_ID_QUERY,
                 customer.getEmail(),
                 customer.getUsername(),
                 customer.getPassword(),
                 customer.getFirstName(),
                 customer.getLastName(),
                 customer.getPhoneNumber(),
-                id);
+                id)
+        );
     }
 
     @Override
     public void deleteById(UUID customerId) {
-        jdbcTemplate.update("DELETE FROM customer WHERE id = ?", customerId);
+        jdbcTemplate.update(String.format(DELETE_BY_ID_QUERY, customerId));
     }
 
     @Override
