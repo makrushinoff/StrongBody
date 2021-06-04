@@ -12,12 +12,25 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class ProductDAOIml implements ProductDAO {
+public class ProductDAOImpl implements ProductDAO {
+
+    private static final String SAVE_QUERY = "INSERT INTO product (id, name, price, article, description, amount)" +
+            " VALUES('%s', '%s', '%s', '%s', '%s', '%s')";
+    private static final String SAVE_WITHOUT_ID_QUERY = "INSERT INTO product (name, price, article, description, amount)" +
+            " VALUES('%s', '%s', '%s', '%s', '%s')";
+    private static final String UPDATE_QUERY = "UPDATE product SET " +
+            "name = '%s'," +
+            "price = '%s'," +
+            "article = '%s'," +
+            "description = '%s'," +
+            "amount = '%s'," +
+            "reserved_amount = '%s' WHERE id = '%s'";
+    private static final String DELETE_QUERY = "DELETE FROM product WHERE id = '%s'";
 
     private final JdbcTemplate jdbcTemplate;
     private final ProductAssembly productAssembly;
 
-    public ProductDAOIml(JdbcTemplate jdbcTemplate, ProductAssembly productAssembly) {
+    public ProductDAOImpl(JdbcTemplate jdbcTemplate, ProductAssembly productAssembly) {
         this.jdbcTemplate = jdbcTemplate;
         this.productAssembly = productAssembly;
     }
@@ -29,46 +42,43 @@ public class ProductDAOIml implements ProductDAO {
 
     @Override
     public void save(Product product) {
-        jdbcTemplate.update("INSERT INTO product (id, name, price, article, description, amount) VALUES(?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update(String.format(SAVE_QUERY,
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
                 product.getArticle(),
                 product.getDescription(),
-                product.getAmount());
+                product.getAmount())
+        );
     }
 
     @Override
     public void saveWithoutId(Product product) {
-        jdbcTemplate.update("INSERT INTO product (name, price, article, description, amount) VALUES(?, ?, ?, ?, ?)",
+        jdbcTemplate.update(String.format(SAVE_WITHOUT_ID_QUERY,
                 product.getName(),
                 product.getPrice(),
                 product.getArticle(),
                 product.getDescription(),
-                product.getAmount());
+                product.getAmount())
+        );
     }
 
     @Override
     public void updateById(UUID id, Product product) {
-        jdbcTemplate.update("UPDATE product SET " +
-                        "name = ?," +
-                        "price = ?," +
-                        "article = ?," +
-                        "description = ?," +
-                        "amount = ?," +
-                        "reserved_amount = ? WHERE id = ?",
+        jdbcTemplate.update(String.format(UPDATE_QUERY,
                 product.getName(),
                 product.getPrice(),
                 product.getArticle(),
                 product.getDescription(),
                 product.getAmount(),
                 product.getReservedAmount(),
-                id);
+                id)
+        );
     }
 
     @Override
     public void deleteById(UUID id) {
-        jdbcTemplate.update("DELETE FROM product WHERE id = ?", id);
+        jdbcTemplate.update(String.format(DELETE_QUERY, id));
     }
 
     @Override

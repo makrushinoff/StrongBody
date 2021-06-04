@@ -13,7 +13,7 @@ import ua.strongBody.models.Customer;
 
 import java.util.*;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,6 +61,15 @@ class CustomerDAOImplUnitTest {
     }
 
     @Test
+    void shouldFindAll() {
+        when(customerAssembly.findAllCustomers()).thenReturn(customerList);
+
+        List<Customer> actual = testInstance.findAll();
+
+        assertThat(actual).isEqualTo(customerList);
+    }
+
+    @Test
     void shouldSave() {
         testInstance.save(customer);
 
@@ -93,10 +102,10 @@ class CustomerDAOImplUnitTest {
         when(customerAssembly.findAllCustomers()).thenReturn(customerList);
 
         Optional<Customer> actualOptional = testInstance.findById(ID);
-        Customer actual = actualOptional.get();
 
-        assertThat(customerList.contains(actual)).isTrue();
-        assertThat(customerList.get(0)).isEqualTo(actual);
+        assertThat(actualOptional).isPresent();
+        Customer actual = actualOptional.get();
+        assertThat(actual).isEqualTo(customerList.get(0));
     }
 
     @Test
@@ -104,9 +113,9 @@ class CustomerDAOImplUnitTest {
         when(customerAssembly.findAllCustomers()).thenReturn(customerList);
 
         Optional<Customer> actualOptional = testInstance.findFirstByUsername(USERNAME);
-        Customer actual = actualOptional.get();
 
-        assertThat(customerList.contains(actual)).isTrue();
-        assertThat(customerList.get(0)).isEqualTo(actual);
+        assertThat(actualOptional).isPresent();
+        Customer actual = actualOptional.get();
+        assertThat(actual).isEqualTo(customerList.get(0));
     }
 }
