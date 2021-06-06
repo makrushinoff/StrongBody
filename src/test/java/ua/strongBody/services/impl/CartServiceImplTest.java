@@ -10,7 +10,10 @@ import ua.strongBody.dao.CartDAO;
 import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;
+import ua.strongBody.processors.post.PostProcessor;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +32,9 @@ class CartServiceImplTest {
     @Mock
     private CartDAO cartDAO;
 
+    @Mock
+    private PostProcessor<Cart> cartPostProcessor;
+
     @InjectMocks
     private CartServiceImpl testInstance;
 
@@ -40,9 +46,14 @@ class CartServiceImplTest {
 
     @Test
     void shouldFindAll() {
-        testInstance.findAll();
+        List<Cart> cartList = Collections.singletonList(cart);
+        when(cartDAO.findAll()).thenReturn(cartList);
+
+        List<Cart> actual = testInstance.findAll();
 
         verify(cartDAO).findAll();
+        verify(cartPostProcessor).postProcess(cartList);
+        assertThat(actual).isEqualTo(cartList);
     }
 
     @Test
@@ -73,6 +84,7 @@ class CartServiceImplTest {
 
         Cart actual = testInstance.findById(ID);
 
+        verify(cartPostProcessor).postProcess(cart);
         assertThat(actual).isEqualTo(cart);
     }
 
@@ -90,6 +102,7 @@ class CartServiceImplTest {
 
         Cart actual = testInstance.findCartByCustomerId(ID);
 
+        verify(cartPostProcessor).postProcess(cart);
         assertThat(actual).isEqualTo(cart);
     }
 

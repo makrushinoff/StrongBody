@@ -1,6 +1,8 @@
 package ua.strongBody.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.UUID;
@@ -12,6 +14,9 @@ public class Cart implements Serializable {
 
     private UUID id;
     private Customer customer;
+    private int quantity;
+    private BigDecimal price;
+    private List<Booking> bookingList;
 
     public Cart(Customer customer) {
         this.customer = customer;
@@ -36,6 +41,30 @@ public class Cart implements Serializable {
         this.customer = customer;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public List<Booking> getBookingList() {
+        return bookingList;
+    }
+
+    public void setBookingList(List<Booking> bookingList) {
+        this.bookingList = bookingList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,6 +83,8 @@ public class Cart implements Serializable {
         return new StringJoiner(", ", Cart.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("customer_id=" + customer.getId())
+                .add("quantity=" + quantity)
+                .add("price=" + price)
                 .toString();
     }
 }

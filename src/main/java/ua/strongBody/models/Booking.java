@@ -1,6 +1,7 @@
 package ua.strongBody.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -18,6 +19,7 @@ public class Booking implements Serializable {
     private UUID id;
     private LocalDate orderDate;
     private int productAmount;
+    private BigDecimal price;
     private String orderNumber;
     private Product product;
     private Cart cart;
@@ -56,6 +58,14 @@ public class Booking implements Serializable {
 
     public void setProductAmount(int productAmount) {
         this.productAmount = productAmount;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getOrderNumber() {
@@ -101,6 +111,7 @@ public class Booking implements Serializable {
                 .add("id=" + id)
                 .add("orderDate=" + orderDate)
                 .add("productAmount=" + productAmount)
+                .add("price=" + price)
                 .add("orderNumber=" + orderNumber)
                 .add("product_id=" + product.getId())
                 .add("cart_id=" + cart.getId())

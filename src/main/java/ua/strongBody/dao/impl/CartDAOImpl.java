@@ -5,15 +5,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ua.strongBody.assembly.BookingAssembly;
 import ua.strongBody.assembly.CartAssembly;
 import ua.strongBody.assembly.CustomerAssembly;
 import ua.strongBody.dao.CartDAO;
+import ua.strongBody.models.Booking;
 import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -31,11 +34,13 @@ public class CartDAOImpl implements CartDAO {
     private final JdbcTemplate jdbcTemplate;
     private final CartAssembly cartAssembly;
     private final CustomerAssembly customerAssembly;
+    private final BookingAssembly bookingAssembly;
 
-    public CartDAOImpl(JdbcTemplate jdbcTemplate, CartAssembly cartAssembly, CustomerAssembly customerAssembly) {
+    public CartDAOImpl(JdbcTemplate jdbcTemplate, CartAssembly cartAssembly, CustomerAssembly customerAssembly, BookingAssembly bookingAssembly) {
         this.jdbcTemplate = jdbcTemplate;
         this.cartAssembly = cartAssembly;
         this.customerAssembly = customerAssembly;
+        this.bookingAssembly = bookingAssembly;
     }
 
     /**
@@ -58,6 +63,9 @@ public class CartDAOImpl implements CartDAO {
 
         List<Customer> allCustomers = customerAssembly.findAllCustomers();
         carts.forEach(cart -> mapCustomerToCart(allCustomers, cart));
+
+        List<Booking> allBookings = bookingAssembly.findAllSingleLayer();
+        carts.forEach(cart -> mapBookingsToCart(allBookings, cart));
 
         return carts;
     }
@@ -84,6 +92,14 @@ public class CartDAOImpl implements CartDAO {
         UUID customerIdFromCart = cart.getCustomer().getId();
         String message = String.format(CUSTOMER_UNRESOLVED_EXCEPTION_PATTERN, cart.getId(), customerIdFromCart);
         LOG.warn(message);
+    }
+
+    private void mapBookingsToCart(List<Booking> allBookings, Cart cart) {
+        UUID cartId = cart.getId();
+        List<Booking> bookingsForCart = allBookings.stream()
+                .filter(booking -> booking.getCart().getId().equals(cartId))
+                .collect(Collectors.toList());
+        cart.setBookingList(bookingsForCart);
     }
 
     private boolean isEqualsCustomerId(UUID customerIdFromCart, Customer customer) {

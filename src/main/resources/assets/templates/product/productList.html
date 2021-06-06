@@ -21,16 +21,17 @@
                     <th>Article</th>
                     <th>Available amount</th>
                     <th>Reserved amount</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
 
                 <tbody th:each="product : ${productList}">
                 <tr th:object="${product}">
-                    <td class="data" th:text="*{name}"></td>
-                    <td class="data" th:text="*{price}"></td>
-                    <td class="data" th:text="*{article}"></td>
-                    <td class="data" th:text="*{availableAmount}"></td>
-                    <td class="data" th:text="*{reservedAmount}"></td>
+                    <td th:text="*{name}"></td>
+                    <td th:text="*{price}"></td>
+                    <td th:text="*{article}"></td>
+                    <td th:text="*{availableAmount}"></td>
+                    <td th:text="*{reservedAmount}"></td>
                     <td>
                         <a th:if="*{availableAmount} > 0" th:href="@{'/cart/add/' + ${product.id}}"
                            class="btn btn-success me-1">ADD TO CART</a>

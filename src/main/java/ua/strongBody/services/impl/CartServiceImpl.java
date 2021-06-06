@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ua.strongBody.dao.CartDAO;
 import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.models.Cart;
+import ua.strongBody.processors.post.PostProcessor;
 import ua.strongBody.services.CartService;
 
 import java.util.List;
@@ -19,15 +20,19 @@ public class CartServiceImpl implements CartService {
     private static final Logger LOG = LoggerFactory.getLogger(CartServiceImpl.class);
 
     private final CartDAO cartDAO;
+    private final PostProcessor<Cart> cartPostProcessor;
 
-    public CartServiceImpl(CartDAO cartDAO) {
+    public CartServiceImpl(CartDAO cartDAO, PostProcessor<Cart> cartPostProcessor) {
         this.cartDAO = cartDAO;
+        this.cartPostProcessor = cartPostProcessor;
     }
 
     @Override
     public List<Cart> findAll() {
         LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
-        return cartDAO.findAll();
+        List<Cart> allCarts = cartDAO.findAll();
+        cartPostProcessor.postProcess(allCarts);
+        return allCarts;
     }
 
     @Override
@@ -51,15 +56,19 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart findById(UUID id) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
-        return cartDAO.findById(id)
+        Cart cart = cartDAO.findById(id)
                 .orElseThrow(() -> generateGeneralCartException(Cart.ID_FIELD, id.toString()));
+        cartPostProcessor.postProcess(cart);
+        return cart;
     }
 
     @Override
     public Cart findCartByCustomerId(UUID customerId) {
         LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, customerId);
-        return cartDAO.findCartByCustomerId(customerId)
+        Cart cart = cartDAO.findCartByCustomerId(customerId)
                 .orElseThrow(() -> generateGeneralCartException(Cart.CUSTOMER_ID_FIELD, customerId.toString()));
+        cartPostProcessor.postProcess(cart);
+        return cart;
     }
 
     private RuntimeException generateGeneralCartException(String invalidField, String invalidValue) {

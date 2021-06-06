@@ -164,4 +164,13 @@ class CartFacadeTest {
         assertThat(actual.size()).isEqualTo(1);
         assertThat(actual).contains(booking);
     }
+
+    @Test
+    void shouldGetCartByCustomerUsername() {
+        when(customerService.findByUsername(USERNAME)).thenReturn(customer);
+
+        testInstance.getCartByCustomerUsername(USERNAME);
+
+        verify(cartService).findCartByCustomerId(CUSTOMER_ID);
+    }
 }
