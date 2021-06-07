@@ -12,6 +12,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import ua.strongBody.dao.ProductDAO;
 import ua.strongBody.models.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,8 +25,8 @@ class ProductDAOImplIntegrationTest {
 
     private static final String PRODUCT_NAME1 = "prod1";
     private static final String PRODUCT_NAME2 = "prod2";
-    private static final int PRICE1 = 2000;
-    private static final int PRICE2 = 3000;
+    private static final BigDecimal PRICE1 = BigDecimal.valueOf(2000);
+    private static final BigDecimal PRICE2 = BigDecimal.valueOf(3000);
     private static final String ARTICLE1 = "PP-01";
     private static final String ARTICLE2 = "PP-02";
     private static final String DESCRIPTION1 = "Super-puper product1";
@@ -84,14 +85,11 @@ class ProductDAOImplIntegrationTest {
     @Test
     void shouldNotFindProduct() {
         product2.setId(UUID.randomUUID());
-        Product unexpected = new Product();
-        unexpected.setId(UUID.randomUUID());
         testInstance.save(product1);
-        testInstance.save(product2);
 
         List<Product> actual = testInstance.findAll();
 
-        assertThat(actual.contains(unexpected)).isFalse();
+        assertThat(actual.contains(product2)).isFalse();
     }
 
     @Test

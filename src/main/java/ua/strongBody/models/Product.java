@@ -1,6 +1,7 @@
 package ua.strongBody.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.UUID;
@@ -17,14 +18,14 @@ public class Product implements Serializable {
 
     private UUID id;
     private String name;
-    private int price;
+    private BigDecimal price;
     private String article;
     private String description;
     private int amount;
     private int reservedAmount;
     private int availableAmount;
 
-    public Product(String name, int price, String article, String description, int amount) {
+    public Product(String name, BigDecimal price, String article, String description, int amount) {
         this.name = name;
         this.price = price;
         this.article = article;
@@ -51,11 +52,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -104,7 +105,7 @@ public class Product implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return price == product.price && amount == product.amount && reservedAmount == product.reservedAmount && id.equals(product.id) && name.equals(product.name) && article.equals(product.article) && description.equals(product.description);
+        return price.equals(product.price) && amount == product.amount && reservedAmount == product.reservedAmount && id.equals(product.id) && name.equals(product.name) && article.equals(product.article) && description.equals(product.description);
     }
 
     @Override

@@ -77,7 +77,11 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public void save(Order order) throws DataAccessException {
-        String query = String.format(SAVE_QUERY, order.getOrderedDate(), order.getProductAmount(), order.getPrice(), order.getCustomer().getId());
+        String query = String.format(SAVE_QUERY,
+                order.getOrderedDate(),
+                order.getProductAmount(),
+                order.getPrice(),
+                order.getCustomer().getId());
         jdbcTemplate.update(query);
     }
 
