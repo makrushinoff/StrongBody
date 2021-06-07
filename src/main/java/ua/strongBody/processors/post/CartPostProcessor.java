@@ -30,16 +30,13 @@ public class CartPostProcessor implements PostProcessor<Cart> {
 
     private void calculateQuantity(Cart cart) {
         List<Booking> bookingList = cart.getBookingList();
-        int sum = bookingList.stream()
-                .reduce(0, (partialValue, booking) -> partialValue + booking.getProductAmount(), Integer::sum);
+        int sum = bookingList.stream().map(Booking::getProductAmount).reduce(0, Integer::sum);
         cart.setQuantity(sum);
     }
 
     private void calculatePrice(Cart cart) {
         List<Booking> cartBookings = bookingService.getCustomerBookingsByCartId(cart.getId());
-        BigDecimal price = cartBookings.stream()
-                .map(Booking::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal price = cartBookings.stream().map(Booking::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setPrice(price);
     }
 }
