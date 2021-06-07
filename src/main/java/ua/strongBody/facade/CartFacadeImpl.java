@@ -124,4 +124,11 @@ public class CartFacadeImpl implements CartFacade {
         UUID customerCartId = customerCart.getId();
         return bookingService.getCustomerBookingsByCartId(customerCartId);
     }
+
+    @Override
+    public Cart getCartByCustomerUsername(String customerUsername) {
+        Customer customer = customerService.findByUsername(customerUsername);
+        UUID customerId = customer.getId();
+        return cartService.findCartByCustomerId(customerId);
+    }
 }

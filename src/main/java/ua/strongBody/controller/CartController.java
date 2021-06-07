@@ -9,6 +9,7 @@ import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.facade.CartFacade;
 import ua.strongBody.facade.CartFacadeImpl;
 import ua.strongBody.models.Booking;
+import ua.strongBody.models.Cart;
 
 import java.security.Principal;
 import java.util.List;
@@ -27,7 +28,9 @@ public class CartController {
     @GetMapping("/")
     public String getCartPage(Principal principal, Model model) {
         String customerUsername = principal.getName();
+        Cart cart = cartFacade.getCartByCustomerUsername(customerUsername);
         List<Booking> customerBookings = cartFacade.getCustomerBookingsByUsername(customerUsername);
+        model.addAttribute("cart", cart);
         model.addAttribute("bookings", customerBookings);
         return "cart/cartView";
     }

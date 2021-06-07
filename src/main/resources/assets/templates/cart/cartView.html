@@ -16,24 +16,39 @@
             <table class="table table-bordered table-hover text-center align-middle">
                 <thead>
                 <tr class="active">
+                    <th></th>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Amount</th>
+                    <th>Price</th>
                     <th>Ordered Date</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
 
-                <tbody th:each="booking : ${bookings}">
-                <tr th:object="${booking}">
-                    <td class="data" th:text="*{id}"></td>
-                    <td class="data" th:text="*{product.name}"></td>
-                    <td class="data" th:text="*{productAmount}"></td>
-                    <td class="data" th:text="*{orderDate}"></td>
-                    <td>
-                        <a th:href="@{'/cart/delete/' + *{id}}" class="btn btn-danger me-1">REMOVE</a>
-                    </td>
+                <tbody>
+                <th:block th:each="booking : ${bookings}">
+                    <tr th:object="${booking}">
+                        <td></td>
+                        <td th:text="*{id}"></td>
+                        <td th:text="*{product.name}"></td>
+                        <td th:text="*{productAmount}"></td>
+                        <td th:text="*{product.price}"></td>
+                        <td th:text="*{orderDate}"></td>
+                        <td>
+                            <a th:href="@{'/cart/delete/' + *{id}}" class="btn btn-danger me-1">REMOVE</a>
+                        </td>
+                    </tr>
+                </th:block>
+                <tr>
+                    <td><strong>Sum</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td th:text="${cart.quantity}"></td>
+                    <td th:text="${cart.price.toString()}"></td>
+                    <td></td>
+                    <td></td>
                 </tr>
-
                 </tbody>
             </table>
         </div>
