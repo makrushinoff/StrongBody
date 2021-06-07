@@ -8,6 +8,7 @@ import java.util.List;
 
 @Component
 public class ProductPostProcessor implements PostProcessor<Product> {
+
     @Override
     public void postProcess(List<Product> products) {
         sortProducts(products);

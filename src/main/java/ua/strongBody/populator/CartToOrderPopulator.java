@@ -7,7 +7,7 @@ import ua.strongBody.models.Order;
 import java.time.LocalDate;
 
 @Component
-public class CartToOrderPopulator implements Populator<Cart, Order>{
+public class CartToOrderPopulator implements Populator<Cart, Order> {
 
     @Override
     public void convert(Cart cart, Order order) {

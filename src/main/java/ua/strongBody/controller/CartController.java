@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.facade.CartFacade;
-import ua.strongBody.facade.CartFacadeImpl;
 import ua.strongBody.facade.OrderFacade;
+import ua.strongBody.facade.impl.CartFacadeImpl;
 import ua.strongBody.models.Booking;
 import ua.strongBody.models.Cart;
 

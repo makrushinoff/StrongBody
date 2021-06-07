@@ -1,10 +1,9 @@
 package ua.strongBody.models.forms;
 
-import ua.strongBody.models.Product;
-
 import java.util.StringJoiner;
 
 public class RegistrationForm {
+
     private String firstName;
     private String lastName;
     private String username;

@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import ua.strongBody.services.impl.CustomerDetailsServiceImpl;
 
 
@@ -20,7 +19,6 @@ import ua.strongBody.services.impl.CustomerDetailsServiceImpl;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomerDetailsServiceImpl customerDetailsService;
-
 
     public SecurityConfig(CustomerDetailsServiceImpl customerDetailsService) {
         this.customerDetailsService = customerDetailsService;

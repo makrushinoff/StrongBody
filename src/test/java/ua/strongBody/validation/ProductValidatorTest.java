@@ -49,7 +49,7 @@ class ProductValidatorTest {
     @Test
     void shouldValidate() throws ValidationException {
         when(productDAO.findAll()).thenReturn(productList);
-        
+
         testInstance.validate(inputProduct);
     }
 

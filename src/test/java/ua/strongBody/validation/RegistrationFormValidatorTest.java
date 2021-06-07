@@ -10,7 +10,6 @@ import ua.strongBody.dao.impl.CustomerDAOImpl;
 import ua.strongBody.exceptions.ValidationException;
 import ua.strongBody.models.Customer;
 import ua.strongBody.models.forms.RegistrationForm;
-import ua.strongBody.validation.RegistrationFormValidator;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,6 +1,7 @@
 package ua.strongBody.exceptions;
 
 public class FieldValidationException extends RuntimeException {
+
     private final String invalidFieldName;
     private final String invalidValue;
     private final String reason;

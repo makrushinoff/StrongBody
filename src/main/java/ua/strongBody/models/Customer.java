@@ -1,7 +1,5 @@
 package ua.strongBody.models;
 
-import ua.strongBody.models.forms.RegistrationForm;
-
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.StringJoiner;
