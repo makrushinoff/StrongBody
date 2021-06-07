@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ua.strongBody.assembly.ProductAssembly;
-import ua.strongBody.dao.impl.ProductDAOImpl;
 import ua.strongBody.models.Product;
 
 import java.util.Collections;

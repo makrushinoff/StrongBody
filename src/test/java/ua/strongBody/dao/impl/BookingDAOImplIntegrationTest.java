@@ -12,8 +12,10 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import ua.strongBody.dao.CartDAO;
 import ua.strongBody.dao.CustomerDAO;
 import ua.strongBody.dao.ProductDAO;
-import ua.strongBody.dao.impl.BookingDAOImpl;
-import ua.strongBody.models.*;
+import ua.strongBody.models.Booking;
+import ua.strongBody.models.Cart;
+import ua.strongBody.models.Customer;
+import ua.strongBody.models.Product;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ua.strongBody.assembly.CustomerAssembly;
 import ua.strongBody.assembly.OrderAssembly;
-import ua.strongBody.dao.impl.OrderDAOImpl;
 import ua.strongBody.models.Customer;
 import ua.strongBody.models.Order;
 

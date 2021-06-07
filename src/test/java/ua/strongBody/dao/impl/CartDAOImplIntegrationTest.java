@@ -9,9 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import ua.strongBody.dao.impl.CartDAOImpl;
-import ua.strongBody.dao.impl.CustomerDAOImpl;
-import ua.strongBody.models.*;
+import ua.strongBody.models.Cart;
+import ua.strongBody.models.Customer;
 
 import java.util.List;
 import java.util.Optional;

@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import ua.strongBody.assembly.BookingAssembly;
 import ua.strongBody.assembly.CartAssembly;
 import ua.strongBody.assembly.ProductAssembly;
-import ua.strongBody.dao.impl.BookingDAOImpl;
 import ua.strongBody.models.Booking;
 import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;

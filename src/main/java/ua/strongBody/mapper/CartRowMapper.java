@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import static ua.strongBody.models.Cart.*;
+import static ua.strongBody.models.Cart.CUSTOMER_ID_FIELD;
+import static ua.strongBody.models.Cart.ID_FIELD;
 
 @Component
 public class CartRowMapper implements RowMapper<Cart> {
