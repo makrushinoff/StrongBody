@@ -1,4 +1,4 @@
-package ua.strongBody.dao;
+package ua.strongBody.dao.impl;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import ua.strongBody.dao.CartDAO;
+import ua.strongBody.dao.CustomerDAO;
+import ua.strongBody.dao.ProductDAO;
 import ua.strongBody.dao.impl.BookingDAOImpl;
 import ua.strongBody.models.*;
 

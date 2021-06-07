@@ -1,4 +1,4 @@
-package ua.strongBody.dao;
+package ua.strongBody.dao.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
