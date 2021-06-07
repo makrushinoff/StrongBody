@@ -31,7 +31,7 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, username);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), username);
         Optional<Customer> customerOptional = customerDAO.findFirstByUsername(username);
         Customer customer = customerOptional.orElseThrow(() -> processException(username));
         return processCustomerDetails(customer);
@@ -44,7 +44,7 @@ public class CustomerDetailsServiceImpl implements UserDetailsService {
     }
 
     private RuntimeException processException(String username) {
-        String exceptionMessage = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, Customer.USERNAME_FIELD, username);
+        String exceptionMessage = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN.getMessage(), Customer.USERNAME_FIELD, username);
         LOG.warn(exceptionMessage);
         return new UsernameNotFoundException(exceptionMessage);
     }

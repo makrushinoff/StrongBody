@@ -26,37 +26,37 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAll() {
-        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN.getMessage());
         return orderDAO.findAll();
     }
 
     @Override
     public void save(Order order) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, order);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), order);
         orderDAO.save(order);
     }
 
     @Override
     public void updateById(UUID id, Order order) {
-        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, id, order);
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN.getMessage(), id, order);
         orderDAO.updateById(id, order);
     }
 
     @Override
     public void deleteById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         orderDAO.deleteById(id);
     }
 
     @Override
     public Order findById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         return orderDAO.findById(id)
                 .orElseThrow(() -> generateGeneralOrderException(Order.ID_FIELD, id.toString()));
     }
 
     private RuntimeException generateGeneralOrderException(String invalidField, String invalidValue) {
-        String message = String.format(GENERAL_ORDER_NOT_FOUND_PATTERN, invalidField, invalidValue);
+        String message = String.format(GENERAL_ORDER_NOT_FOUND_PATTERN.getMessage(), invalidField, invalidValue);
         LOG.warn(message);
         return new FieldNotFoundException(message);
     }

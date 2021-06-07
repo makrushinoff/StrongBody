@@ -30,50 +30,50 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> findAll() {
-        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN.getMessage());
         return bookingDAO.findAll();
     }
 
     @Override
     public void save(Booking booking) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, booking);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), booking);
         bookingDAO.save(booking);
     }
 
     @Override
     public void updateById(UUID id, Booking booking) {
-        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, booking, id);
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN.getMessage(), booking, id);
         bookingDAO.updateById(id, booking);
     }
 
     @Override
     public void deleteById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         bookingDAO.deleteById(id);
     }
 
     @Override
     public Booking findById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         return bookingDAO.findById(id)
                 .orElseThrow(() -> generateGeneralBookingException(Booking.ID_FIELD, id.toString()));
     }
 
     private RuntimeException generateGeneralBookingException(String invalidField, String invalidValue) {
-        String message = String.format(GENERAL_BOOKING_NOT_FOUND_PATTERN, invalidField, invalidValue);
+        String message = String.format(GENERAL_BOOKING_NOT_FOUND_PATTERN.getMessage(), invalidField, invalidValue);
         LOG.warn(message);
         return new FieldNotFoundException(message);
     }
 
     @Override
     public void createBooking(Booking booking) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, booking);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), booking);
         bookingDAO.saveWithoutId(booking);
     }
 
     @Override
     public List<Booking> getCustomerBookingsByCartId(UUID cartId) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, cartId);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), cartId);
         List<Booking> bookings = bookingDAO.getBookingsByCartId(cartId);
         bookingPostProcessor.postProcess(bookings);
         return bookings;

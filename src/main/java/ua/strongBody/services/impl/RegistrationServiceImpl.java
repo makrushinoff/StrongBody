@@ -37,7 +37,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public boolean register(RegistrationForm registrationForm) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, registrationForm);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), registrationForm);
         if (!isRegistrationFormValid(registrationForm)) {
             return false;
         }
@@ -54,7 +54,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void processSuccessMessage(Customer customer) {
         String username = customer.getUsername();
-        String message = String.format(REGISTRATION_SUCCESS_PATTERN, username);
+        String message = String.format(REGISTRATION_SUCCESS_PATTERN.getMessage(), username);
         LOG.info(message);
     }
 
@@ -62,7 +62,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             processCustomerCreation(customer);
         } catch (DataAccessException ex) {
-            String message = String.format(SAVE_FAILED_PATTERN, ex.getMessage());
+            String message = String.format(SAVE_FAILED_PATTERN.getMessage(), ex.getMessage());
             LOG.warn(message);
             return false;
         }
@@ -85,7 +85,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             registrationFormValidator.validate(registrationForm);
         } catch (ValidationException ex) {
-            String message = String.format(VALIDATION_FAILED_PATTERN, ex.getMessage());
+            String message = String.format(VALIDATION_FAILED_PATTERN.getMessage(), ex.getMessage());
             LOG.warn(message);
             return false;
         }
