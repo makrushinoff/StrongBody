@@ -26,5 +26,38 @@
     </div>
 </div>
 
+<main class="container mt-5">
+    <div class="content mt-5 ms-5 me-5">
+        <h4 class="text-center">Customer orders</h4>
+        <div th:if="${orders.isEmpty()} == false">
+
+            <table class="table table-bordered table-hover text-center align-middle mt-3">
+                <thead>
+                <tr class="active">
+                    <th>Id</th>
+                    <th>Ordered Date</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+
+                <tbody th:each="order : ${orders}">
+                <tr th:object="${order}">
+                    <td th:text="*{id}"></td>
+                    <td th:text="*{orderedDate}"></td>
+                    <td th:text="*{productAmount}"></td>
+                    <td th:text="*{price.toString()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${orders.isEmpty()}" class="text-center">
+            <h5 class="mb-4 mt-4">You have no orders ☹️</h5>
+            <a th:href="@{/catalog/}" class="btn btn-success mt-2">Go to catalog!</a>
+        </div>
+    </div>
+</main>
+
 </body>
 </html>

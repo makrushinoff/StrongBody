@@ -13,6 +13,7 @@ import static ua.strongBody.models.Cart.*;
 
 @Component
 public class CartRowMapper implements RowMapper<Cart> {
+
     @Override
     public Cart mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Cart cart = new Cart();

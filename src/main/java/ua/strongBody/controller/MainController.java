@@ -4,13 +4,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.strongBody.exceptions.FieldNotFoundException;
+import ua.strongBody.facade.OrderFacade;
 import ua.strongBody.models.Customer;
+import ua.strongBody.models.Order;
 import ua.strongBody.models.forms.LoginForm;
 import ua.strongBody.models.forms.RegistrationForm;
 import ua.strongBody.services.CustomerService;
 import ua.strongBody.services.RegistrationService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -18,10 +21,12 @@ public class MainController {
 
     private final RegistrationService registrationService;
     private final CustomerService customerService;
+    private final OrderFacade orderFacade;
 
-    public MainController(RegistrationService registrationService, CustomerService customerService) {
+    public MainController(RegistrationService registrationService, CustomerService customerService, OrderFacade orderFacade) {
         this.registrationService = registrationService;
         this.customerService = customerService;
+        this.orderFacade = orderFacade;
     }
 
     @GetMapping("/")
@@ -62,12 +67,14 @@ public class MainController {
         try {
             String username = principal.getName();
             Customer customer = customerService.findByUsername(username);
+            List<Order> orders = orderFacade.getOrdersByCustomerUsername(username);
+
             model.addAttribute("customer", customer);
+            model.addAttribute("orders", orders);
         } catch (FieldNotFoundException ex) {
             return "redirect:/";
         }
 
-        model.addAttribute("firstName", principal.getName());
         return "other/profile";
     }
 }

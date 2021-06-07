@@ -12,6 +12,7 @@ public final class LoggingConstants {
     public static final String GENERAL_CUSTOMER_NOT_FOUND_PATTERN = "Customer with %s: '%s' not found!";
     public static final String GENERAL_CART_NOT_FOUND_PATTERN = "Cart with %s: '%s' not found!";
     public static final String GENERAL_BOOKING_NOT_FOUND_PATTERN = "Booking with %s: '%s' not found!";
+    public static final String GENERAL_ORDER_NOT_FOUND_PATTERN = "Booking with %s: '%s' not found!";
 
     public static final String VALIDATION_FAILED_PATTERN = "Validation stage is failed. Message: '%s'";
     public static final String SAVE_FAILED_PATTERN = "Customer save process is failed. Exception: '%s'";

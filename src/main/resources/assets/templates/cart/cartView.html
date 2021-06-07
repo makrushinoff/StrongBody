@@ -11,8 +11,30 @@
         <h1 class="text-center">Customer cart</h1>
         <div th:if="${bookings.isEmpty()} == false">
             <div class="d-flex justify-content-end mb-4 mt-4">
-                <a th:href="@{/cart/submit}" class="btn btn-success">Submit Cart</a>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#submitModal">
+                    Submit Cart
+                </button>
+
+                <div id="submitModal" class="modal fade in">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title">Submit cart?</h2>
+                                <button type="button" class="btn-close me-1" data-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p th:text="'Your order price going to be ' + ${cart.price.toString()}"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <a th:href="@{/cart/submit}" class="btn btn-success">Submit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <table class="table table-bordered table-hover text-center align-middle">
                 <thead>
                 <tr class="active">
