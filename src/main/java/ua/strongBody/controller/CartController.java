@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ua.strongBody.exceptions.FieldNotFoundException;
 import ua.strongBody.facade.CartFacade;
 import ua.strongBody.facade.CartFacadeImpl;
+import ua.strongBody.facade.OrderFacade;
 import ua.strongBody.models.Booking;
 import ua.strongBody.models.Cart;
 
@@ -20,9 +21,11 @@ import java.util.UUID;
 public class CartController {
 
     private final CartFacade cartFacade;
+    private final OrderFacade orderFacade;
 
-    public CartController(CartFacadeImpl cartFacade) {
+    public CartController(CartFacadeImpl cartFacade, OrderFacade orderFacade) {
         this.cartFacade = cartFacade;
+        this.orderFacade = orderFacade;
     }
 
     @GetMapping("/")
@@ -56,6 +59,8 @@ public class CartController {
     @GetMapping("/submit")
     public String submitCart(Principal principal) {
         String customerUsername = principal.getName();
+
+        orderFacade.createOrderFromCartByCustomerUsername(customerUsername);
         cartFacade.submitCartByCustomerUsername(customerUsername);
         return "cart/cartSubmit";
     }

@@ -48,3 +48,15 @@ CREATE TABLE IF NOT EXISTS booking
     CONSTRAINT "product_id_fkey" FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE,
     CONSTRAINT "cart_id_fkey" FOREIGN KEY (cart_id) REFERENCES cart (id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS order_table
+(
+    id             UUID    NOT NULL DEFAULT uuid_generate_v4(),
+    order_date     DATE    NOT NULL,
+    product_amount INTEGER NOT NULL,
+    price          NUMERIC NOT NULL,
+    customer_id    UUID    NOT NULL,
+
+    CONSTRAINT "order_table_id" PRIMARY KEY (id),
+    CONSTRAINT "customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE
+)

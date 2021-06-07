@@ -60,7 +60,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private RuntimeException generateGeneralBookingException(String invalidField, String invalidValue) {
-        String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN, invalidField, invalidValue);
+        String message = String.format(GENERAL_BOOKING_NOT_FOUND_PATTERN, invalidField, invalidValue);
         LOG.warn(message);
         return new FieldNotFoundException(message);
     }
