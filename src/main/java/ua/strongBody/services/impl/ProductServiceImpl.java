@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN.getMessage());
         List<Product> allProducts = productDAO.findAll();
         productPostProcessor.postProcess(allProducts);
         return allProducts;
@@ -37,25 +37,25 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(Product product) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, product);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), product);
         productDAO.save(product);
     }
 
     @Override
     public void updateById(UUID id, Product product) {
-        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, product, id);
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN.getMessage(), product, id);
         productDAO.updateById(id, product);
     }
 
     @Override
     public void deleteById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         productDAO.deleteById(id);
     }
 
     @Override
     public Product findById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         Product product = productDAO.findById(id)
                 .orElseThrow(() -> generateGeneralProductException(Product.ID_FIELD, id.toString()));
         productPostProcessor.postProcess(product);
@@ -63,14 +63,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private RuntimeException generateGeneralProductException(String invalidField, String invalidValue) {
-        String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN, invalidField, invalidValue);
+        String message = String.format(GENERAL_PRODUCT_NOT_FOUND_PATTERN.getMessage(), invalidField, invalidValue);
         LOG.warn(message);
         return new FieldNotFoundException(message);
     }
 
     @Override
     public void createProduct(Product product) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, product);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), product);
         productDAO.saveWithoutId(product);
     }
 }

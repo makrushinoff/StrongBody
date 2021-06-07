@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<Cart> findAll() {
-        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN.getMessage());
         List<Cart> allCarts = cartDAO.findAll();
         cartPostProcessor.postProcess(allCarts);
         return allCarts;
@@ -37,25 +37,25 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void save(Cart cart) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, cart);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), cart);
         cartDAO.save(cart);
     }
 
     @Override
     public void updateById(UUID id, Cart cart) {
-        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, cart, id);
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN.getMessage(), cart, id);
         cartDAO.updateById(id, cart);
     }
 
     @Override
     public void deleteById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         cartDAO.deleteById(id);
     }
 
     @Override
     public Cart findById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         Cart cart = cartDAO.findById(id)
                 .orElseThrow(() -> generateGeneralCartException(Cart.ID_FIELD, id.toString()));
         cartPostProcessor.postProcess(cart);
@@ -64,7 +64,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart findCartByCustomerId(UUID customerId) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, customerId);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), customerId);
         Cart cart = cartDAO.findCartByCustomerId(customerId)
                 .orElseThrow(() -> generateGeneralCartException(Cart.CUSTOMER_ID_FIELD, customerId.toString()));
         cartPostProcessor.postProcess(cart);
@@ -72,7 +72,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private RuntimeException generateGeneralCartException(String invalidField, String invalidValue) {
-        String message = String.format(GENERAL_CART_NOT_FOUND_PATTERN, invalidField, invalidValue);
+        String message = String.format(GENERAL_CART_NOT_FOUND_PATTERN.getMessage(), invalidField, invalidValue);
         LOG.warn(message);
         return new FieldNotFoundException(message);
     }

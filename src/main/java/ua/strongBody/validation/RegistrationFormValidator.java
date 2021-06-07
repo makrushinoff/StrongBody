@@ -44,7 +44,7 @@ public class RegistrationFormValidator implements Validator<RegistrationForm> {
      * @see Customer
      */
     public void validate(RegistrationForm registrationForm) throws ValidationException {
-        LOG.info(LOG_DEBUG_ONE_ARG_PATTERN, registrationForm);
+        LOG.info(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), registrationForm);
         List<Customer> allCustomers = customerDAO.findAll();
         try {
             allCustomers.forEach(customer -> validateFields(registrationForm, customer));

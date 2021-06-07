@@ -30,7 +30,7 @@ public class ProductValidator implements Validator<Product> {
 
     @Override
     public void validate(Product product) throws ValidationException {
-        LOG.info(LOG_DEBUG_ONE_ARG_PATTERN, product);
+        LOG.info(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), product);
         List<Product> allProducts = productDAO.findAll();
         try {
             allProducts.forEach(prod -> validateFields(product, prod));

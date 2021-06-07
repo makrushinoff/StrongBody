@@ -26,44 +26,44 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer findByUsername(String username) throws FieldNotFoundException {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, username);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), username);
         return customerDAO.findFirstByUsername(username)
                 .orElseThrow(() -> generateGeneralCustomerException(Customer.USERNAME_FIELD, username));
     }
 
     @Override
     public List<Customer> findAll() {
-        LOG.debug(LOG_DEBUG_EMPTY_PATTERN);
+        LOG.debug(LOG_DEBUG_EMPTY_PATTERN.getMessage());
         return customerDAO.findAll();
     }
 
     @Override
     public void save(Customer customer) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, customer);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), customer);
         customerDAO.save(customer);
     }
 
     @Override
     public void updateById(UUID id, Customer customer) {
-        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN, customer, id);
+        LOG.debug(LOG_DEBUG_TWO_ARG_PATTERN.getMessage(), customer, id);
         customerDAO.updateById(id, customer);
     }
 
     @Override
     public void deleteById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         customerDAO.deleteById(id);
     }
 
     @Override
     public Customer findById(UUID id) {
-        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN, id);
+        LOG.debug(LOG_DEBUG_ONE_ARG_PATTERN.getMessage(), id);
         return customerDAO.findById(id)
                 .orElseThrow(() -> generateGeneralCustomerException(Customer.ID_FIELD, id.toString()));
     }
 
     private RuntimeException generateGeneralCustomerException(String invalidField, String invalidValue) {
-        String message = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN, invalidField, invalidValue);
+        String message = String.format(GENERAL_CUSTOMER_NOT_FOUND_PATTERN.getMessage(), invalidField, invalidValue);
         LOG.warn(message);
         return new FieldNotFoundException(message);
     }
