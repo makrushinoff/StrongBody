@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CartFacade {
+
     void addProductToCartByCustomerUsername(UUID productId, String username);
 
     void removeBookingFromCart(UUID bookingId);

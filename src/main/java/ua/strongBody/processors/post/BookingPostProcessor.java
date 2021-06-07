@@ -9,6 +9,7 @@ import java.util.List;
 
 @Component
 public class BookingPostProcessor implements PostProcessor<Booking> {
+
     @Override
     public void postProcess(List<Booking> bookings) {
         sortBookings(bookings);

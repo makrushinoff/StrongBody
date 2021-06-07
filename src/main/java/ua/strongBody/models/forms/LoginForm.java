@@ -5,6 +5,7 @@ import ua.strongBody.models.Product;
 import java.util.StringJoiner;
 
 public class LoginForm {
+
     private String username;
     private String password;
 

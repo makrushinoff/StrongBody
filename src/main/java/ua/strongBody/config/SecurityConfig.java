@@ -21,7 +21,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomerDetailsServiceImpl customerDetailsService;
 
-
     public SecurityConfig(CustomerDetailsServiceImpl customerDetailsService) {
         this.customerDetailsService = customerDetailsService;
     }

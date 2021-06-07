@@ -1,6 +1,7 @@
-package ua.strongBody.facade;
+package ua.strongBody.facade.impl;
 
 import org.springframework.stereotype.Component;
+import ua.strongBody.facade.CartFacade;
 import ua.strongBody.models.Booking;
 import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;

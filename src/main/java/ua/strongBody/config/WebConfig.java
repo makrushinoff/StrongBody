@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @ComponentScan("ua.strongBody.controller")
 public class WebConfig implements WebMvcConfigurer {
+
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/assets/static/css/",
             "classpath:/assets/static/js/"

@@ -48,21 +48,21 @@ public class ProductValidator implements Validator<Product> {
         return String.format(VALIDATION_EXCEPTION_PATTERN, invalidFieldName, invalidValue, reason);
     }
 
-    private void validateFields(Product inputProduct, Product presenceProduct)  throws FieldValidationException {
+    private void validateFields(Product inputProduct, Product presenceProduct) throws FieldValidationException {
         articleValidation(inputProduct, presenceProduct);
         nameValidation(inputProduct, presenceProduct);
     }
 
     private void nameValidation(Product inputProduct, Product presenceProduct) {
         boolean nameCheck = presenceProduct.getName().equals(inputProduct.getName());
-        if(nameCheck) {
+        if (nameCheck) {
             throw new FieldValidationException(NAME_FIELD, inputProduct.getName(), DUPLICATION_REASON);
         }
     }
 
     private void articleValidation(Product inputProduct, Product presenceProduct) {
         boolean articleCheck = presenceProduct.getArticle().equals(inputProduct.getArticle());
-        if(articleCheck) {
+        if (articleCheck) {
             throw new FieldValidationException(ARTICLE_FIELD, inputProduct.getArticle(), DUPLICATION_REASON);
         }
     }
