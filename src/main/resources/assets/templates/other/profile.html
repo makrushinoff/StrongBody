@@ -13,8 +13,6 @@
                 <div class="card-header fw-bold" th:text="*{firstName} + '&nbsp' + *{lastName}"></div>
 
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item" th:text="'Id: ' + *{id}"></li>
-
                     <li class="list-group-item" th:text="'Email: ' + *{email}"></li>
 
                     <li class="list-group-item" th:text="'Username: ' + *{username}"></li>
@@ -34,7 +32,7 @@
             <table class="table table-bordered table-hover text-center align-middle mt-3">
                 <thead>
                 <tr class="active">
-                    <th>Id</th>
+                    <th>Order Number</th>
                     <th>Ordered Date</th>
                     <th>Amount</th>
                     <th>Price</th>
