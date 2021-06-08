@@ -30,6 +30,6 @@ public class BookingPostProcessor implements PostProcessor<Booking> {
     }
 
     private void sortBookings(List<Booking> bookings) {
-        bookings.sort(Comparator.comparing(Booking::getId).reversed());
+        bookings.sort(Comparator.comparing(Booking::getId));
     }
 }
