@@ -22,10 +22,9 @@ public class BookingPostProcessor implements PostProcessor<Booking> {
     }
 
     private void calculateBookingPrice(Booking booking) {
-        int productPrice = booking.getProduct().getPrice();
+        BigDecimal productPrice = booking.getProduct().getPrice();
         int productAmount = booking.getProductAmount();
-        int price = productPrice * productAmount;
-        BigDecimal bookingPrice = BigDecimal.valueOf(price);
+        BigDecimal bookingPrice = productPrice.multiply(BigDecimal.valueOf(productAmount));
         booking.setPrice(bookingPrice);
     }
 

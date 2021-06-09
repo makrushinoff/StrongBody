@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.strongBody.models.Product;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -20,7 +21,7 @@ class ProductRowMapperTest {
 
     private static final UUID ID = UUID.randomUUID();
     private static final String PRODUCT_NAME = "prod1";
-    private static final int PRICE = 2000;
+    private static final BigDecimal PRICE = BigDecimal.valueOf(2000);
     private static final String ARTICLE = "PP-01";
     private static final String DESCRIPTION = "Super-puper product1";
     private static final int AMOUNT = 5;
@@ -37,7 +38,7 @@ class ProductRowMapperTest {
     void setUp() throws SQLException {
         when(resultSet.getObject(ID_FIELD, UUID.class)).thenReturn(ID);
         when(resultSet.getString(NAME_FIELD)).thenReturn(PRODUCT_NAME);
-        when(resultSet.getInt(PRICE_FIELD)).thenReturn(PRICE);
+        when(resultSet.getBigDecimal(PRICE_FIELD)).thenReturn(PRICE);
         when(resultSet.getString(ARTICLE_FIELD)).thenReturn(ARTICLE);
         when(resultSet.getString(DESCRIPTION_FIELD)).thenReturn(DESCRIPTION);
         when(resultSet.getInt(AMOUNT_FIELD)).thenReturn(AMOUNT);

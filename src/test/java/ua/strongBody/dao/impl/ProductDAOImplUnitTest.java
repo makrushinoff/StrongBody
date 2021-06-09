@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import ua.strongBody.assembly.ProductAssembly;
 import ua.strongBody.models.Product;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,7 @@ class ProductDAOImplUnitTest {
     private static final String DELETE_QUERY = "DELETE FROM product WHERE id = '%s'";
 
     private static final String PRODUCT_NAME = "prod1";
-    private static final int PRICE = 2000;
+    private static final BigDecimal PRICE = BigDecimal.valueOf(2000);
     private static final String ARTICLE = "PP-01";
     private static final String DESCRIPTION = "Super-puper product1";
     private static final int AVAILABLE_AMOUNT = 5;

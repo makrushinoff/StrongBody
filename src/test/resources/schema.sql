@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS product
 (
     id              UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
     name            VARCHAR(100)   NOT NULL,
-    price           int            NOT NULL,
+    price           numeric            NOT NULL,
     article         VARCHAR(50)    NOT NULL UNIQUE,
     description     text,
     amount          int            NOT NULL,

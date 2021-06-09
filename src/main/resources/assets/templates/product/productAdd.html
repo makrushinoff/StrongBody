@@ -16,32 +16,32 @@
       <div class="col-lg-4 mt-4">
         <form class="row" th:object="${product}" th:action="@{/catalog/add}" method="post">
           <div class="mb-4">
-            <label class="form-label h5" th:for="username">Name</label>
+            <label class="form-label h5" th:for="name">Name</label>
             <input class="form-control" type="text" placeholder="Name" th:field="*{name}"
                    required>
           </div>
 
           <div class="mb-4">
-            <label class="form-label h5" th:for="firstName">Price</label>
-            <input class="form-control" type="text" placeholder="Price" th:field="*{price}"
+            <label class="form-label h5" th:for="price">Price</label>
+            <input class="form-control" type="number" step="0.01" placeholder="Price" th:field="*{price}"
                    required>
           </div>
 
           <div class="mb-4">
-            <label class="form-label h5" th:for="firstName">Article</label>
+            <label class="form-label h5" th:for="article">Article</label>
             <input class="form-control" type="text" placeholder="Article" th:field="*{article}"
                    required>
           </div>
 
           <div class="mb-4">
-            <label class="form-label h5" th:for="email">Description</label>
+            <label class="form-label h5" th:for="description">Description</label>
             <input class="form-control" type="text" placeholder="Description" th:field="*{description}"
                    required>
           </div>
 
           <div class="mb-4">
-            <label class="form-label h5" th:for="phoneNumber">General amount</label>
-            <input class="form-control" type="text" placeholder="General amount" th:field="*{amount}"
+            <label class="form-label h5" th:for="amount">General amount</label>
+            <input class="form-control" type="number" step="1" placeholder="General amount" th:field="*{amount}"
                    required>
           </div>
 

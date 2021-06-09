@@ -17,6 +17,7 @@ import ua.strongBody.models.Cart;
 import ua.strongBody.models.Customer;
 import ua.strongBody.models.Product;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ class BookingDAOImplIntegrationTest {
     private static final String ORDER_NUMBER1 = "12345";
     private static final String ORDER_NUMBER2 = "12346";
     private static final String PRODUCT_NAME = "prod1";
-    private static final int PRICE = 2000;
+    private static final BigDecimal PRICE = BigDecimal.valueOf(2000);
     private static final String ARTICLE = "PP-01";
     private static final String DESCRIPTION = "Super-puper product1";
     private static final int AVAILABLE_AMOUNT = 5;
